@@ -16,3 +16,21 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.btn-custom {
+    color: #fff;
+    background-color: #004d6f;
+    border-color: #004d6f;
+}
+
+.btn-custom:hover {
+    color: #fff;
+    background-color: #003349;
+    border-color: #003349;
+}
+
+.btn-custom:focus + .btn-custom, .btn-custom:focus {
+    color: #fff;
+    background-color: #003349;
+    border-color: #003349;
+}
