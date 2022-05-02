@@ -1,3 +1,4 @@
+using System.Dynamic;
 using NewtonLibraryManager.Models;
 
 namespace NewtonLibraryManager.EntityFramework;
@@ -24,20 +25,5 @@ public class DBHandler
 }
 */
 
-    public int AddAccount(string firstName, string lastName, string email, string password, bool isAdmin)
-    {
-        using (NewtonLibraryContext db = new())
-        {
-            var User = new User()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                EMail = email,
-                Password = password,
-                IsAdmin = isAdmin
-            };
-            db.Add(User);
-            return db.SaveChanges();
-        }
-    }
+    
 }
