@@ -14,5 +14,50 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #f7f2ed;
 }
+
+.btn-custom {
+    color: #fff;
+    background-color: #004d6f;
+    border-color: #004d6f;
+}
+
+.btn-custom:hover {
+    color: #fff;
+    background-color: #003349;
+    border-color: #003349;
+}
+
+.btn-custom:focus + .btn-custom, .btn-custom:focus {
+    color: #fff;
+    background-color: #003349;
+    border-color: #003349;
+}
+
+.beige-bg {
+    background-color: #f7f2ed !important;
+}
+
+li.nav-item .nav-link.beige-bg {
+    border-bottom: 1px solid #dee2e6;
+}
+
+li.nav-item .nav-link.beige-bg.active {
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom: 1px solid transparent;
+}
+
+form.d-flex div {
+    width: 100%;
+    display: block;
+}
+
+/*
+@media (min-width: 576px) {
+    input[type=text], input[type=email], input[type=password] {
+        min-width: 20rem;
+    }
+}
+*/
