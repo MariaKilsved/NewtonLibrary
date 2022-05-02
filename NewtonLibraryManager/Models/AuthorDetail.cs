@@ -7,9 +7,9 @@ namespace NewtonLibraryManager.Models
     {
         public int Id { get; set; }
         public int? AuthorId { get; set; }
-        public int? Isbn { get; set; }
+        public int? ProductId { get; set; }
 
         public virtual Author? Author { get; set; }
-        public virtual Book? IsbnNavigation { get; set; }
+        public virtual Product? Product { get; set; }
     }
 }

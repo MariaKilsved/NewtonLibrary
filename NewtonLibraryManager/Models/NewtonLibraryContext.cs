@@ -18,10 +18,11 @@ namespace NewtonLibraryManager.Models
 
         public virtual DbSet<Author> Authors { get; set; } = null!;
         public virtual DbSet<AuthorDetail> AuthorDetails { get; set; } = null!;
-        public virtual DbSet<Book> Books { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Language> Languages { get; set; } = null!;
         public virtual DbSet<LendingDetail> LendingDetails { get; set; } = null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<Type> Types { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -50,37 +51,17 @@ namespace NewtonLibraryManager.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Isbn).HasColumnName("ISBN");
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.AuthorDetails)
                     .HasForeignKey(d => d.AuthorId)
                     .HasConstraintName("FK_AuthorDetails.AuthorId");
 
-                entity.HasOne(d => d.IsbnNavigation)
+                entity.HasOne(d => d.Product)
                     .WithMany(p => p.AuthorDetails)
-                    .HasForeignKey(d => d.Isbn)
-                    .HasConstraintName("FK_AuthorDetails.ISBN");
-            });
-
-            modelBuilder.Entity<Book>(entity =>
-            {
-                entity.HasKey(e => e.Isbn)
-                    .HasName("PK__Book__447D36EB86BA6F49");
-
-                entity.ToTable("Book");
-
-                entity.Property(e => e.Isbn)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ISBN");
-
-                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-
-                entity.Property(e => e.Dewey).HasColumnType("decimal(6, 3)");
-
-                entity.Property(e => e.LanguageId).HasColumnName("LanguageID");
-
-                entity.Property(e => e.Title).HasMaxLength(100);
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_AuthorDetails.ProductID");
             });
 
             modelBuilder.Entity<Category>(entity =>
@@ -107,25 +88,58 @@ namespace NewtonLibraryManager.Models
 
             modelBuilder.Entity<LendingDetail>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ID");
 
                 entity.Property(e => e.BorrowedFrom).HasColumnType("date");
 
                 entity.Property(e => e.BorrowedTo).HasColumnType("date");
 
-                entity.Property(e => e.Isbn).HasColumnName("ISBN");
-
                 entity.Property(e => e.ReturnDate).HasColumnType("date");
 
-                entity.HasOne(d => d.IsbnNavigation)
-                    .WithMany(p => p.LendingDetails)
-                    .HasForeignKey(d => d.Isbn)
-                    .HasConstraintName("FK_LendingDetails.ISBN");
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.LendingDetail)
+                    .HasForeignKey<LendingDetail>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_LendingDetails.ID");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.LendingDetails)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_LendingDetails.UserId");
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.ToTable("Product");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+
+                entity.Property(e => e.Dewey).HasColumnType("decimal(6, 3)");
+
+                entity.Property(e => e.Isbn)
+                    .HasMaxLength(13)
+                    .IsUnicode(false)
+                    .HasColumnName("ISBN")
+                    .IsFixedLength();
+
+                entity.Property(e => e.LanguageId).HasColumnName("LanguageID");
+
+                entity.Property(e => e.Title).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Type>(entity =>
+            {
+                entity.ToTable("Type");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Type1)
+                    .HasMaxLength(70)
+                    .HasColumnName("Type");
             });
 
             modelBuilder.Entity<User>(entity =>
