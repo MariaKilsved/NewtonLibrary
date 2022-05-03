@@ -19,7 +19,7 @@
         <form id="loginForm" method="post" class="mt-3 d-flex align-items-center flex-column">
           <div class="mb-3">
             <label for="loginEmail" class="form-label">Email address</label>
-            <input type="email" asp-for="User.EMail" class="form-control" id="loginEmail" aria-describedby="emailHelp" maxlength="90" />
+            <input type="email" asp-for="EMail" class="form-control" id="loginEmail" aria-describedby="emailHelp" maxlength="90" />
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
           </div>
           <div class="mb-3">
@@ -33,15 +33,15 @@
         <form id="registerForm" method="post" class="mt-3 d-flex align-items-center flex-column">
           <div class="mb-3">
             <label for="registerFirstName" class="form-label">First name</label>
-            <input type="text" asp-for="User.FirstName" class="form-control" id="registerFirstName" maxlength="30" />
+            <input type="text" asp-for="FirstName" class="form-control" id="registerFirstName" maxlength="30" />
           </div>
           <div class="mb-3">
             <label for="registerLastName" class="form-label">Last name</label>
-            <input type="text" asp-for="User.LastName" class="form-control" id="registerLastName" maxlength="30">
+            <input type="text" asp-for="LastName" class="form-control" id="registerLastName" maxlength="30">
           </div>
           <div class="mb-3">
             <label for="registerEmail" class="form-label">Email address</label>
-            <input type="email" asp-for="User.EMail" class="form-control" id="registerEmail" aria-describedby="emailHelp2" maxlength="90">
+            <input type="email" asp-for="EMail" class="form-control" id="registerEmail" aria-describedby="emailHelp2" maxlength="90">
             <div id="emailHelp2" class="form-text">We'll never share your email with anyone else.</div>
           </div>
           <div class="mb-3">

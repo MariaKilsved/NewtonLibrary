@@ -12,9 +12,20 @@ public class IndexModel : PageModel
         _logger = logger;
     }
 
-
+    /*
+    //Har inget Id från frontend
     [BindProperty]
     public Models.User User { get; set; }
+    */
+
+    [BindProperty]
+    public string FirstName { get; set; }
+
+    [BindProperty]
+    public string LastName { get; set; }
+
+    [BindProperty]
+    public string EMail { get; set; }
 
     [BindProperty]
     public string Password { get; set; }   //Should be hashed before put in User
