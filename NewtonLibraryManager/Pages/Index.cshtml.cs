@@ -17,12 +17,12 @@ public class IndexModel : PageModel
     public Models.User User { get; set; }
 
     [BindProperty]
-    private string Password { get; set; }   //Should be hashed before put in User
+    public string Password { get; set; }   //Should be hashed before put in User
 
 
     public void OnGet()
     {
-        User = new Models.User { IsAdmin = false };
+        //User = new Models.User { IsAdmin = false };
     }
 
 
