@@ -38,8 +38,13 @@ public class IndexModel : PageModel
         if(ModelState.IsValid == false)
             return Page();
 
+        var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
 
-        //Antagligen ska man lägga in registrering i databasen här.
+        foreach (var user in listOfUsers)
+            if (EMail == user.EMail && Password == user.Password)
+                return RedirectToPage("/ProductSearch");
+
+        return Page();
         //Kontrollera vad som hämtats från frontend.
         //Frontend gör antingen register eller login.
         //Login: User.EMail, Password
@@ -52,7 +57,6 @@ public class IndexModel : PageModel
 
         //Gå till annan sida
         //Kommer använda webbsession senare
-        return RedirectToPage("/ProductSearch");
     }
 
 }
