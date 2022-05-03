@@ -61,3 +61,39 @@ form.d-flex div {
     }
 }
 */
+
+form.d-flex div.AltAutoWidth {
+    width: 100%;
+}
+
+@media (min-width: 576px) {
+    form.d-flex div.AltAutoWidth {
+        width: 80%;
+    }
+}
+
+@media (min-width: 768px) {
+    form.d-flex div.AltAutoWidth {
+        width: 65%;
+    }
+}
+
+@media (min-width: 992px) {
+    form.d-flex div.AltAutoWidth {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1200px) {
+    form.d-flex div.AltAutoWidth {
+        width: 33%;
+    }
+}
+
+.nav-link {
+    color: #004d6f;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: #004361
+}

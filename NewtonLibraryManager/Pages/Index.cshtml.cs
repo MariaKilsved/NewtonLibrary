@@ -19,12 +19,6 @@ public class IndexModel : PageModel
     */
 
     [BindProperty]
-    public string FirstName { get; set; }
-
-    [BindProperty]
-    public string LastName { get; set; }
-
-    [BindProperty]
     public string EMail { get; set; }
 
     [BindProperty]
