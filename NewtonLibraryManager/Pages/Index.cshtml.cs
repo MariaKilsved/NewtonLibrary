@@ -42,9 +42,8 @@ public class IndexModel : PageModel
     {
         //Om det är något fel på det som skrivits in laddas sidan bara om
         if(ModelState.IsValid == false)
-        {
             return Page();
-        }
+
 
         //Antagligen ska man lägga in registrering i databasen här.
         //Kontrollera vad som hämtats från frontend.
