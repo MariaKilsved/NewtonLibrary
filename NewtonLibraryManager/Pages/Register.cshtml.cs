@@ -23,6 +23,8 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string Password { get; set; }   //Should be hashed before put in User
 
+        [BindProperty]
+        public bool IsAdmin { get; set; }
 
         public void OnGet()
         {

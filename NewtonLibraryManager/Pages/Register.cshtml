@@ -24,6 +24,12 @@
         <label for="registerPassword" class="form-label">Password</label>
         <input type="password" asp-for="Password" class="form-control" id="registerPassword">
         </div>
+        <div class="form-check p-4 text-start w-auto">
+            <input asp-for="IsAdmin" class="form-check-input" type="checkbox" value="" id="checkboxIsAdmin" />
+            <label class="form-check-label" for="checkboxIsAdmin">
+            Admin
+            </label>
+        </div>
         <button type="submit" class="btn btn-custom">Register</button>
     </form>
 
