@@ -24,6 +24,7 @@ public class IndexModel : PageModel
     [BindProperty]
     public string Password { get; set; }   //Should be hashed before put in User
 
+    public int Id { get; set; }
 
     public void OnGet()
     {
@@ -42,8 +43,17 @@ public class IndexModel : PageModel
 
         foreach (var user in listOfUsers)
             if (EMail == user.EMail && Password == user.Password)
-                return RedirectToPage("/ProductSearch");
+            {
+                Id = user.Id;
 
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddDays(1)
+                };
+                Response.Cookies.Append("LibraryCookie", user.Id.ToString(), cookieOptions);
+
+                return RedirectToPage("/ProductSearch");
+            }
         return Page();
         //Kontrollera vad som hämtats från frontend.
         //Frontend gör antingen register eller login.
