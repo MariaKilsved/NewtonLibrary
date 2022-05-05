@@ -54,7 +54,7 @@ namespace NewtonLibraryManager.Pages
 
             //G� till annan sida
             //Kommer anv�nda webbsession senare
-            return RedirectToPage("/ProductSearch");
+            return RedirectToPage("/Index");
         }
     }
 }

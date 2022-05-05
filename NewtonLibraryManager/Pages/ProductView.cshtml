@@ -1,0 +1,44 @@
+﻿@page
+@model NewtonLibraryManager.Pages.ProductViewModel
+@{
+    ViewData["Title"] = "Product";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Title</h1>
+
+    <div>@Model.Description</div>
+
+
+    <div class="container">
+
+      <div class="row">
+        <div class="col">
+          <b>Author:</b> @Model.Author
+        </div>
+        <div class="col">
+          <b>Language:</b> @Model.Language
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <b>Dewey:</b> @Model.Dewey
+        </div>
+        <div class="col">
+          <b>Category:</b> @Model.Category
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <b>ISBN:</b> @Model.Isbn
+        </div>
+        <div class="col">
+          <!-- <b>In stock:</b> @Model.NrOfCopies -->
+        </div>
+      </div>
+
+
+    </div>
+</div>

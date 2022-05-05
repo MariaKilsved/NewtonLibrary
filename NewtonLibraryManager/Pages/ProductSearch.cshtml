@@ -7,16 +7,8 @@
     <h1 class="display-4">@ViewData["Title"]</h1>
     <form id="searchForm" class="mt-3 d-flex align-items-center flex-column">
         <div class="mb-3 AltAutoWidth">
-          <label for="searchISBN" class="form-label">ISBN</label>
-          <input type="text" asp-for="Isbn" maxlength="13" class="form-control" id="searchISBN" placeholder="E.g. 9781329224278" />
-        </div>
-        <div class="mb-3 AltAutoWidth">
-          <label for="searchAuthorFN" class="form-label">Author first name</label>
-          <input type="text" asp-for="FirstName" maxlength="30" class="form-control" id="searchAuthorFN" />
-        </div>
-        <div class="mb-3 AltAutoWidth">
-          <label for="searchAuthorLN" class="form-label">Author last name</label>
-          <input type="text" asp-for="LastName" maxlength="30" class="form-control" id="searchAuthorLN" />
+          <label for="search" class="form-label">Search</label>
+          <input type="text" asp-for="Search" maxlength="61" class="form-control" id="search" />
         </div>
 
         <h5 class="mt-3 fw-light">Include...</h5>

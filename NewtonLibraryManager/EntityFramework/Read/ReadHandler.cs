@@ -1,4 +1,5 @@
 ﻿using NewtonLibraryManager.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace NewtonLibraryManager.EntityFramework.Read
 {
@@ -97,6 +98,70 @@ namespace NewtonLibraryManager.EntityFramework.Read
             using NewtonLibraryContext db = new();
             var Authors = db.Authors.ToList();
             return Authors;
+        }
+
+        //-----------//
+        //Overloads//
+        //---------//
+
+        public static Author GetAuthors(int authorId)
+        {
+            using NewtonLibraryContext db = new();
+            Author? author = db.Authors.Find(authorId);
+
+            if (author == null)
+            {
+                throw new Exception("Could not find author with that ID");
+            }
+            return author;
+        }
+
+        public static Category GetCategories(int categoryId)
+        {
+            using NewtonLibraryContext db = new();
+            Category? category = db.Categories.Find(categoryId);
+
+            if (category == null)
+            {
+                throw new Exception("Could not find category with that ID");
+            }
+            return category;
+        }
+
+        public static Product GetProducts(int productId)
+        {
+            using NewtonLibraryContext db = new();
+            Product? product = db.Products.Find(productId);
+
+            if (product == null)
+            {
+                throw new Exception("Could not find product with that ID");
+            }
+            return product;
+        }
+
+        public static User GetUsers(int userId)
+        {
+            using NewtonLibraryContext db = new();
+            User? user = db.Users.Find(userId);
+
+            if (user == null)
+            {
+                throw new Exception("Could not find user with that ID");
+            }
+            return user;
+        }
+
+        public static LendingDetail GetLendingDetails(int lendingDetailsId)
+        {
+            using NewtonLibraryContext db = new();
+            LendingDetail? lendingDetail = db.LendingDetails.Find(lendingDetailsId);
+
+            if (lendingDetail == null)
+            {
+                throw new Exception("Could not find user with that ID");
+            }
+            return lendingDetail;
         }
     }
 }
