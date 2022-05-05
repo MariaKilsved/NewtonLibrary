@@ -40,8 +40,7 @@ namespace NewtonLibraryManager.Pages
                 return Page();
 
             EntityFramework.Create.CreateHandler.CreateUser(FirstName, LastName, EMail, Password, false);
-            var myList = EntityFramework.Read.ReadHandler.GetUsers();
-
+            
             //Antagligen ska man l�gga in registrering i databasen h�r.
             //Kontrollera vad som h�mtats fr�n frontend.
             //Frontend g�r antingen register eller login.

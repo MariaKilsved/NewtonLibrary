@@ -24,7 +24,6 @@ public class IndexModel : PageModel
     [BindProperty]
     public string Password { get; set; }   //Should be hashed before put in User
 
-    public int Id { get; set; }
 
     public void OnGet()
     {
@@ -39,21 +38,9 @@ public class IndexModel : PageModel
         if(ModelState.IsValid == false)
             return Page();
 
-        var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
-
-        foreach (var user in listOfUsers)
-            if (EMail == user.EMail && Password == user.Password)
-            {
-                Id = user.Id;
-
-                var cookieOptions = new CookieOptions
-                {
-                    Expires = DateTime.Now.AddDays(1)
-                };
-                Response.Cookies.Append("LibraryCookie", user.Id.ToString(), cookieOptions);
-
+        if(Controllers.AccountController.LogIn(EMail, Password))
                 return RedirectToPage("/ProductSearch");
-            }
+
         return Page();
         //Kontrollera vad som hämtats från frontend.
         //Frontend gör antingen register eller login.
