@@ -2,7 +2,7 @@ namespace NewtonLibraryManager.Controllers;
 
 public static class AccountController
 {
-    private static bool _loggedIn = false;
+    private static bool _loggedIn;
     public static bool LoggedIn => _loggedIn;
 
     public static bool LogIn(string email, string password)
