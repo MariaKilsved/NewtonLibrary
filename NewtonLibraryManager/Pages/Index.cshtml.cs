@@ -38,10 +38,7 @@ public class IndexModel : PageModel
         if(ModelState.IsValid == false)
             return Page();
 
-        var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
-
-        foreach (var user in listOfUsers)
-            if (EMail == user.EMail && Password == user.Password)
+        if(Controllers.AccountController.LogIn(EMail, Password))
                 return RedirectToPage("/ProductSearch");
 
         return Page();
