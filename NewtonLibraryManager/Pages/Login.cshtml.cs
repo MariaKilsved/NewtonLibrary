@@ -29,6 +29,16 @@ namespace NewtonLibraryManager.Pages
             if (AccountHandler.LogIn(EMail, Password))
                 return RedirectToPage("/Index");
 
+            if (AccountHandler.LogIn(EMail, Password))
+            {
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddHours(1)
+                };
+                Response.Cookies.Append("NewtonLibraryCookie", $"{AccountHandler.CurrentIdLoggedIn}", cookieOptions);
+                return RedirectToPage("/ProductSearch");
+            }
+
             return Page();
             //Kontrollera vad som hämtats från frontend.
             //Frontend gör antingen register eller login.
