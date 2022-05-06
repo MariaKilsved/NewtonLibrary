@@ -1,5 +1,40 @@
 ﻿@page
 @model NewtonLibraryManager.Pages.AdminManagementModel
 @{
+    var cookieValue = Request.Cookies["LibraryCookie"];
 }
+<div class="text-center">
+@if (cookieValue == "10")
+{
+    <h1 class="display-4">Administrera administratörer</h1>
+
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Förnamn</th>
+          <th scope="col">Efternamn</th>
+          <th scope="col">E-mail</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var user in Model.Admins)
+        {
+         <tr>
+             <th scope="row">@user.Id<input type="hidden" name="id" value="@user.Id" /></th>
+             <td>@user.FirstName</td>
+             <td>@user.LastName</td>
+             <td>@user.EMail</td>
+         </tr>               
+        }
+      </tbody>
+    </table>
+}
+else
+{
+    <p>Sidan är ej tillgänglig.</p>
+}
+</div>
+
+
 

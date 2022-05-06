@@ -35,7 +35,7 @@ namespace NewtonLibraryManager.Pages
                 {
                     Expires = DateTime.Now.AddHours(1)
                 };
-                Response.Cookies.Append("NewtonLibraryCookie", $"{AccountHandler.CurrentIdLoggedIn}", cookieOptions);
+                Response.Cookies.Append("LibraryCookie", $"{AccountHandler.CurrentIdLoggedIn}", cookieOptions);
                 return RedirectToPage("/ProductSearch");
             }
 
