@@ -3,7 +3,9 @@ namespace NewtonLibraryManager.Handlers;
 public static class AccountHandler
 {
     private static bool _loggedIn;
+    private static int _currentIdLoggedIn;
     public static bool LoggedIn => _loggedIn;
+    public static int CurrentIdLoggedIn => _currentIdLoggedIn;
 
     public static bool LogIn(string email, string password)
     {
@@ -13,6 +15,7 @@ public static class AccountHandler
             if (email == user.EMail && password == user.Password)
             {
                 _loggedIn = true;
+                _currentIdLoggedIn = user.Id;
                 return true;
             }
         return false;
