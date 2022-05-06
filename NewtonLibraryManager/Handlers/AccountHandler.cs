@@ -21,7 +21,11 @@ public static class AccountHandler
         return false;
     }
 
-    public static void LogOut() => _loggedIn = false;
+    public static void LogOut()
+    {
+        _loggedIn = false;
+        _currentIdLoggedIn = 0;
+    }
 
     public static bool CreateUser(string firstName, string lastName, string email, string password)
     {
