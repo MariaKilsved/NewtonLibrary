@@ -14,6 +14,5 @@ public class ProductHandler
                 where product.Isbn.Contains(isbn)
                 select product.Isbn;
         }
-
     }
 }

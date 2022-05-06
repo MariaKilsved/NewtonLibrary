@@ -73,7 +73,7 @@ public class IndexModel : PageModel
         //Should instead set the property SearchResults!
         //SearchResults.Author should be a string of authors separated by ,
 
-        return RedirectToPage("/ProductSearch");
+        return RedirectToPage("/Index");
 
     }
 

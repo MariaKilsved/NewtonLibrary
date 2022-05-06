@@ -27,7 +27,7 @@ namespace NewtonLibraryManager.Pages
                 return Page();
 
             if (AccountHandler.LogIn(EMail, Password))
-                return RedirectToPage("/ProductSearch");
+                return RedirectToPage("/Index");
 
             return Page();
             //Kontrollera vad som hämtats från frontend.
