@@ -37,20 +37,7 @@ namespace NewtonLibraryManager.Pages
                 return Page();
             }
 
-            //List of the ids of all selected products
-            List<int> selectedIdsList;
-
-
-            using (var context = new Models.NewtonLibraryContext())
-            {
-                var selectedIds = from product in context.Products
-                                       join ad in context.AuthorDetails on product.Id equals ad.ProductId
-                                       join author in context.Authors on ad.AuthorId equals author.Id
-                                       join type in context.Types on product.ProductType equals type.Id
-                                       where product.Isbn == Search || author.FirstName == Search || author.LastName == Search || author.FirstName + " " + author.LastName == Search && ((IncludeBooks? type.Id == 1 : type.Id != 1) && (IncludeEbooks? type.Id == 2 : type.Id != 2) && (IncludeAudio? type.Id == 3 : type.Id != 3))
-                                       select product.Id;
-                selectedIdsList = selectedIds.ToList();
-            }
+            Handlers.SearchHander.BookSearch(Search);
 
             /*
             string query = "?";
