@@ -24,7 +24,7 @@ namespace NewtonLibraryManager.Pages
 
         public IActionResult OnPost()
         {
-            //Om det är något fel på det som skrivits in laddas sidan bara om
+            //Om det ï¿½r nï¿½got fel pï¿½ det som skrivits in laddas sidan bara om
             if (ModelState.IsValid == false)
             {
                 return Page();

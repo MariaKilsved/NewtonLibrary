@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NewtonLibraryManager.Handlers;
 
 namespace NewtonLibraryManager.Pages;
 
@@ -38,7 +39,7 @@ public class IndexModel : PageModel
         if(ModelState.IsValid == false)
             return Page();
 
-        if(Controllers.AccountController.LogIn(EMail, Password))
+        if(AccountHandler.LogIn(EMail, Password))
                 return RedirectToPage("/ProductSearch");
 
         return Page();
