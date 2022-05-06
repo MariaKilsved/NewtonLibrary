@@ -33,6 +33,7 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string ProductType { get; set; }
 
+
         public void OnGet()
         {
             //Should get whatever product info there is
