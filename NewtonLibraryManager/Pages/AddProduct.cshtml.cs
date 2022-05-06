@@ -20,24 +20,24 @@ namespace NewtonLibraryManager.Pages
         public decimal Dewey { get; set; }
 
         [BindProperty]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         [BindProperty]
         public int Isbn { get; set; }
 
 
         [BindProperty]
-        public List<string?>? ProdTypes { get; set; }
+        public List<string> ProdTypes { get; set; }
 
 
         [BindProperty]
-        public List<string?>? Categories { get; set; }
+        public List<string> Categories { get; set; }
 
         [BindProperty]
-        public string? ProdType { get; set; }
+        public string ProdType { get; set; }
 
         [BindProperty]
-        public string? Category { get; set; }
+        public string Category { get; set; }
 
         public void OnGet()
         {

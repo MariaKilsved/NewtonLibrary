@@ -39,8 +39,16 @@ namespace NewtonLibraryManager.Pages
             if (ModelState.IsValid == false)
                 return Page();
 
-            EntityFramework.Create.CreateHandler.CreateUser(FirstName, LastName, EMail, Password, false);
-            
+            if(IsAdmin)
+                if(Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
+                    return RedirectToPage("/Index");
+                
+                else
+            if(Handlers.AccountHandler.CreateUser(FirstName, LastName, EMail, Password))
+                return RedirectToPage("/Index");
+
+            return Page();
+
             //Antagligen ska man l�gga in registrering i databasen h�r.
             //Kontrollera vad som h�mtats fr�n frontend.
             //Frontend g�r antingen register eller login.
@@ -54,7 +62,6 @@ namespace NewtonLibraryManager.Pages
 
             //G� till annan sida
             //Kommer anv�nda webbsession senare
-            return RedirectToPage("/Index");
         }
     }
 }

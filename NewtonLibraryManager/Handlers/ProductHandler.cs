@@ -1,4 +1,4 @@
-namespace NewtonLibraryManager.Controllers;
+namespace NewtonLibraryManager.Handlers;
 
 public class ProductHandler
 {
