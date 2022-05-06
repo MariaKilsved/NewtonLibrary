@@ -32,7 +32,12 @@ namespace NewtonLibraryManager.Pages
 
             Search = Search?.Replace("-", "");
 
-            //List of the ids of all selected products
+            if(String.IsNullOrWhiteSpace(Search))
+            {
+                return Page();
+            }
+
+            Handlers.SearchHander.BookSearch(Search);
 
             /*
             string query = "?";
