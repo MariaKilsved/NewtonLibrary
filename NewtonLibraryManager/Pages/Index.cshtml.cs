@@ -13,48 +13,68 @@ public class IndexModel : PageModel
         _logger = logger;
     }
 
-    /*
-    //Har inget Id från frontend
     [BindProperty]
-    public Models.User User { get; set; }
-    */
+    public string Search { get; set; }
 
     [BindProperty]
-    public string EMail { get; set; }
+    public bool IncludeBooks { get; set; }
 
     [BindProperty]
-    public string Password { get; set; }   //Should be hashed before put in User
+    public bool IncludeEbooks { get; set; }
 
+    [BindProperty]
+    public bool IncludeAudio { get; set; }
+
+    [BindProperty]
+    public List<Models.ProductSearchItem> SearchResults { get; set; }
+
+    [BindProperty]
+    public bool SearchCompleted { get; set; }
 
     public void OnGet()
     {
-        //User = new Models.User { IsAdmin = false };
+        SearchCompleted = false;
     }
 
+    public IActionResult OnPostView(int id)
+    {
+        return RedirectToPage("/ProductView/" + id.ToString());
+    }
 
-    //Detta kommer köras när man trycker på submit, d.v.s. användaren har skrivit in saker
+    //public async Task<IActionResult> OnPostAsync()
     public IActionResult OnPost()
     {
-        //Om det är något fel på det som skrivits in laddas sidan bara om
-        if(ModelState.IsValid == false)
+        //Om det �r n�got fel p� det som skrivits in laddas sidan bara om
+        if (ModelState.IsValid == false)
+        {
             return Page();
+        }
 
-        if(AccountHandler.LogIn(EMail, Password))
-                return RedirectToPage("/ProductSearch");
+        Search = Search?.Replace("-", "");
 
-        return Page();
-        //Kontrollera vad som hämtats från frontend.
-        //Frontend gör antingen register eller login.
-        //Login: User.EMail, Password
-        //Register: User.FirstName, User.LastName, User.EMail, Password
+        if (String.IsNullOrWhiteSpace(Search))
+        {
+            return Page();
+        }
 
-        //Bör hash:a Password innan det läggs i User.Password
+        Handlers.SearchHander.BookSearch(Search);
 
-        //Bör testa om något av fälten på fronten var IsNullOrWhitespace
-        //Om något var null bör sidan också laddas om d.v.s. Return Page();
+        /*
+        string query = "?";
+        foreach(var id in selectedIdsList)
+        {
+            query += id.ToString() + "&";
+        }
+        query = query.Remove(query.Length - 1);
+        */
 
-        //Gå till annan sida
-        //Kommer använda webbsession senare
+        SearchCompleted = true;
+
+        //Should instead set the property SearchResults!
+        //SearchResults.Author should be a string of authors separated by ,
+
+        return RedirectToPage("/ProductSearch");
+
     }
 
 }
