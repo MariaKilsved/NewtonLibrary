@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NewtonLibraryManager.Handlers;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewtonLibraryManager.Pages
 {
     public class LoginModel : PageModel
     {
-        [BindProperty]
+        [BindProperty, MaxLength(90)]
         public string EMail { get; set; }
 
         [BindProperty]

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewtonLibraryManager.Pages
 {
@@ -11,16 +12,16 @@ namespace NewtonLibraryManager.Pages
         public Models.User User { get; set; }
         */
 
-        [BindProperty]
+        [BindProperty, MaxLength(30), Required]
         public string FirstName { get; set; }
 
-        [BindProperty]
+        [BindProperty, MaxLength(30), Required]
         public string LastName { get; set; }
 
-        [BindProperty]
+        [BindProperty, MaxLength(90), Required]
         public string EMail { get; set; }
 
-        [BindProperty]
+        [BindProperty, Required]
         public string Password { get; set; }   //Should be hashed before put in User
 
         [BindProperty]

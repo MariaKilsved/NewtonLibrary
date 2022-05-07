@@ -119,3 +119,14 @@ form.d-flex div {
 input[type=hidden] {
     display: none;
 }
+
+@font-face {
+    font-family: 'charlotte_signature_demoRg';
+    src: url('../css/fonts/charlotte_signature_demo-regular-webfont.woff2') format('woff2'), url('../css/fonts/charlotte_signature_demo-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.signature-bg {
+    font-family: 'charlotte_signature_demoRg', sans-serif;
+}
