@@ -57,7 +57,7 @@ public class IndexModel : PageModel
             return Page();
         }
 
-        Handlers.SearchHander.BookSearch(Search);
+        Handlers.SearchHander.ProductSearch(Search);
 
         /*
         string query = "?";
