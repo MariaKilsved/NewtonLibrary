@@ -10,7 +10,7 @@
 <form id="loginForm" method="post" class="mt-3 d-flex align-items-center flex-column">
     <div class="mb-3 AltAutoWidth">
         <label for="loginEmail" class="form-label">Email address</label>
-        <input type="email" asp-for="EMail" class="form-control" id="loginEmail" aria-describedby="emailHelp" maxlength="90" />
+        <input type="email" asp-for="EMail" class="form-control" id="loginEmail" aria-describedby="emailHelp" maxlength="90" data-val-length-max="90"/>
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
     <div class="mb-3 AltAutoWidth">
