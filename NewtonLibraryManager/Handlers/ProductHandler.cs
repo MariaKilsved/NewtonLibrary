@@ -5,6 +5,7 @@ namespace NewtonLibraryManager.Handlers;
 
 public class ProductHandler
 {
+    /*
     public static bool ReturnProduct(string isbn)
     {
         using (var db = new NewtonLibraryContext())
@@ -15,4 +16,5 @@ public class ProductHandler
                 select product.Isbn;
         }
     }
+    */
 }
