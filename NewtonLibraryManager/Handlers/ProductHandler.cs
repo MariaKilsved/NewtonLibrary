@@ -13,6 +13,9 @@ public class ProductHandler
                 join lendingDetail in db.LendingDetails on product.Id equals lendingDetail.UserId
                 where product.Isbn.Contains(isbn)
                 select product.Isbn;
+
         }
+
+        return false;
     }
 }
