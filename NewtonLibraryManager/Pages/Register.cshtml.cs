@@ -44,7 +44,6 @@ namespace NewtonLibraryManager.Pages
                 if(Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
                     return RedirectToPage("/Index");
                 
-                else
             if(Handlers.AccountHandler.CreateUser(FirstName, LastName, EMail, Password))
                 return RedirectToPage("/Index");
 
