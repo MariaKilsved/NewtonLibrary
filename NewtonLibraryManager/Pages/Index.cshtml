@@ -1,23 +1,73 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Newton Library";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Log in</h1>
+    <h1 class="display-4">Sök</h1>
+    <form id="searchForm" class="mt-3 d-flex align-items-center flex-column" method="post">
+        <div class="mb-3 AltAutoWidth">
+          <label for="search" class="form-label">Sök</label>
+          <input type="search" asp-for="Search" maxlength="61" minlength="4" data-val-length-max="61" data-val-length-min="4" class="form-control" id="search" />
+        </div>
 
-<form id="loginForm" method="post" class="mt-3 d-flex align-items-center flex-column">
-    <div class="mb-3 AltAutoWidth">
-        <label for="loginEmail" class="form-label">Email address</label>
-        <input type="email" asp-for="EMail" class="form-control" id="loginEmail" aria-describedby="emailHelp" maxlength="90" />
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3 AltAutoWidth">
-        <label for="loginPassword" class="form-label">Password</label>
-        <input type="password" asp-for="Password" class="form-control" id="loginPassword" />
-    </div>
-    <button type="submit" class="btn btn-custom">Log in</button>
-</form>
+        <!--
+        <h5 class="mt-3 fw-light">Inkludera...</h5>
+        <div class="d-flex flex-row justify-content-center">
+            <div class="form-check p-4 text-start w-auto">
+              <input asp-for="IncludeBooks" class="form-check-input" type="checkbox" value="" id="checkboxBooks" checked />
+              <label class="form-check-label" for="checkboxBooks">
+                Books
+              </label>
+            </div>
+            <div class="form-check p-4 text-start w-auto">
+              <input asp-for="IncludeEbooks" class="form-check-input" type="checkbox" value="" id="checkboxEbooks" />
+              <label class="form-check-label" for="checkboxEbooks">
+                E-books
+              </label>
+            </div>
+            <div class="form-check p-4 text-start w-auto">
+              <input asp-for="IncludeAudio" class="form-check-input" type="checkbox" value="" id="checkboxAudio" />
+              <label class="form-check-label" for="checkboxAudio">
+                Audio books
+              </label>
+            </div>
+        </div>
+        -->
 
+        <button type="submit" class="btn btn-custom">Sök</button>
+    </form>
 </div>
+
+@if(Model.SearchCompleted) {
+<form asp-page-handler="view" method="post">
+    <div class="container text-center mt-3 searchResults">
+      <div class="row">
+        <div class="col-4">
+          <b>ISBN</b>
+        </div>
+        <div class="col-4">
+          <b>Title</b>
+        </div>
+        <div class="col-4">
+          <b>Authors</b>
+        </div>
+      </div>
+      @foreach (var result in Model.SearchResults)
+        {
+        <a class="row" asp-page="./Product/@result.Id">
+            <div class="col-4">
+              @result.Isbn<input type="hidden" name="id" value="@result.Id" />
+            </div>
+            <div class="col-4">
+              @result.Title
+            </div>
+            <div class="col-4">
+              @result.Authors
+            </div>
+        </a>
+        }
+    </div>
+</form>
+}

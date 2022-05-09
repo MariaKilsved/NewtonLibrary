@@ -1,9 +1,11 @@
-namespace NewtonLibraryManager.Controllers;
+namespace NewtonLibraryManager.Handlers;
 
-public static class AccountController
+public static class AccountHandler
 {
     private static bool _loggedIn;
+    private static int _currentIdLoggedIn;
     public static bool LoggedIn => _loggedIn;
+    public static int CurrentIdLoggedIn => _currentIdLoggedIn;
 
     public static bool LogIn(string email, string password)
     {
@@ -13,10 +15,58 @@ public static class AccountController
             if (email == user.EMail && password == user.Password)
             {
                 _loggedIn = true;
+                _currentIdLoggedIn = user.Id;
                 return true;
             }
         return false;
     }
 
-    public static void LogOut() => _loggedIn = false;
+    public static void LogOut()
+    {
+        _loggedIn = false;
+        _currentIdLoggedIn = 0;
+    }
+
+    public static bool CreateUser(string firstName, string lastName, string email, string password)
+    {
+        try
+        {
+            EntityFramework.Create.CreateHandler.CreateUser(firstName, lastName, email, password, false);
+            return true;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error: {ex}");
+            return false;
+        }
+    }
+    public static bool CreateAdmin(string firstName, string lastName, string email, string password)
+    {
+        try
+        {
+            EntityFramework.Create.CreateHandler.CreateUser(firstName, lastName, email, password, true);
+            return true;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error: {ex}");
+            return false;
+        }
+    }
+
+    public static bool DeleteUser(int userId)
+    {
+        var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
+
+        try
+        {
+            EntityFramework.Delete.DeleteHandler.DeleteUser(listOfUsers, userId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex}");
+            return false;
+        }
+    }
 }

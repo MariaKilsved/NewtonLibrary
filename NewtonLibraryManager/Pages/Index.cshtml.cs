@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NewtonLibraryManager.Handlers;
 
 namespace NewtonLibraryManager.Pages;
 
@@ -12,48 +13,48 @@ public class IndexModel : PageModel
         _logger = logger;
     }
 
-    /*
-    //Har inget Id från frontend
     [BindProperty]
-    public Models.User User { get; set; }
-    */
+    public string Search { get; set; }
 
     [BindProperty]
-    public string EMail { get; set; }
+    public bool IncludeBooks { get; set; }
 
     [BindProperty]
-    public string Password { get; set; }   //Should be hashed before put in User
+    public bool IncludeEbooks { get; set; }
 
+    [BindProperty]
+    public bool IncludeAudio { get; set; }
+
+    [BindProperty]
+    public List<Models.DisplayProductModel> SearchResults { get; set; }
+
+    [BindProperty]
+    public bool SearchCompleted { get; set; }
 
     public void OnGet()
     {
-        //User = new Models.User { IsAdmin = false };
+        SearchCompleted = false;
     }
 
-
-    //Detta kommer köras när man trycker på submit, d.v.s. användaren har skrivit in saker
-    public IActionResult OnPost()
+    public IActionResult OnPostView(int id)
     {
-        //Om det är något fel på det som skrivits in laddas sidan bara om
-        if(ModelState.IsValid == false)
-            return Page();
+        return RedirectToPage("/ProductView/" + id.ToString());
+    }
 
-        if(Controllers.AccountController.LogIn(EMail, Password))
-                return RedirectToPage("/ProductSearch");
+    //public async Task<IActionResult> OnPostAsync()
+    public void OnPost()
+    {
+        Search = Search?.Replace("-", "");
 
-        return Page();
-        //Kontrollera vad som hämtats från frontend.
-        //Frontend gör antingen register eller login.
-        //Login: User.EMail, Password
-        //Register: User.FirstName, User.LastName, User.EMail, Password
 
-        //Bör hash:a Password innan det läggs i User.Password
+        SearchResults = Handlers.SearchHandler.ProductSearch(Search);
 
-        //Bör testa om något av fälten på fronten var IsNullOrWhitespace
-        //Om något var null bör sidan också laddas om d.v.s. Return Page();
+        SearchCompleted = true;
 
-        //Gå till annan sida
-        //Kommer använda webbsession senare
+        //Should instead set the property SearchResults!
+        //SearchResults.Author should be a string of authors separated by ,
+
+
     }
 
 }

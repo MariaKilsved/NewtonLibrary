@@ -1,31 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NewtonLibraryManager.Handlers;
 using System.ComponentModel.DataAnnotations;
 
 namespace NewtonLibraryManager.Pages
 {
-    public class RegisterModel : PageModel
+    public class LoginModel : PageModel
     {
-        /*
-        //Har inget Id fr�n frontend
-        [BindProperty]
-        public Models.User User { get; set; }
-        */
-
-        [BindProperty, MaxLength(30), Required]
-        public string FirstName { get; set; }
-
-        [BindProperty, MaxLength(30), Required]
-        public string LastName { get; set; }
-
-        [BindProperty, MaxLength(90), Required]
+        [BindProperty, MaxLength(90)]
         public string EMail { get; set; }
 
-        [BindProperty, Required]
+        [BindProperty]
         public string Password { get; set; }   //Should be hashed before put in User
 
-        [BindProperty]
-        public bool IsAdmin { get; set; }
 
         public void OnGet()
         {
@@ -40,16 +27,17 @@ namespace NewtonLibraryManager.Pages
             if (ModelState.IsValid == false)
                 return Page();
 
-            if(IsAdmin)
-                if(Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
-                    return RedirectToPage("/Index");
-                
-            if(Handlers.AccountHandler.CreateUser(FirstName, LastName, EMail, Password))
-                return RedirectToPage("/Index");
+            if (AccountHandler.LogIn(EMail, Password))
+            {
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddHours(1)
+                };
+                Response.Cookies.Append("LibraryCookie", $"{AccountHandler.CurrentIdLoggedIn}", cookieOptions);
+                return RedirectToPage("/ProductSearch");
+            }
 
             return Page();
-
-            //Antagligen ska man l�gga in registrering i databasen h�r.
             //Kontrollera vad som h�mtats fr�n frontend.
             //Frontend g�r antingen register eller login.
             //Login: User.EMail, Password
@@ -63,5 +51,6 @@ namespace NewtonLibraryManager.Pages
             //G� till annan sida
             //Kommer anv�nda webbsession senare
         }
+
     }
 }

@@ -16,14 +16,14 @@ namespace NewtonLibraryManager.Models
         {
         }
 
-        public virtual DbSet<Author> Authors { get; set; } = null!;
-        public virtual DbSet<AuthorDetail> AuthorDetails { get; set; } = null!;
-        public virtual DbSet<Category> Categories { get; set; } = null!;
-        public virtual DbSet<Language> Languages { get; set; } = null!;
-        public virtual DbSet<LendingDetail> LendingDetails { get; set; } = null!;
-        public virtual DbSet<Product> Products { get; set; } = null!;
-        public virtual DbSet<Type> Types { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<AuthorDetail> AuthorDetails { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Language> Languages { get; set; }
+        public virtual DbSet<LendingDetail> LendingDetails { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Type> Types { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -88,21 +88,20 @@ namespace NewtonLibraryManager.Models
 
             modelBuilder.Entity<LendingDetail>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.BorrowedFrom).HasColumnType("date");
 
                 entity.Property(e => e.BorrowedTo).HasColumnType("date");
 
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
                 entity.Property(e => e.ReturnDate).HasColumnType("date");
 
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.LendingDetail)
-                    .HasForeignKey<LendingDetail>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_LendingDetails.ID");
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.LendingDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_LendingDetails.ProductID");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.LendingDetails)
@@ -122,9 +121,7 @@ namespace NewtonLibraryManager.Models
 
                 entity.Property(e => e.Isbn)
                     .HasMaxLength(13)
-                    .IsUnicode(false)
-                    .HasColumnName("ISBN")
-                    .IsFixedLength();
+                    .HasColumnName("ISBN");
 
                 entity.Property(e => e.LanguageId).HasColumnName("LanguageID");
 
@@ -138,7 +135,7 @@ namespace NewtonLibraryManager.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Type1)
-                    .HasMaxLength(70)
+                    .HasMaxLength(20)
                     .HasColumnName("Type");
             });
 
@@ -156,10 +153,7 @@ namespace NewtonLibraryManager.Models
 
                 entity.Property(e => e.LastName).HasMaxLength(30);
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(32)
-                    .IsUnicode(false)
-                    .IsFixedLength();
+                entity.Property(e => e.Password).HasMaxLength(32);
             });
 
             OnModelCreatingPartial(modelBuilder);

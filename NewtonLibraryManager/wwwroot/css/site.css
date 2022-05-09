@@ -24,17 +24,17 @@ body {
     border-color: #004d6f;
 }
 
-.btn-custom:hover {
-    color: #fff;
-    background-color: #003349;
-    border-color: #003349;
-}
+    .btn-custom:hover {
+        color: #fff;
+        background-color: #003349;
+        border-color: #003349;
+    }
 
-.btn-custom:focus + .btn-custom, .btn-custom:focus {
-    color: #fff;
-    background-color: #003349;
-    border-color: #003349;
-}
+    .btn-custom:focus + .btn-custom, .btn-custom:focus {
+        color: #fff;
+        background-color: #003349;
+        border-color: #003349;
+    }
 
 .beige-bg {
     background-color: #f7f2ed !important;
@@ -44,17 +44,17 @@ li.nav-item .nav-link.beige-bg {
     border-bottom: 1px solid #dee2e6;
 }
 
-li.nav-item .nav-link.beige-bg.active {
-    border-color: #dee2e6 #dee2e6 #fff;
-    border-bottom: 1px solid transparent;
-}
+    li.nav-item .nav-link.beige-bg.active {
+        border-color: #dee2e6 #dee2e6 #fff;
+        border-bottom: 1px solid transparent;
+    }
 
 form.d-flex div {
     width: 100%;
     display: block;
 }
 
-/*
+    /*
 @media (min-width: 576px) {
     input[type=text], input[type=email], input[type=password] {
         min-width: 20rem;
@@ -62,9 +62,9 @@ form.d-flex div {
 }
 */
 
-form.d-flex div.AltAutoWidth {
-    width: 100%;
-}
+    form.d-flex div.AltAutoWidth {
+        width: 100%;
+    }
 
 @media (min-width: 576px) {
     form.d-flex div.AltAutoWidth {
@@ -94,6 +94,39 @@ form.d-flex div.AltAutoWidth {
     color: #004d6f;
 }
 
-.nav-link:focus, .nav-link:hover {
-    color: #004361
+    .nav-link:focus, .nav-link:hover {
+        color: #004361
+    }
+
+.searchResults {
+    padding: 0.5rem 0.5rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+    .searchResults .col-4 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .searchResults .row:hover {
+        --bs-table-accent-bg: var(--bs-table-hover-bg);
+        color: var(--bs-table-hover-color);
+    }
+
+input[type=hidden] {
+    display: none;
+}
+
+@font-face {
+    font-family: 'charlotte_signature_demoRg';
+    src: url('../css/fonts/charlotte_signature_demo-regular-webfont.woff2') format('woff2'), url('../css/fonts/charlotte_signature_demo-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.signature-bg {
+    font-family: 'charlotte_signature_demoRg', sans-serif;
 }
