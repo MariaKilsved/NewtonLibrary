@@ -24,17 +24,17 @@ body {
     border-color: #004d6f;
 }
 
-    .btn-custom:hover {
-        color: #fff;
-        background-color: #003349;
-        border-color: #003349;
-    }
+.btn-custom:hover {
+    color: #fff;
+    background-color: #003349;
+    border-color: #003349;
+}
 
-    .btn-custom:focus + .btn-custom, .btn-custom:focus {
-        color: #fff;
-        background-color: #003349;
-        border-color: #003349;
-    }
+.btn-custom:focus + .btn-custom, .btn-custom:focus {
+    color: #fff;
+    background-color: #003349;
+    border-color: #003349;
+}
 
 .beige-bg {
     background-color: #f7f2ed !important;
@@ -44,27 +44,19 @@ li.nav-item .nav-link.beige-bg {
     border-bottom: 1px solid #dee2e6;
 }
 
-    li.nav-item .nav-link.beige-bg.active {
-        border-color: #dee2e6 #dee2e6 #fff;
-        border-bottom: 1px solid transparent;
-    }
+li.nav-item .nav-link.beige-bg.active {
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom: 1px solid transparent;
+}
 
 form.d-flex div {
     width: 100%;
     display: block;
 }
 
-    /*
-@media (min-width: 576px) {
-    input[type=text], input[type=email], input[type=password] {
-        min-width: 20rem;
-    }
+form.d-flex div.AltAutoWidth {
+    width: 100%;
 }
-*/
-
-    form.d-flex div.AltAutoWidth {
-        width: 100%;
-    }
 
 @media (min-width: 576px) {
     form.d-flex div.AltAutoWidth {
@@ -94,9 +86,9 @@ form.d-flex div {
     color: #004d6f;
 }
 
-    .nav-link:focus, .nav-link:hover {
-        color: #004361
-    }
+.nav-link:focus, .nav-link:hover {
+    color: #004361
+}
 
 .searchResults {
     padding: 0.5rem 0.5rem;
@@ -105,16 +97,16 @@ form.d-flex div {
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 
-    .searchResults .col-4 {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.searchResults .col-4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .searchResults .row:hover {
-        --bs-table-accent-bg: var(--bs-table-hover-bg);
-        color: var(--bs-table-hover-color);
-    }
+.searchResults .row:hover {
+    --bs-table-accent-bg: var(--bs-table-hover-bg);
+    color: var(--bs-table-hover-color);
+}
 
 input[type=hidden] {
     display: none;
@@ -129,4 +121,68 @@ input[type=hidden] {
 
 .signature-bg {
     font-family: 'charlotte_signature_demoRg', sans-serif;
+}
+
+.searchResults {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: start !important;
+}
+
+@media (min-width: 992px) {
+    .searchResults {
+        width: 80%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .searchResults {
+        width: 75%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .searchResults {
+        width: 65%;
+    }
+}
+
+.searchResults a, .searchResults a:visited, .searchResults a:hover, .searchResults a:active {
+    text-decoration: none;
+    color: #212529;
+}
+
+.searchResults .row {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.searchResults .searchBody:hover {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.searchResults .searchBody:active {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.searchHeader {
+    border-bottom: 1px solid #B9B5B2;
+}
+
+.searchHeader div {
+    font-weight: 700;
+    vertical-align: bottom;
+}
+
+.searchBody {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #B9B5B2;
+    font-weight: 400;
+}
+
+.searchBody:nth-child(even) {
+    background-color:rgba(0, 0, 0, 0.04);
 }
