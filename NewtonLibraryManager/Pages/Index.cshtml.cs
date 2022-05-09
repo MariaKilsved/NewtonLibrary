@@ -42,20 +42,10 @@ public class IndexModel : PageModel
     }
 
     //public async Task<IActionResult> OnPostAsync()
-    public IActionResult OnPost()
+    public void OnPost()
     {
-        //Om det �r n�got fel p� det som skrivits in laddas sidan bara om
-        if (ModelState.IsValid == false)
-        {
-            return Page();
-        }
-
         Search = Search?.Replace("-", "");
 
-        if (String.IsNullOrWhiteSpace(Search))
-        {
-            return Page();
-        }
 
         SearchResults = Handlers.SearchHandler.ProductSearch(Search);
 
@@ -64,7 +54,6 @@ public class IndexModel : PageModel
         //Should instead set the property SearchResults!
         //SearchResults.Author should be a string of authors separated by ,
 
-        return RedirectToPage("/Index");
 
     }
 
