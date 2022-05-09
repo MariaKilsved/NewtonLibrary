@@ -26,7 +26,7 @@ public class IndexModel : PageModel
     public bool IncludeAudio { get; set; }
 
     [BindProperty]
-    public List<Models.ProductSearchItem> SearchResults { get; set; }
+    public List<Models.DisplayProductModel> SearchResults { get; set; }
 
     [BindProperty]
     public bool SearchCompleted { get; set; }
@@ -57,16 +57,7 @@ public class IndexModel : PageModel
             return Page();
         }
 
-        Handlers.SearchHandler.ProductSearch(Search);
-
-        /*
-        string query = "?";
-        foreach(var id in selectedIdsList)
-        {
-            query += id.ToString() + "&";
-        }
-        query = query.Remove(query.Length - 1);
-        */
+        SearchResults = Handlers.SearchHandler.ProductSearch(Search);
 
         SearchCompleted = true;
 

@@ -26,27 +26,17 @@ namespace NewtonLibraryManager.Handlers
                     select new
                     {
                         TITLE = product.Title,
-                        LANG = language.Language1,
-                        CAT = category.Category1,
-                        DEW = product.Dewey,
-                        DESC = product.Description,
                         ISBN = product.Isbn,
                         FIRSTNAME = author.FirstName,
                         LASTNAME = author.LastName,
-                        PRODTYPE = type.Type1
                     };
 
                 foreach (var item in queryable)
                 {
                     DisplayProductModel displayProductModel = new();
-                    displayProductModel.Category = item.CAT;
-                    displayProductModel.Description = item.DESC;
-                    displayProductModel.Dewey = item.DEW;
-                    displayProductModel.Language = item.LANG;
                     displayProductModel.Title = item.TITLE;
                     displayProductModel.FirstName = item.FIRSTNAME;
                     displayProductModel.LastName = item.LASTNAME;
-                    displayProductModel.ProductType = item.PRODTYPE;
                     displayProductModel.ISBN = item.ISBN;
                     displayProductModels.Add(displayProductModel);
                 }
