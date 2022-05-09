@@ -23,7 +23,7 @@ public class ProductHandler
     public static bool AddProduct(string title, int languageId, int categoryId, int nrOfCopies,
         decimal dewey, string description, string isbn, int productType)
     {
-        if (AdminLoggedIn)
+        if (AccountHandler.AdminLoggedIn)
         {
             EntityFramework.Create.CreateHandler.CreateProduct(title, languageId, categoryId, nrOfCopies, dewey,
                 description, isbn, productType);
