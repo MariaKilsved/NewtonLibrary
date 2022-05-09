@@ -90,6 +90,14 @@ form.d-flex div.AltAutoWidth {
     color: #004361
 }
 
+.display-4 {
+    font-weight: 400;
+}
+
+.form-text {
+    color: #212529;
+}
+
 .searchResults {
     padding: 0.5rem 0.5rem;
     background-color: var(--bs-table-bg);
