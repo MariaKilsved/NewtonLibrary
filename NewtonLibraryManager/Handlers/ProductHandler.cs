@@ -20,4 +20,16 @@ public class ProductHandler
         return false;
     }
     */
+    public static bool AddProduct(string title, int languageId, int categoryId, int nrOfCopies,
+        decimal dewey, string description, string isbn, int productType)
+    {
+        if (AdminLoggedIn)
+        {
+            EntityFramework.Create.CreateHandler.CreateProduct(title, languageId, categoryId, nrOfCopies, dewey,
+                description, isbn, productType);
+            return true;
+        }
+        Console.WriteLine("Admin not logged in");
+        return false;
+    }
 }
