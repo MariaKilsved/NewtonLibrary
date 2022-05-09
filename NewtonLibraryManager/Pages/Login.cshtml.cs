@@ -20,15 +20,12 @@ namespace NewtonLibraryManager.Pages
         }
 
 
-        //Detta kommer köras när man trycker på submit, d.v.s. användaren har skrivit in saker
+        //Detta kommer kï¿½ras nï¿½r man trycker pï¿½ submit, d.v.s. anvï¿½ndaren har skrivit in saker
         public IActionResult OnPost()
         {
-            //Om det är något fel på det som skrivits in laddas sidan bara om
+            //Om det ï¿½r nï¿½got fel pï¿½ det som skrivits in laddas sidan bara om
             if (ModelState.IsValid == false)
                 return Page();
-
-            if (AccountHandler.LogIn(EMail, Password))
-                return RedirectToPage("/Index");
 
             if (AccountHandler.LogIn(EMail, Password))
             {
@@ -41,18 +38,18 @@ namespace NewtonLibraryManager.Pages
             }
 
             return Page();
-            //Kontrollera vad som hämtats från frontend.
-            //Frontend gör antingen register eller login.
+            //Kontrollera vad som hï¿½mtats frï¿½n frontend.
+            //Frontend gï¿½r antingen register eller login.
             //Login: User.EMail, Password
             //Register: User.FirstName, User.LastName, User.EMail, Password
 
-            //Bör hash:a Password innan det läggs i User.Password
+            //Bï¿½r hash:a Password innan det lï¿½ggs i User.Password
 
-            //Bör testa om något av fälten på fronten var IsNullOrWhitespace
-            //Om något var null bör sidan också laddas om d.v.s. Return Page();
+            //Bï¿½r testa om nï¿½got av fï¿½lten pï¿½ fronten var IsNullOrWhitespace
+            //Om nï¿½got var null bï¿½r sidan ocksï¿½ laddas om d.v.s. Return Page();
 
-            //Gå till annan sida
-            //Kommer använda webbsession senare
+            //Gï¿½ till annan sida
+            //Kommer anvï¿½nda webbsession senare
         }
 
     }
