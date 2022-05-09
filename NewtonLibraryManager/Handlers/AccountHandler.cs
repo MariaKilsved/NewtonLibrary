@@ -4,8 +4,14 @@ public static class AccountHandler
 {
     private static bool _loggedIn;
     private static int _currentIdLoggedIn;
+    private static bool _adminLoggedIn = false;
     public static bool LoggedIn => _loggedIn;
     public static int CurrentIdLoggedIn => _currentIdLoggedIn;
+    public static bool AdminLoggedIn
+    {
+        get { return _adminLoggedIn;}
+        set { _adminLoggedIn = value; }
+    }
 
     public static bool LogIn(string email, string password)
     {
