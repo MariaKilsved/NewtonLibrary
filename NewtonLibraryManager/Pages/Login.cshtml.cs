@@ -43,7 +43,7 @@ namespace NewtonLibraryManager.Pages
             //Login: User.EMail, Password
             //Register: User.FirstName, User.LastName, User.EMail, Password
 
-            //B�r hash:a Password innan det l�ggs i User.Password
+            //B�r hash:a Password innan det läggs i User.Password
 
             //B�r testa om n�got av f�lten p� fronten var IsNullOrWhitespace
             //Om n�got var null b�r sidan ocks� laddas om d.v.s. Return Page();

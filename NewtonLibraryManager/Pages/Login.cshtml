@@ -9,12 +9,12 @@
 
 <form id="loginForm" method="post" class="mt-3 d-flex align-items-center flex-column">
     <div class="mb-3 AltAutoWidth">
-        <label for="loginEmail" class="form-label">Email adress</label>
+        <label for="loginEmail" class="form-label"><b>Email adress</b></label>
         <input type="email" asp-for="EMail" class="form-control" id="loginEmail" aria-describedby="emailHelp" maxlength="90" data-val-length-max="90"/>
-    <div id="emailHelp" class="form-text">Vi delar aldrig din email med någon annan.</div>
+    <div id="emailHelp" class="form-text"><i>Vi delar aldrig din email med någon annan.</i></div>
     </div>
     <div class="mb-3 AltAutoWidth">
-        <label for="loginPassword" class="form-label">Lösenord</label>
+        <label for="loginPassword" class="form-label"><b>Lösenord</b></label>
         <input type="password" asp-for="Password" class="form-control" id="loginPassword" />
     </div>
     <button type="submit" class="btn btn-custom">Log in</button>

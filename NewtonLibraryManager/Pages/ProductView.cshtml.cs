@@ -37,7 +37,7 @@ namespace NewtonLibraryManager.Pages
         {
             string path = Request.Path;
             string[] subPaths = path.Split('/');
-            string id = subPaths[1];    // ProductView/id?query
+            string id = subPaths[1];    // Format will be ProductView/id?query
 
             //Should get whatever product info there is
             //Uses the product Id determined in the Url to set everything
