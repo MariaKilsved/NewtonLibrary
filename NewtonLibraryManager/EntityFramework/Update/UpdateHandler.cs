@@ -5,6 +5,58 @@ namespace NewtonLibraryManager.EntityFramework.Update
 {
     public static class UpdateHandler
     {
+        public static int UpdateAuthor(int id, string newFirstName, string newLastName)
+        {
+            Author ath;
+            int rowsAff;
+            using (NewtonLibraryContext db = new NewtonLibraryContext())
+            {
+                ath = db.Authors.FirstOrDefault(a => a.Id == id);
+                if (ath != null)
+                {
+                     ath.FirstName = newFirstName;
+                     ath.LastName = newLastName;
+                } 
+                rowsAff = db.SaveChanges();
+                return rowsAff;
+            }
+        }
+        public static int UpdateUser(int id, string newFirstName, string newLastName)
+        {
+            User usr;
+            using (NewtonLibraryContext db = new NewtonLibraryContext())
+            {
+                usr = db.Users.FirstOrDefault(a => a.Id == id);
+                if (usr != null)
+                {
+                     usr.FirstName = newFirstName;
+                     usr.LastName = newLastName;
+                } 
+                return db.SaveChanges();
+            }
+        }
+        public static int updateUsers(int userId, User updatedUser)
+        {
+            using (NewtonLibraryContext db = new NewtonLibraryContext())
+            {
+                try
+                {
+                    //Get user that is to be updated
+                    User user = db.Users.FirstOrDefault(a => a.Id == userId);
+                    
+                    //Update the retrieved user from DB and replace it with
+                    //edited user from form.
+                    user = updatedUser;
+                    return db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return 0;
+                }
+                //Save changes, return number of rows changed or throw exception
+            }
+        }
         public static int updateAuthor(int authorId, Author updatedAuthor)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
@@ -95,35 +147,6 @@ namespace NewtonLibraryManager.EntityFramework.Update
             }
         }
 
-        public static int updateUsers(int userId, User updatedUser)
-        {
-            using (NewtonLibraryContext db = new NewtonLibraryContext())
-            {
-                try
-                {
-                    //Get user that is to be updated
-                    User user = Read.ReadHandler.GetUsers(userId);
-
-                    //Update the retrieved user from DB and replace it with
-                    //edited user from form.
-                    user = updatedUser;
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-
-                //Save changes, return number of rows changed or throw exception
-                try
-                {
-                    return db.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw new DbUpdateException();
-                }
-            }
-        }
 
         public static int updateLendingDetails(int lendingDetailsId, LendingDetail updatedLendingDetail)
         {
