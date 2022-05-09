@@ -11,8 +11,9 @@ namespace NewtonLibraryManager.Models
         public DateTime? BorrowedTo { get; set; }
         public DateTime? ReturnDate { get; set; }
         public bool? IsReservation { get; set; }
+        public int? ProductId { get; set; }
 
-        public virtual Product IdNavigation { get; set; } = null!;
-        public virtual User? User { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual User User { get; set; }
     }
 }

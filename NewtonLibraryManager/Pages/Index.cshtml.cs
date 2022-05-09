@@ -57,7 +57,7 @@ public class IndexModel : PageModel
             return Page();
         }
 
-        Handlers.SearchHander.ProductSearch(Search);
+        Handlers.SearchHandler.ProductSearch(Search);
 
         /*
         string query = "?";

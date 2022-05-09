@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NewtonLibraryManager.Handlers
 {
-    public class SearchHander
+    public class SearchHandler
     {
         
         public static List<DisplayProductModel> ProductSearch(string search)
