@@ -11,34 +11,8 @@
 <body>
 <header>
     <div class="signature-bg" aria-hidden="true" style="font-size: 120px;color: #D8D4CF;font-weight: 500;overflow: hidden;position: fixed;top: -20px;left: -30px;width: 120%;height: 120%;user-select: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;z-index: -100;line-height: 95%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et bibendum ligula. Suspendisse eu enim nec nulla consectetur dictum vitae ut turpis. Etiam nisi orci, tristique vel bibendum et, dignissim in ex. Integer sed consectetur tellus. Maecenas cursus felis id felis lobortis elementum. Donec condimentum mauris ut blandit sodales. Duis diam ante, viverra quis fringilla vel, molestie vitae nulla. Morbi nec nisl finibus, venenatis metus id, lobortis nisi. Curabitur fringilla ex elit, ultricies pharetra ante aliquet sed. Mauris ut nunc ac libero dapibus posuere at eu tortor. Praesent eu eros vel felis tincidunt porta sed pharetra nibh. Aenean luctus libero ut tortor mattis imperdiet. Vivamus nisl orci, mattis eu feugiat nec, tempor in dui. Duis nec aliquet ex, a tempor lacus. Curabitur sed gravida mi. In erat quam, imperdiet id augue sed, convallis dignissim metus. Vivamus mollis neque sed sapien elementum, ac tincidunt metus tristique. Suspendisse sagittis luctus dolor finibus volutpat. Morbi laoreet arcu vel lorem ullamcorper, et varius nibh semper. Cras quis libero ut urna consectetur tempor. Mauris molestie orci nec erat rutrum, in euismod enim tristique. Nam fringilla nisl et pulvinar accumsan. In hac habitasse platea dictumst. Sed nec consequat metus. Aenean eget purus vel ex placerat sagittis id id quam. Nunc vulputate libero ut dignissim elementum. Etiam ut eros rutrum tellus commodo ultricies et in ipsum. Nulla facilisi. Pellentesque tristique, tellus a consequat cursus, erat tellus auctor erat, sit amet posuere massa nibh vel lectus. Ut dapibus, mauris ut maximus interdum, velit risus egestas lectus, quis condimentum magna urna at nibh. Integer vestibulum, nibh eu molestie porttitor, arcu mi dignissim nibh, sit amet interdum est mauris a ante. Nulla sed massa elit. Praesent venenatis et arcu nec malesuada. Integer id porta neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec malesuada odio dui, gravida venenatis turpis egestas eget. Ut et urna eget dui tempor commodo non sed nibh. Integer leo ex, eleifend vitae accumsan in, imperdiet sit amet dui. Quisque at lacinia enim, ac accumsan dui. Etiam vitae arcu scelerisque, congue velit at, dictum nunc. Duis diam sem, mollis euismod ante vel, lobortis consequat nisl. Suspendisse mattis volutpat enim non cursus. Donec finibus mattis mauris, nec imperdiet mauris iaculis vitae. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas sit amet eleifend purus. Duis mollis dolor a pharetra tincidunt. Integer rhoncus quam tortor, ut vestibulum dui lacinia nec. Duis dignissim semper ante, sed venenatis purus dignissim vitae. Pellentesque at lectus eleifend, luctus ante et, facilisis nulla. Donec tempus mi nec magna sollicitudin luctus. Quisque non porttitor libero. Cras ut diam consequat, iaculis enim et, imperdiet nisl. Vestibulum efficitur posuere tellus, non ultricies purus. Aliquam id fermentum nisl. Praesent fermentum odio porttitor tortor maximus, quis imperdiet risus ultricies. Ut sapien velit, efficitur nec mattis quis, tincidunt in odio. Quisque ac massa massa. Suspendisse vel enim at arcu facilisis volutpat vel id ex. Pellentesque viverra neque tempus lacus iaculis cursus. Morbi ut diam odio. Pellentesque lobortis lectus a blandit pulvinar.</div>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">NewtonLibraryManager</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Search</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Log in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Add Product</a>
-                    </li>
-                    <li class="nav-item">
-                        <a style="color:"red;" class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Admin Management</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @RenderSection("Navigation", true)
+
 </header>
 <div class="container">
     <main role="main" class="pb-3">

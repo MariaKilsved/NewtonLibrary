@@ -7,11 +7,7 @@ public static class AccountHandler
     private static bool _adminLoggedIn = false;
     public static bool LoggedIn => _loggedIn;
     public static int CurrentIdLoggedIn => _currentIdLoggedIn;
-    public static bool AdminLoggedIn
-    {
-        get { return _adminLoggedIn;}
-        set { _adminLoggedIn = value; }
-    }
+    public static bool AdminLoggedIn => _adminLoggedIn;
 
     public static bool LogIn(string email, string password)
     {
@@ -22,6 +18,7 @@ public static class AccountHandler
             {
                 _loggedIn = true;
                 _currentIdLoggedIn = user.Id;
+                _adminLoggedIn = user.IsAdmin ?? false;
                 return true;
             }
         return false;
@@ -31,6 +28,7 @@ public static class AccountHandler
     {
         _loggedIn = false;
         _currentIdLoggedIn = 0;
+        _adminLoggedIn = false;
     }
 
     public static bool CreateUser(string firstName, string lastName, string email, string password)

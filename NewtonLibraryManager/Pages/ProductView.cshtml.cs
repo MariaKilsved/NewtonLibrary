@@ -43,6 +43,8 @@ namespace NewtonLibraryManager.Pages
             Id = id;
 
 
+
+
             //Should get whatever product info there is
             //Uses the product Id determined in the Url to set everything
         }
