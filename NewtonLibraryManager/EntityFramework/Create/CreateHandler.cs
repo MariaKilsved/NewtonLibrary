@@ -25,7 +25,7 @@ public static class CreateHandler
             return db.SaveChanges();
         }
     }
-    public static int CreateLendingDetail(int userId, DateTime from, DateTime to, DateTime returnDate, bool isReservation)
+    public static int CreateLendingDetail(int userId, DateTime from, DateTime to, bool isReservation, int productId)
     {
         using (NewtonLibraryContext db = new())
         {
@@ -34,8 +34,8 @@ public static class CreateHandler
                 UserId = userId,
                 BorrowedFrom = from,
                 BorrowedTo = to,
-                ReturnDate = returnDate,
                 IsReservation = isReservation,
+                ProductId = productId
             };
             db.Add(lendingDetail);
             return db.SaveChanges();
