@@ -8,7 +8,7 @@
     cookieValue1 = Request.Cookies["LibraryCookie1"];
 }
 <div class="text-center">
-@if (cookieValue == "1" && cookieValue1 == "true")
+@if (cookieValue == "1" && cookieValue1 == "True")
 {
     <h1 class="display-4">Administrera administratörer</h1>
 
@@ -25,20 +25,23 @@
               <b>E-mail</b>
             </div>
           </div>
-          @foreach (var admin in Model.Admins)
-            {
-            <a class="row" asp-page="./Product/@admin.Id">
-                <div class="col-4">
-                  @admin.FirstName<input type="hidden" name="id" value="@admin.Id" />
-                </div>
-                <div class="col-4">
-                  @admin.LastName
-                </div>
-                <div class="col-4">
-                  @admin.EMail
-                </div>
-            </a>
-            }
+                @if (Model.Admins != null)
+                {
+                    @foreach (var admin in Model.Admins)
+                    {
+                        <a class="row" asp-page="./Product/@admin.Id">
+                            <div class="col-4">
+                                @admin.FirstName<input type="hidden" name="id" value="@admin.Id" />
+                            </div>
+                            <div class="col-4">
+                                @admin.LastName
+                            </div>
+                            <div class="col-4">
+                                @admin.EMail
+                            </div>
+                        </a>
+                    }
+                }
         </div>
     </form>
 }
@@ -76,12 +79,12 @@ else
                         <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logga ut</a>
                     </li>
                     }
-                    @if (cookieValue1 == "true") {
+                    @if (cookieValue1 == "True") {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
                     </li>
                     }
-                    @if (cookieValue1 == "true" && cookieValue == "1") {
+                    @if (cookieValue1 == "True" && cookieValue == "1") {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
