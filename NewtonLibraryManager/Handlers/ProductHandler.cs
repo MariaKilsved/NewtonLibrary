@@ -49,4 +49,17 @@ public class ProductHandler
             return false;
         }
     }
+    public static bool ReserveProduct(int userid, int productId)
+    {
+        try
+        {
+            EntityFramework.Create.CreateHandler.CreateLendingDetail(userid, DateTime.Now, DateTime.Now.AddMonths(1), true, productId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return false;
+        }
+    }
 }
