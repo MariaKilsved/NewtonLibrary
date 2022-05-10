@@ -5,6 +5,10 @@
 }
 
 <div class="text-center">
+    <h1>Page loaded</h1>
+
+    @if(Model.Id != null)
+    {
     <h1 class="display-4">@Model.Title</h1>
 
     <div>@Model.Description</div>
@@ -37,7 +41,7 @@
           <!-- <b>In stock:</b> @Model.NrOfCopies -->
         </div>
       </div>
-
-
     </div>
+    }
+
 </div>

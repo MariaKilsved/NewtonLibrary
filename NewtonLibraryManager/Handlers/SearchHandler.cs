@@ -25,6 +25,7 @@ namespace NewtonLibraryManager.Handlers
                           product.Title.Contains(search)
                                 select new
                                 {
+                                    ID = product.Id,
                                     TITLE = product.Title,
                                     LANG = language.Language1,
                                     CAT = category.Category1,
@@ -39,6 +40,7 @@ namespace NewtonLibraryManager.Handlers
                 foreach (var item in queryable)
                 {
                     DisplayProductModel displayProductModel = new();
+                    displayProductModel.Id = item.ID;
                     displayProductModel.Category = item.CAT;
                     displayProductModel.Description = item.DESC;
                     displayProductModel.Dewey = item.DEW;
@@ -55,4 +57,4 @@ namespace NewtonLibraryManager.Handlers
             }
         }
     }
-    }
+}

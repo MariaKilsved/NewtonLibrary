@@ -38,11 +38,16 @@ public class IndexModel : PageModel
 
     public IActionResult OnPostView(int id)
     {
-        return RedirectToPage("/ProductView/" + id.ToString());
+        if (ModelState.IsValid == false)
+            return Page();
+        else
+        {
+            return RedirectToPage("/ProductView?Id=" + id.ToString());
+        }
+
     }
 
-    //public async Task<IActionResult> OnPostAsync()
-    public void OnPost()
+    public void OnPostEdit()
     {
         Search = Search?.Replace("-", "");
 
@@ -50,11 +55,6 @@ public class IndexModel : PageModel
         SearchResults = Handlers.SearchHandler.ProductSearch(Search);
 
         SearchCompleted = true;
-
-        //Should instead set the property SearchResults!
-        //SearchResults.Author should be a string of authors separated by ,
-
-
     }
 
 }

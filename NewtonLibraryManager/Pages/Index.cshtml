@@ -3,10 +3,9 @@
 @{
     ViewData["Title"] = "Newton Library";
 }
-
 <div class="text-center">
     <h1 class="display-4">Sök</h1>
-    <form id="searchForm" class="mt-3 d-flex align-items-center flex-column" method="post">
+    <form id="searchForm" class="mt-3 d-flex align-items-center flex-column" method="post" asp-page-handler="edit">
         <div class="mb-3 AltAutoWidth">
           <label for="search" class="form-label" style="display:none;"><b>Sök</b></label>
           <input type="search" asp-for="Search" maxlength="61" minlength="4" data-val-length-max="61" data-val-length-min="4" class="form-control" id="search" />
@@ -56,7 +55,7 @@
       </div>
       @foreach (var result in Model.SearchResults)
         {
-        <a class="row searchBody" asp-page="./Product/@result.Id">
+        <div onclick="document.forms[1].submit()" class="row searchBody">
             <div class="col-4 col-md-2">
               @result.Isbn<input type="hidden" name="id" value="@result.Id" />
             </div>
@@ -66,7 +65,7 @@
             <div class="col-4 col-md-2">
               @result.Authors
             </div>
-        </a>
+        </div>
         }
     </div>
 </form>
