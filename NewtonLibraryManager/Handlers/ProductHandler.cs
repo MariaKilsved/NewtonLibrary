@@ -32,4 +32,18 @@ public class ProductHandler
         Console.WriteLine("Admin not logged in");
         return false;
     }
+
+    public static bool BorrowProduct(int userid, bool reserved, int productId)
+    {
+        try
+        {
+            EntityFramework.Create.CreateHandler.CreateLendingDetail(userid, DateTime.Now, DateTime.Now.AddMonths(1), reserved, productId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return false;
+        }
+    }
 }
