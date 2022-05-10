@@ -2,7 +2,10 @@
 @model NewtonLibraryManager.Pages.RegisterModel
 @{
     ViewData["Title"] = "Registrera dig";
-    var cookieValue = Request.Cookies["LibraryCookie"];
+    string cookieValue = null;
+    string cookieValue1 = null;
+    cookieValue = Request.Cookies["LibraryCookie"];
+    cookieValue1 = Request.Cookies["LibraryCookie1"];
 }
 
 <div class="text-center">
@@ -52,20 +55,32 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Search</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
+                    </li>
+                    @if (cookieValue == null) {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Logga in</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Log in</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera dig</a>
                     </li>
+                    }
+                    @if (cookieValue != null || cookieValue1 != null) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Register</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logga ut</a>
                     </li>
+                    }
+                    @if (cookieValue1 == "true") {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Add Product</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
                     </li>
+                    }
+                    @if (cookieValue1 == "true" && cookieValue == "1") {
                     <li class="nav-item">
-                        <a style="color:"red;" class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Admin Management</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
+                    }
+
                 </ul>
             </div>
         </div>

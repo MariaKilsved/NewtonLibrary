@@ -1,54 +1,23 @@
 ﻿@page
-@model NewtonLibraryManager.Pages.AdminManagementModel
+@model NewtonLibraryManager.Pages.LogoutModel
 @{
-    ViewData["Title"] = "Admin";
+    ViewData["Title"] = "Logga ut";
     string cookieValue = null;
     string cookieValue1 = null;
     cookieValue = Request.Cookies["LibraryCookie"];
     cookieValue1 = Request.Cookies["LibraryCookie1"];
 }
+
 <div class="text-center">
-@if (cookieValue == "1" && cookieValue1 == "true")
-{
-    <h1 class="display-4">Administrera administratörer</h1>
-
-    <form method="post">
-        <div class="container text-center mt-3 searchResults">
-          <div class="row">
-            <div class="col-4">
-              <b>Förnamn</b>
-            </div>
-            <div class="col-4">
-              <b>Efternamn</b>
-            </div>
-            <div class="col-4">
-              <b>E-mail</b>
-            </div>
-          </div>
-          @foreach (var admin in Model.Admins)
-            {
-            <a class="row" asp-page="./Product/@admin.Id">
-                <div class="col-4">
-                  @admin.FirstName<input type="hidden" name="id" value="@admin.Id" />
-                </div>
-                <div class="col-4">
-                  @admin.LastName
-                </div>
-                <div class="col-4">
-                  @admin.EMail
-                </div>
-            </a>
-            }
-        </div>
-    </form>
-}
-else
-{
-    <p>Sidan är ej tillgänglig.</p>
-}
+    @if (cookieValue == null && cookieValue1 == null)
+    {
+        <p>Du är nu utloggad.</p>
+    }
+    else
+    {
+        <p>Utloggningen misslyckades.</p>
+    }
 </div>
-
-
 
 @section Navigation {
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
