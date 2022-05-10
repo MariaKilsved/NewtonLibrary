@@ -5,21 +5,24 @@ namespace NewtonLibraryManager.Handlers;
 
 public class ProductHandler
 {
-    /*
-    public static bool ReturnProduct(string isbn)
+    public static bool ReturnProduct(int prodId)
     {
-        using (var db = new NewtonLibraryContext())
-        {
-            var groupedLending = from product in db.Products
-                join lendingDetail in db.LendingDetails on product.Id equals lendingDetail.UserId
-                where product.Isbn.Contains(isbn)
-                select product.Isbn;
+        var listOfDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
 
+        using (NewtonLibraryContext db = new())
+        {
+            foreach (var item in listOfDetails)
+             if (item.ProductId == prodId && item.UserId == AccountHandler.CurrentIdLoggedIn)
+             {
+                 item.ReturnDate = DateTime.Now;
+                 db.SaveChanges();
+                 return true;
+             }
         }
 
+        Console.WriteLine("Did not find relevant information in the database.");
         return false;
     }
-    */
     public static bool AddProduct(string title, int languageId, int categoryId, int nrOfCopies,
         decimal dewey, string description, string isbn, int productType)
     {
@@ -33,11 +36,11 @@ public class ProductHandler
         return false;
     }
 
-    public static bool BorrowProduct(int userid, bool reserved, int productId)
+    public static bool BorrowProduct(int userid, int productId)
     {
         try
         {
-            EntityFramework.Create.CreateHandler.CreateLendingDetail(userid, DateTime.Now, DateTime.Now.AddMonths(1), reserved, productId);
+            EntityFramework.Create.CreateHandler.CreateLendingDetail(userid, DateTime.Now, DateTime.Now.AddMonths(1), false, productId);
             return true;
         }
         catch (Exception ex)

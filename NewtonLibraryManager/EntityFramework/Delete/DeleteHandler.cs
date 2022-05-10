@@ -50,15 +50,22 @@ namespace NewtonLibraryManager.EntityFramework.Delete
             }
         }
 
-        public static int DeleteLendingDetail(List<LendingDetail> lendingdetailID, int id)
+        public static bool DeleteLendingDetail(int detailId)
         {
+            var listOfDetails = Read.ReadHandler.GetLendingDetails();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in lendingdetailID)
-                    if (id == item.Id)
+                foreach (var item in listOfDetails)
+                    if (item.Id == detailId)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("ID not found.");
+            return false;
         }
 
         public static int DeleteProduct(List<Product> productID, int id)
