@@ -34,15 +34,13 @@ namespace NewtonLibraryManager.Pages
         public string ProductType { get; set; }
 
         [BindProperty(SupportsGet = true)]
+        //[BindProperty]
         public string Id { get; set; }
 
 
-        public void OnGet()
+        public void OnGet(string id)
         {
-            string path = Request.Path;
-            string[] subPaths = path.Split('/');
-            string id = subPaths[1];    // Format will be ProductView/id?query
-
+            Id = id;
 
 
             //Should get whatever product info there is

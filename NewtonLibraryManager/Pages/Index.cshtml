@@ -55,9 +55,9 @@
       </div>
       @foreach (var result in Model.SearchResults)
         {
-        <div onclick="document.forms[1].submit()" class="row searchBody">
+        <a asp-page="/ProductView" asp-route-id="@result.Id" class="row searchBody">
             <div class="col-4 col-md-2">
-              @result.Isbn<input type="hidden" name="id" value="@result.Id" />
+              @result.Isbn<input type="hidden" name="id" value="@result.Id.ToString()" />
             </div>
             <div class="col-4 col-md-8">
               @result.Title
@@ -65,7 +65,7 @@
             <div class="col-4 col-md-2">
               @result.Authors
             </div>
-        </div>
+        </a>
         }
     </div>
 </form>

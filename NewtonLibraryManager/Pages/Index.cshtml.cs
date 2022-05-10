@@ -36,16 +36,18 @@ public class IndexModel : PageModel
         SearchCompleted = false;
     }
 
+    /*
     public IActionResult OnPostView(int id)
     {
         if (ModelState.IsValid == false)
             return Page();
         else
         {
-            return RedirectToPage("/ProductView?Id=" + id.ToString());
+            return RedirectToPage("/ProductView?id=" + id.ToString());
         }
 
     }
+    */
 
     public void OnPostEdit()
     {
