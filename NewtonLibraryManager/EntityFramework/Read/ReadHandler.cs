@@ -113,7 +113,7 @@ namespace NewtonLibraryManager.EntityFramework.Read
         public static Author GetAuthors(int authorId)
         {
             using NewtonLibraryContext db = new();
-            Author? author = db.Authors.Find(authorId);
+            Author author = db.Authors.Find(authorId);
 
             if (author == null)
             {
@@ -125,7 +125,7 @@ namespace NewtonLibraryManager.EntityFramework.Read
         public static Category GetCategories(int categoryId)
         {
             using NewtonLibraryContext db = new();
-            Category? category = db.Categories.Find(categoryId);
+            Category category = db.Categories.Find(categoryId);
 
             if (category == null)
             {
@@ -137,7 +137,7 @@ namespace NewtonLibraryManager.EntityFramework.Read
         public static Product GetProducts(int productId)
         {
             using NewtonLibraryContext db = new();
-            Product? product = db.Products.Find(productId);
+            Product product = db.Products.Find(productId);
 
             if (product == null)
             {
@@ -149,7 +149,7 @@ namespace NewtonLibraryManager.EntityFramework.Read
         public static User GetUsers(int userId)
         {
             using NewtonLibraryContext db = new();
-            User? user = db.Users.Find(userId);
+            User user = db.Users.Find(userId);
 
             if (user == null)
             {
@@ -161,13 +161,25 @@ namespace NewtonLibraryManager.EntityFramework.Read
         public static LendingDetail GetLendingDetails(int lendingDetailsId)
         {
             using NewtonLibraryContext db = new();
-            LendingDetail? lendingDetail = db.LendingDetails.Find(lendingDetailsId);
+            LendingDetail lendingDetail = db.LendingDetails.Find(lendingDetailsId);
 
             if (lendingDetail == null)
             {
                 throw new Exception("Could not find user with that ID");
             }
             return lendingDetail;
+        }
+
+        public static ReservationDetail GetReservationDetails(int reservationDetailId)
+        {
+            using NewtonLibraryContext db = new();
+            ReservationDetail reservationDetail = db.ReservationDetails.Find(reservationDetailId);
+
+            if (reservationDetail == null)
+            {
+                throw new Exception("Could not find reservationdetail with that ID");
+            }
+            return reservationDetail;
         }
     }
 }
