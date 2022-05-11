@@ -51,10 +51,10 @@
           ISBN
         </div>
         <div class="col-4 col-md-8">
-          Title
+          Titel
         </div>
         <div class="col-4 col-md-2">
-          Authors
+          Författare
         </div>
       </div>
       @foreach (var result in Model.SearchResults)
@@ -66,9 +66,12 @@
             <div class="col-4 col-md-8">
               @result.Title
             </div>
-            <div class="col-4 col-md-2">
-              @result.Authors
-            </div>
+            @if(@result.FirstName != null && @result.LastName != null)
+            {
+                <div class="col-4 col-md-2">
+                    @result.Authors
+                </div>     
+            }
         </a>
         }
     </div>
