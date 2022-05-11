@@ -7,8 +7,12 @@ namespace NewtonLibraryManager.Pages
     {
         public void OnGet()
         {
+            Handlers.AccountHandler.LogOut();
+
             Response.Cookies.Delete("LibraryCookie");
             Response.Cookies.Delete("LibraryCookie1");
+
+
         }
     }
 }
