@@ -4,7 +4,7 @@ public static class AccountHandler
 {
     private static bool _loggedIn;
     private static int _currentIdLoggedIn;
-    private static bool _adminLoggedIn = false;
+    private static bool _adminLoggedIn;
     public static bool LoggedIn => _loggedIn;
     public static int CurrentIdLoggedIn => _currentIdLoggedIn;
     public static bool AdminLoggedIn => _adminLoggedIn;
@@ -26,9 +26,14 @@ public static class AccountHandler
 
     public static void LogOut()
     {
-        _loggedIn = false;
-        _currentIdLoggedIn = 0;
-        _adminLoggedIn = false;
+        if (LoggedIn || AdminLoggedIn)
+        {
+            _loggedIn = false;
+            _currentIdLoggedIn = 0;
+            _adminLoggedIn = false;
+        }
+        else
+            Console.WriteLine("You're not logged in.");
     }
 
     public static bool CreateUser(string firstName, string lastName, string email, string password)
