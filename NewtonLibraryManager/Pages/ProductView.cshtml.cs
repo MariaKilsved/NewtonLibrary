@@ -32,5 +32,16 @@ namespace NewtonLibraryManager.Pages
             }
 
         }
+
+        public IActionResult OnPostBorrow()
+        {
+            string cookieValue = Request.Cookies["LibraryCookie"];
+            int userId = Int32.Parse(cookieValue);
+            int prodId = Int32.Parse(Id);
+
+            Handlers.ProductHandler.BorrowProduct(userId, prodId);
+
+            return RedirectToPage("/Index");
+        }
     }
 }

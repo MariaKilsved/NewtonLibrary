@@ -56,8 +56,15 @@
     </div>
     <div class="container mt-4 text-start">@Model.Product.Description</div>
     }
-
 </div>
+
+@if(cookieValue != null) {
+    <form method=post>
+        <div class="container mt-4 text-center">
+            <button type="submit" value="borrow" asp-page-handler="Borrow" class="btn btn-custom">Låna</button>
+        </div>
+    </form>
+}
 
 @section Navigation {
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
