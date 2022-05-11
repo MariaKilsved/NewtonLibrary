@@ -40,7 +40,7 @@ public class ProductHandler
     {
         try
         {
-            EntityFramework.Create.CreateHandler.CreateLendingDetail(userid, DateTime.Now, DateTime.Now.AddMonths(1), false, productId);
+            EntityFramework.Create.CreateHandler.CreateLendingDetail(userid, DateTime.Now, DateTime.Now.AddMonths(1), productId);
             return true;
         }
         catch (Exception ex)
@@ -53,7 +53,7 @@ public class ProductHandler
     {
         try
         {
-            EntityFramework.Create.CreateHandler.CreateLendingDetail(userid, DateTime.Now, DateTime.Now.AddMonths(1), true, productId);
+            EntityFramework.Create.CreateHandler.CreateReservationDetail(userid, DateTime.Now, productId);
             return true;
         }
         catch (Exception ex)

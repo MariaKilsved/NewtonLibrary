@@ -94,6 +94,23 @@ namespace NewtonLibraryManager.EntityFramework.Delete
             Console.WriteLine("DeleteLendingDetail: ID not found.");
             return false;
         }
+        public static bool DeleteReservationDetail(int detailId)
+        {
+            var listOfDetails = Read.ReadHandler.GetReservationDetails();
+
+            using (NewtonLibraryContext db = new())
+            {
+                foreach (var item in listOfDetails)
+                    if (item.Id == detailId)
+                    {
+                        db.Remove(item);
+                        db.SaveChanges();
+                        return true;
+                    }
+            }
+            Console.WriteLine("DeleteReservationDetail: ID not found.");
+            return false;
+        }
 
         public static bool DeleteProduct(int productID)
         {

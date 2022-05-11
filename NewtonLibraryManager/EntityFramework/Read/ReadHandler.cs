@@ -92,6 +92,12 @@ namespace NewtonLibraryManager.EntityFramework.Read
             var LendingDetails = db.LendingDetails.ToList();
             return LendingDetails;
         }
+        public static List<ReservationDetail> GetReservationDetails()
+        {
+            using NewtonLibraryContext db = new();
+            var reservDetails = db.ReservationDetails.ToList();
+            return reservDetails;
+        }
 
         public static List<Author> GetAuthors()
         {
