@@ -22,6 +22,7 @@ namespace NewtonLibraryManager.Models
         public virtual DbSet<Language> Languages { get; set; }
         public virtual DbSet<LendingDetail> LendingDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ReservationDetail> ReservationDetails { get; set; }
         public virtual DbSet<Type> Types { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
@@ -126,6 +127,25 @@ namespace NewtonLibraryManager.Models
                 entity.Property(e => e.LanguageId).HasColumnName("LanguageID");
 
                 entity.Property(e => e.Title).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<ReservationDetail>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+                entity.Property(e => e.ReservationDate).HasColumnType("date");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ReservationDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_ReservationDetails.ProductID");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.ReservationDetails)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_ReservationDetails.UserId");
             });
 
             modelBuilder.Entity<Type>(entity =>
