@@ -175,5 +175,39 @@ namespace NewtonLibraryManager.EntityFramework.Update
                 }
             }
         }
+
+        public static int updateReservationDetails(int reservationDetailId, ReservationDetail updatedReservationDetail)
+        {
+            using (NewtonLibraryContext db = new NewtonLibraryContext())
+            {
+                try
+                {
+                    //Get lendingDetail that is to be updated
+                    ReservationDetail reservationDetail = Read.ReadHandler.GetReservationDetails(reservationDetailId);
+
+                    //Update the retrieved lendingDetail from DB and replace it with
+                    //edited lendingDetail from form.
+                    reservationDetail.UserId = updatedReservationDetail.UserId;
+                    reservationDetail.ReservationDate = updatedReservationDetail.ReservationDate;
+                    reservationDetail.ProductId = updatedReservationDetail.ProductId;
+                    reservationDetail.Product = updatedReservationDetail.Product;
+                    reservationDetail.User = updatedReservationDetail.User;
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Could not set object properties");
+                }
+
+                //Save changes, return number of rows changed or throw exception
+                try
+                {
+                    return db.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Could not update database");
+                }
+            }
+        }
     }
 }
