@@ -5,39 +5,6 @@ namespace NewtonLibraryManager.EntityFramework.Update
 {
     public static class UpdateHandler
     {
-        /*public static int UpdateAuthor(int id, string newFirstName, string newLastName)
-        {
-            Author ath;
-            int rowsAff;
-            using (NewtonLibraryContext db = new NewtonLibraryContext())
-            {
-                ath = db.Authors.FirstOrDefault(a => a.Id == id);
-                if (ath != null)
-                {
-                     ath.FirstName = newFirstName;
-                     ath.LastName = newLastName;
-                } 
-                rowsAff = db.SaveChanges();
-                return rowsAff;
-            }
-        }
-
-        public static int UpdateUser(int id, string newFirstName, string newLastName)
-        {
-            User usr;
-            using (NewtonLibraryContext db = new NewtonLibraryContext())
-            {
-                usr = db.Users.FirstOrDefault(a => a.Id == id);
-                if (usr != null)
-                {
-                     usr.FirstName = newFirstName;
-                     usr.LastName = newLastName;
-                } 
-                return db.SaveChanges();
-            }
-        }*/
-
-
         public static int updateUser(int userId, User updatedUser)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
@@ -187,25 +154,10 @@ namespace NewtonLibraryManager.EntityFramework.Update
                     lendingDetail.BorrowedFrom = updatedLendingDetail.BorrowedFrom;
                     lendingDetail.BorrowedTo = updatedLendingDetail.BorrowedTo;
                     lendingDetail.ReturnDate = updatedLendingDetail.ReturnDate;
-                    lendingDetail.IsReservation = updatedLendingDetail.IsReservation;
                     lendingDetail.ProductId = updatedLendingDetail.ProductId;
 
                     lendingDetail.Product = updatedLendingDetail.Product;
                     lendingDetail.User = updatedLendingDetail.User;
-
-
-                    /*
-                        public int Id { get; set; }
-                        public int? UserId { get; set; }
-                        public DateTime? BorrowedFrom { get; set; }
-                        public DateTime? BorrowedTo { get; set; }
-                        public DateTime? ReturnDate { get; set; }
-                        public bool? IsReservation { get; set; }
-                        public int? ProductId { get; set; }
-
-                        public virtual Product Product { get; set; }
-                        public virtual User User { get; set; }
-                     */
                 }
                 catch (Exception)
                 {
@@ -223,8 +175,5 @@ namespace NewtonLibraryManager.EntityFramework.Update
                 }
             }
         }
-
-
-
     }
 }

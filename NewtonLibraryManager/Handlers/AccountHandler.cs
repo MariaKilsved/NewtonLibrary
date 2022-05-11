@@ -69,7 +69,7 @@ public static class AccountHandler
 
         try
         {
-            EntityFramework.Delete.DeleteHandler.DeleteUser(listOfUsers, userId);
+            EntityFramework.Delete.DeleteHandler.DeleteUser(userId);
             return true;
         }
         catch (Exception ex)

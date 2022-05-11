@@ -8,6 +8,7 @@ namespace NewtonLibraryManager.Models
         public User()
         {
             LendingDetails = new HashSet<LendingDetail>();
+            ReservationDetails = new HashSet<ReservationDetail>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace NewtonLibraryManager.Models
         public string Password { get; set; }
 
         public virtual ICollection<LendingDetail> LendingDetails { get; set; }
+        public virtual ICollection<ReservationDetail> ReservationDetails { get; set; }
     }
 }

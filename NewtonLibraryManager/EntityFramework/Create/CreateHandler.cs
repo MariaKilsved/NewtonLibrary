@@ -5,79 +5,148 @@ namespace NewtonLibraryManager.EntityFramework.Create;
 
 public static class CreateHandler
 {
-    public static int CreateProduct(string title, int langId, int catId, 
+    public static bool CreateProduct(string title, int langId, int catId, 
         int nrOfCopies, decimal dewey, string desc, string isbn, int productType)
     {
-        using (NewtonLibraryContext db = new())
+        try
         {
-            var product = new Product
+            using (NewtonLibraryContext db = new())
             {
-                Title = title,
-                LanguageId = langId,
-                CategoryId = catId,
-                NrOfCopies = nrOfCopies,
-                Dewey = dewey,
-                Description = desc,
-                Isbn = isbn,
-                ProductType = productType,
-            };
-            db.Add(product);
-            return db.SaveChanges();
+                var product = new Product
+                {
+                    Title = title,
+                    LanguageId = langId,
+                    CategoryId = catId,
+                    NrOfCopies = nrOfCopies,
+                    Dewey = dewey,
+                    Description = desc,
+                    Isbn = isbn,
+                    ProductType = productType,
+                };
+                db.Add(product);
+                db.SaveChanges();
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+            return false;
         }
     }
-    public static int CreateLendingDetail(int userId, DateTime from, DateTime to, bool isReservation, int productId)
+    public static bool CreateLendingDetail(int userId, DateTime from, DateTime to, int productId)
     {
-        using (NewtonLibraryContext db = new())
+        try
         {
-            var lendingDetail = new LendingDetail
+            using (NewtonLibraryContext db = new())
             {
-                UserId = userId,
-                BorrowedFrom = from,
-                BorrowedTo = to,
-                IsReservation = isReservation,
-                ProductId = productId
-            };
-            db.Add(lendingDetail);
-            return db.SaveChanges();
+                var lendingDetail = new LendingDetail
+                {
+                    UserId = userId,
+                    BorrowedFrom = from,
+                    BorrowedTo = to,
+                    ProductId = productId
+                };
+                db.Add(lendingDetail);
+                db.SaveChanges();
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return false;
         }
     }
-    public static int CreateAuthorDetail(int authorId, int productId)
+    public static bool CreateReservationDetail(int userId, DateTime reservDate , int productId)
     {
-        using (NewtonLibraryContext db = new())
+        try
         {
-            var authorDetail = new AuthorDetail
+            using (NewtonLibraryContext db = new())
             {
-                AuthorId = authorId,
-                ProductId = productId
-            };
-            db.Add(authorDetail);
-            return db.SaveChanges();
+                var reservationDetail = new ReservationDetail
+                {
+                    UserId = userId,
+                    ReservationDate = DateTime.Now,
+                    ProductId = productId
+                };
+                db.Add(reservationDetail);
+                db.SaveChanges();
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return false;
+        }
+    }
+    public static bool CreateAuthorDetail(int authorId, int productId)
+    {
+        try
+        {
+            using (NewtonLibraryContext db = new())
+            {
+                var authorDetail = new AuthorDetail
+                {
+                    AuthorId = authorId,
+                    ProductId = productId
+                };
+                db.Add(authorDetail);
+                db.SaveChanges();
+            }
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return false;
         }
     }
     
-    public static int CreateAuthor(string firstName, string lastName)
+    public static bool CreateAuthor(string firstName, string lastName)
     {
-        using (NewtonLibraryContext db = new())
+        try
         {
-            var author = new Author
+            using (NewtonLibraryContext db = new())
             {
-                FirstName = firstName,
-                LastName = lastName
-            };
-            db.Add(author);
-            return db.SaveChanges();
+                var author = new Author
+                {
+                    FirstName = firstName,
+                    LastName = lastName
+                };
+                db.Add(author);
+                db.SaveChanges();
+            }
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            return false;
         }
     }
-    public static int CreateType(string tp)
+    public static bool CreateType(string tp)
     {
-        using (NewtonLibraryContext db = new())
+        try
         {
-            var type = new Models.Type
+            using (NewtonLibraryContext db = new())
             {
-                Type1 = tp
-            };
-            db.Add(type);
-            return db.SaveChanges();
+                var type = new Models.Type
+                {
+                    Type1 = tp
+                };
+                db.Add(type);
+                db.SaveChanges();
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+            return false;
         }
     }
     public static int CreateLanguage(string lang)
@@ -93,33 +162,51 @@ public static class CreateHandler
         }
     }
 
-    public static int CreateCategory(string cat)
+    public static bool CreateCategory(string cat)
     {
-        using (NewtonLibraryContext db = new())
+        try
         {
-            var category = new Category
+            using (NewtonLibraryContext db = new())
             {
-                Category1 = cat
-            };
-            db.Add(category);
-            return db.SaveChanges();
+                var category = new Category
+                {
+                    Category1 = cat
+                };
+                db.Add(category);
+                db.SaveChanges();
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+            return false;
         }
     }
 
-    public static int CreateUser(string firstName, string lastName, string email, string password, bool isAdmin)
+    public static bool CreateUser(string firstName, string lastName, string email, string password, bool isAdmin)
     {
-        using (NewtonLibraryContext db = new())
+        try
         {
-            var user = new User
+            using (NewtonLibraryContext db = new())
             {
-                FirstName = firstName,
-                LastName = lastName,
-                EMail = email,
-                Password = password,
-                IsAdmin = isAdmin
-            };
-            db.Add(user);
-            return db.SaveChanges();
+                var user = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    EMail = email,
+                    Password = password,
+                    IsAdmin = isAdmin
+                };
+                db.Add(user);
+                db.SaveChanges();
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+            return false;
         }
     }
 }
