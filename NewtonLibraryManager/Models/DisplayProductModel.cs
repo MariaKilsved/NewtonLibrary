@@ -14,6 +14,7 @@ public class DisplayProductModel
     public string LastName { get; set; }
     public string ProductType { get; set; }
     public string Authors { get { return LastName + ", " + FirstName;  } }
-    public List<string> FirstNames { get; set; }
-    public List<string> LastNames { get; set; }
+    public string DeweyString { get {
+            return Dewey.ToString("000.###", new System.Globalization.CultureInfo("en-US"));
+        } }
 }

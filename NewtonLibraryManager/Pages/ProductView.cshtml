@@ -1,51 +1,60 @@
 ﻿@page "{id?}"
 @model NewtonLibraryManager.Pages.ProductViewModel
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Product.Title;
     string cookieValue = null;
     string cookieValue1 = null;
     cookieValue = Request.Cookies["LibraryCookie"];
     cookieValue1 = Request.Cookies["LibraryCookie1"];
+    System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 }
 
 <div class="text-center">
-    <h1>Page loaded</h1>
-
     @if(Model.Id != null)
     {
-    <h1 class="display-4">@Model.Title</h1>
+    <h1 class="display-4 mb-4">@Model.Product.Title</h1>
 
-    <div>@Model.Description</div>
-
-    <div class="container">
+    <div class="container text-start">
 
       <div class="row">
         <div class="col">
-          <b>Författare:</b> @Model.Author
+        @if(@Model.AuthorNames != null)
+        {
+        <b>Författare:</b>
+            @for (int i = 0; i < @Model.AuthorNames.Count; i++)
+            {
+                <span class="mb-0 mt-0 pt-0 pb-0">@Model.AuthorNames[i]</span>
+                @if(@Model.AuthorNames[i] != @Model.AuthorNames[^1])
+                {
+                    <br />
+                }
+            }
+        }
         </div>
         <div class="col">
-          <b>Språk:</b> @Model.Language
+            <b>Kategori:</b> @Model.Product.Category
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <b>Dewey:</b> @Model.Dewey
+          <b>Dewey decimalklassifikation:</b> @Model.Product.DeweyString
         </div>
         <div class="col">
-          <b>Kategori:</b> @Model.Category
+            <b>Språk:</b> @Model.Product.Language
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <b>ISBN:</b> @Model.Isbn
+          <b>ISBN:</b> @Model.Product.Isbn
         </div>
         <div class="col">
-          <!-- <b>In stock:</b> @Model.NrOfCopies -->
+          <b>Antal ex:</b> @Model.Product.NrOfCopies
         </div>
       </div>
     </div>
+    <div class="container mt-4 text-start">@Model.Product.Description</div>
     }
 
 </div>
