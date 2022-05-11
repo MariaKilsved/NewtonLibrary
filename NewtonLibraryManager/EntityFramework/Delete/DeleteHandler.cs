@@ -5,49 +5,76 @@ namespace NewtonLibraryManager.EntityFramework.Delete
     public static class DeleteHandler
     {
 
-
-        public static int DeleteAuthor(List<Author> authorID, int id)
+        public static bool DeleteAuthor(int authorID)
         {
+            var listOfAuthors = Read.ReadHandler.GetAuthors();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in authorID)
-                    if (id == item.Id)
+                foreach (var item in listOfAuthors)
+                    if (item.Id == authorID)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("DeleteAuthor: ID not found.");
+            return false;
         }
 
-        public static int DeleteAuthorDetail(List<AuthorDetail> authordetailID, int id)
+        public static bool DeleteAuthorDetail(int authordetailID)
         {
+            var listOfAuthorDetails = Read.ReadHandler.GetAuthorDetails();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in authordetailID)
-                    if (id == item.Id)
+                foreach (var item in listOfAuthorDetails)
+                    if (item.Id == authordetailID)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("DeleteAuthorDetail: ID not found.");
+            return false;
         }
 
-        public static int DeleteCategory(List<Category> categoryID, int id)
+        public static bool DeleteCategory(int categoryID)
         {
+            var listOfCategories = Read.ReadHandler.GetCategories();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in categoryID)
-                    if (id == item.Id)
+                foreach (var item in listOfCategories)
+                    if (item.Id == categoryID)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("DeleteCategory: ID not found.");
+            return false;
         }
 
-        public static int DeleteLanguage(List<Language> languageID, int id)
+        public static bool DeleteLanguage(int languageID)
         {
+            var listOfLanguages = Read.ReadHandler.GetLanguages();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in languageID)
-                    if (id == item.Id)
+                foreach (var item in listOfLanguages)
+                    if (item.Id == languageID)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("DeleteLanguage: ID not found.");
+            return false;
         }
 
         public static bool DeleteLendingDetail(int detailId)
@@ -64,41 +91,62 @@ namespace NewtonLibraryManager.EntityFramework.Delete
                         return true;
                     }
             }
-            Console.WriteLine("ID not found.");
+            Console.WriteLine("DeleteLendingDetail: ID not found.");
             return false;
         }
 
-        public static int DeleteProduct(List<Product> productID, int id)
+        public static bool DeleteProduct(int productID)
         {
+            var listOfProducts = Read.ReadHandler.GetProducts();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in productID)
-                   if (id == item.Id)
+                foreach (var item in listOfProducts)
+                    if (item.Id == productID)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("DeleteProduct: ID not found.");
+            return false;
         }
 
-        public static int DeleteType(List<Models.Type> typeID, int id)
+        public static bool DeleteType(int typeID)
         {
+            var listOfTypes = Read.ReadHandler.GetTypes();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in typeID)
-                    if (id == item.Id)
+                foreach (var item in listOfTypes)
+                    if (item.Id == typeID)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("DeleteType: ID not found.");
+            return false;
         }
 
-        public static int DeleteUser(List<User> userID, int id)
+        public static bool DeleteUser(int userID)
         {
+            var listOfUsers = Read.ReadHandler.GetUsers();
+
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in userID)
-                    if (id == item.Id)
+                foreach (var item in listOfUsers)
+                    if (item.Id == userID)
+                    {
                         db.Remove(item);
-                return db.SaveChanges();
+                        db.SaveChanges();
+                        return true;
+                    }
             }
+            Console.WriteLine("DeleteUser: ID not found.");
+            return false;
         }
     }
 }
