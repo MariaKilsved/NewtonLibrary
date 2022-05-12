@@ -23,13 +23,13 @@ namespace NewtonLibraryManager.Pages
         //Detta kommer k�ras n�r man trycker p� submit, d.v.s. anv�ndaren har skrivit in saker
         public IActionResult OnPost()
         {
+            var hashedPass = Models.SecurePasswordHasher.Hash(Password);
+            Console.WriteLine(hashedPass);
             //Om det �r n�got fel p� det som skrivits in laddas sidan bara om
             if (ModelState.IsValid == false)
                 return Page();
 
-            //B�r hash:a Password innan det läggs i User.Password
-
-            if (AccountHandler.LogIn(EMail, Password))
+            if (AccountHandler.LogIn(EMail, hashedPass))
             {
                 var cookieOptions = new CookieOptions
                 {
@@ -41,6 +41,18 @@ namespace NewtonLibraryManager.Pages
             }
 
             return Page();
+            //Kontrollera vad som h�mtats fr�n frontend.
+            //Frontend g�r antingen register eller login.
+            //Login: User.EMail, Password
+            //Register: User.FirstName, User.LastName, User.EMail, Password
+
+            //B�r hash:a Password innan det läggs i User.Password
+
+            //B�r testa om n�got av f�lten p� fronten var IsNullOrWhitespace
+            //Om n�got var null b�r sidan ocks� laddas om d.v.s. Return Page();
+
+            //G� till annan sida
+            //Kommer anv�nda webbsession senare
         }
 
     }
