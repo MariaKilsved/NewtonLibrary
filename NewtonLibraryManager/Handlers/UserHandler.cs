@@ -20,6 +20,12 @@ namespace NewtonLibraryManager.Handlers
 			return admin;
 		}
 
+		public static List<User> GetUsers()
+		{
+			List<User> user = EntityFramework.Read.ReadHandler.GetUsers();
+			return user;
+		}
+
 		public static User GetUsers(int userId)
 		{
 			User user = EntityFramework.Read.ReadHandler.GetUsers(userId);
