@@ -13,7 +13,24 @@ public class DisplayProductModel
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string ProductType { get; set; }
-    public string Authors { get { return LastName + ", " + FirstName;  } }
+    public string Authors { get { 
+            if(LastName != null && FirstName != null)
+            {
+                return LastName + ", " + FirstName;
+            }
+            else if(FirstName != null)
+            {
+                return FirstName;
+            }
+            else if (LastName != null)
+            {
+                return LastName;
+            }
+            else
+            {
+                return "";
+            }
+        } }
     public string DeweyString { get {
             return Dewey.ToString("000.###", new System.Globalization.CultureInfo("en-US"));
         } }
