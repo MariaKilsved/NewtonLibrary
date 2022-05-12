@@ -12,7 +12,6 @@ namespace NewtonLibraryManager.Pages
         public List<string> AuthorNames { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        //[BindProperty]
         public string Id { get; set; }
 
 
