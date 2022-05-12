@@ -27,6 +27,8 @@ namespace NewtonLibraryManager.Pages
             if (ModelState.IsValid == false)
                 return Page();
 
+            //B�r hash:a Password innan det läggs i User.Password
+
             if (AccountHandler.LogIn(EMail, Password))
             {
                 var cookieOptions = new CookieOptions
@@ -39,18 +41,6 @@ namespace NewtonLibraryManager.Pages
             }
 
             return Page();
-            //Kontrollera vad som h�mtats fr�n frontend.
-            //Frontend g�r antingen register eller login.
-            //Login: User.EMail, Password
-            //Register: User.FirstName, User.LastName, User.EMail, Password
-
-            //B�r hash:a Password innan det läggs i User.Password
-
-            //B�r testa om n�got av f�lten p� fronten var IsNullOrWhitespace
-            //Om n�got var null b�r sidan ocks� laddas om d.v.s. Return Page();
-
-            //G� till annan sida
-            //Kommer anv�nda webbsession senare
         }
 
     }
