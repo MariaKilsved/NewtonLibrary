@@ -33,15 +33,41 @@ namespace NewtonLibraryManager.Pages
 
         }
 
+        public IActionResult OnPostReserve()
+        {
+            string cookieValue = Request.Cookies["LibraryCookie"];
+            int userId = Int32.Parse(cookieValue);
+            int prodId = Int32.Parse(Id);
+
+            if (Handlers.ProductHandler.ReserveProduct(userId, prodId))
+            {
+                return RedirectToPage("/Index");
+
+            }
+            else
+            {
+                return Page();
+            }
+        }
+        
+        /*
         public IActionResult OnPostBorrow()
         {
             string cookieValue = Request.Cookies["LibraryCookie"];
             int userId = Int32.Parse(cookieValue);
             int prodId = Int32.Parse(Id);
 
-            Handlers.ProductHandler.BorrowProduct(userId, prodId);
+            if(Handlers.ProductHandler.BorrowProduct(userId, prodId))
+            {
+                return RedirectToPage("/Index");
 
-            return RedirectToPage("/Index");
+            }
+            else
+            {
+                return Page();
+            }
+
         }
+        */
     }
 }
