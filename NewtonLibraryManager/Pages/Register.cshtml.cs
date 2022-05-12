@@ -36,6 +36,9 @@ namespace NewtonLibraryManager.Pages
         //Detta kommer k�ras n�r man trycker p� submit, d.v.s. anv�ndaren har skrivit in saker
         public IActionResult OnPost()
         {
+
+            Password = Models.SecurePasswordHasher.Hash(Password);
+            Console.WriteLine(Password);
             //Om det �r n�got fel p� det som skrivits in laddas sidan bara om
             if (ModelState.IsValid == false)
                 return Page();

@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace NewtonLibraryManager.Handlers;
 
 public static class AccountHandler
@@ -76,6 +78,16 @@ public static class AccountHandler
         {
             Console.WriteLine($"Error: {ex}");
             return false;
+        }
+    }
+
+    public static void passwordHash(string pass)
+    {
+        byte[] salt = new byte[32];
+        using (var rngCsp = new RSACryptoServiceProvider())
+        {
+
+
         }
     }
 }
