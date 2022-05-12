@@ -49,7 +49,7 @@ public class IndexModel : PageModel
     }
     */
 
-    public void OnPostEdit()
+    public void OnPostSearch()
     {
         Search = Search?.Replace("-", "");
 
