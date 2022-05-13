@@ -8,14 +8,10 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public List<Models.User> Admins { get; set; }
 
-        public void OnPostView(int id)
-        {
-        }
-
         public void OnGet()
         {
-
-            //Should get all librarians (admins)
+            //Get all librarians
+            Admins = Handlers.UserHandler.GetAdmins();
         }
     }
 }

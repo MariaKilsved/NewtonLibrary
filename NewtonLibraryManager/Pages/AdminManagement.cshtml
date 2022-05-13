@@ -12,26 +12,25 @@
 {
     <h1 class="display-4">Administrera administratörer</h1>
 
-    <form method="post">
         <div class="container text-center mt-3 searchResults">
-          <div class="row">
+          <div class="row searchHeader">
             <div class="col-4">
-              <b>Förnamn</b>
+              Förnamn
             </div>
             <div class="col-4">
-              <b>Efternamn</b>
+              Efternamn
             </div>
             <div class="col-4">
-              <b>E-mail</b>
+              E-mail
             </div>
           </div>
                 @if (Model.Admins != null)
                 {
                     @foreach (var admin in Model.Admins)
                     {
-                        <a class="row" asp-page="./Product/@admin.Id">
+                        <a class="row searchBody" asp-page="/Profile" asp-route-id="@admin.Id.ToString()">
                             <div class="col-4">
-                                @admin.FirstName<input type="hidden" name="id" value="@admin.Id" />
+                                @admin.FirstName
                             </div>
                             <div class="col-4">
                                 @admin.LastName
@@ -43,7 +42,6 @@
                     }
                 }
         </div>
-    </form>
 }
 else
 {
