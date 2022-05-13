@@ -1,15 +1,19 @@
 ﻿@page
 @model NewtonLibraryManager.Pages.RegisterModel
 @{
-    ViewData["Title"] = "Registrera dig";
+    ViewData["Title"] = "Registrera dig"; 
     string cookieValue = null;
     string cookieValue1 = null;
     cookieValue = Request.Cookies["LibraryCookie"];
     cookieValue1 = Request.Cookies["LibraryCookie1"];
+    if(cookieValue == "1")
+    {
+        ViewData["Title"] = "Registrera användare";
+    }
 }
 
 <div class="text-center">
-        <h1 class="display-4">Registrera dig</h1>
+    <h1 class="display-4">@ViewData["Title"]</h1>
     <form id="registerForm" method="post" class="mt-3 d-flex align-items-center flex-column">
         <div class="mb-3 AltAutoWidth">
         <label for="registerFirstName" class="form-label"><b>Förnamn</b></label>
@@ -32,14 +36,14 @@
         @if (cookieValue == "1")
         {
         <div class="form-check p-4 text-start w-auto">
-            <input asp-for="IsAdmin" class="form-check-input" type="checkbox" value="" id="checkboxIsAdmin" />
-            <label class="form-check-label" for="checkboxIsAdmin">
+            <input asp-for="IsAdmin" class="form-check-input" type="checkbox" value="false" id="IsAdmin" />
+            <input name="IsAdmin" type="hidden" value="false">
+            <label class="form-check-label" for="IsAdmin">
             Admin
             </label>
         </div>
         }
-
-        <button type="submit" class="btn btn-custom">Registrera dig</button>
+        <button type="submit" class="btn btn-custom">@ViewData["Title"]</button>
     </form>
 
 </div>
@@ -67,7 +71,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera administratör</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera användare</a>
                     </li>
                     }
                     @if (cookieValue != null) {

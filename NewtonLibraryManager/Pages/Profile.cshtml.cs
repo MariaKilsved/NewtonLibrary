@@ -20,5 +20,25 @@ namespace NewtonLibraryManager.Pages
             //Needs to be User1 instead of User to avoid hiding PageModel.User
             User1 = Handlers.UserHandler.GetUsers(Int32.Parse(id));
         }
+
+        public IActionResult OnPostDelete(int id)
+        {
+            if(id != 1 && Handlers.AccountHandler.DeleteUser(id))
+            {
+                int cookieId = Int32.Parse(Request.Cookies["LibraryCookie"]);
+
+                if (cookieId == id)
+                {
+                    Response.Cookies.Delete("LibraryCookie");
+                    Response.Cookies.Delete("LibraryCookie1");
+                }
+                return RedirectToPage("/Index");
+            }
+            else
+            {
+                //Maybe return error page?
+                return Page();
+            }
+        }
     }
 }

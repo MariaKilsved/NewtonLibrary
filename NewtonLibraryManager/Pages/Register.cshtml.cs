@@ -38,17 +38,24 @@ namespace NewtonLibraryManager.Pages
         {
 
             Password = Models.SecurePasswordHasher.Hash(Password);
-            Console.WriteLine(Password);
+            //Console.WriteLine(Password);
             //Om det �r n�got fel p� det som skrivits in laddas sidan bara om
             if (ModelState.IsValid == false)
                 return Page();
 
             if(IsAdmin)
-                if(Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
+            {
+                if (Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
+                {
+                    return RedirectToPage("/Index");
+                }
+            }
+            else
+            {
+                if (Handlers.AccountHandler.CreateUser(FirstName, LastName, EMail, Password))
                     return RedirectToPage("/Login");
-                
-            if(Handlers.AccountHandler.CreateUser(FirstName, LastName, EMail, Password))
-                return RedirectToPage("/Login");
+            }
+
 
             return Page();
 
