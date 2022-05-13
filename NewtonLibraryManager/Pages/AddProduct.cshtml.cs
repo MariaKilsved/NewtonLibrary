@@ -24,8 +24,11 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string Description { get; set; }
 
-        [BindProperty, Required]
-        public int Isbn { get; set; }
+        [BindProperty, Required, MinLength(10), MaxLength(13)]
+        public string Isbn { get; set; }
+
+        [BindProperty]
+        public int NrOfCopies { get; set; }
 
         [BindProperty]
         public List<SelectListItem> ProdTypes { get; set; }         //Used to make dropdown (select)
@@ -39,20 +42,24 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string SelectedProdType { get; set; }                //The chosen option of the dropdown
 
+        private List<Models.Type> ProductTypes { get; set; }
+
+        private List<Models.Category> ProductCategories { get; set; }
+
         public void OnGet()
         {
+            //Get all product types and categories to display dropdown menus
+            ProductTypes = EntityFramework.Read.ReadHandler.GetTypes();
+            ProductCategories = EntityFramework.Read.ReadHandler.GetCategories();
 
-            List<Models.Type> prodTypeList = EntityFramework.Read.ReadHandler.GetTypes();
-            List <Models.Category> catList = EntityFramework.Read.ReadHandler.GetCategories();
-
-            ProdTypes = prodTypeList.Select(a =>
+            ProdTypes = ProductTypes.Select(a =>
             new SelectListItem
             {
                 Value = a.Id.ToString(),
                 Text = a.Type1
             }).ToList();
 
-            Categories = catList.Select(a =>
+            Categories = ProductCategories.Select(a =>
             new SelectListItem
             {
                 Value = a.Id.ToString(),
@@ -67,8 +74,49 @@ namespace NewtonLibraryManager.Pages
                 return Page();
             }
 
-            //Should redirect to specific product? Or show confirmation message on page.
-            return RedirectToPage("/ProductSearch");
+            int languageId = 1;
+            int categoryId = 1;
+            int productTypeId = 1;
+
+            Isbn = Isbn.Replace("-", "");
+
+            foreach (var prod in ProductTypes)
+            {
+                if(prod.Type1 == SelectedProdType)
+                {
+                    productTypeId = prod.Id;
+                    break;
+                }
+            }
+
+            foreach(var cat in ProductCategories)
+            {
+                if(cat.Category1 == SelectedCategory)
+                {
+                    categoryId = cat.Id;
+                    break;
+                }
+            }
+
+            if(IsSwedish)
+            {
+                languageId = 1;
+            }
+            if(IsEnglish)
+            {
+                languageId = 2;
+            }
+
+            if(Handlers.ProductHandler.AddProduct(Title, languageId, categoryId, NrOfCopies, Dewey, Description, Isbn, productTypeId))
+            {
+                //Should redirect to specific product? Or show confirmation message on page.
+                return RedirectToPage("/ProductSearch");
+            }
+            else
+            {
+                return RedirectToPage("/ProductSearch");
+            }
+
         }
     }
 }

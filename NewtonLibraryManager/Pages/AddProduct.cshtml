@@ -49,12 +49,17 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="isbn" class="form-label"><b>ISBN</b></label>
-        <input type="number" asp-for="Isbn" class="form-control" id="isbn" step="1" min="0" max="9999999999999"/>
+        <input type="text" asp-for="Isbn" class="form-control" id="isbn" minlength="10" maxlength="13" data-val-length-min="10" data-val-length-max="13"/>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="prodTypeSelect" class="form-label"><b>Produkttyp</b></label>
         <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="prodTypeId"></select>
+    </div>
+
+    <div class="mb-3 AltAutoWidth">
+        <label for="nrOfCopies" class="form-label"><b>Antal exemplar</b></label>
+        <input type="number" asp-for="NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" value="1"/>
     </div>
 
     <button type="submit" class="btn btn-custom">Lägg till</button>
