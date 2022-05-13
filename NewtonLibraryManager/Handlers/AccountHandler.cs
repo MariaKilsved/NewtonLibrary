@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace NewtonLibraryManager.Handlers;
 
@@ -78,6 +79,49 @@ public static class AccountHandler
         {
             Console.WriteLine($"Error: {ex}");
             return false;
+        }
+    }
+
+    public static bool ValidatePassword(string password, out string errorMessage)
+    {
+        errorMessage = "";
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            errorMessage = "Lösenordet kan inte vara tomt";
+            return false;
+        }
+
+        var hasNumber = new Regex(@"[0-9]+");
+        var hasUpperChar = new Regex(@"[A-Z]+");
+        var hasMinChars = new Regex(@".{8,}");
+        var hasLowerChar = new Regex(@"[a-z]+");
+        var hasSymbols = new Regex(@"[!@#$£%^&*()_+=\[{\]};:<>|./?,-]");
+
+
+        if (!hasLowerChar.IsMatch(password))
+        {
+            errorMessage = "Lösenordet måste innehålla minst en liten bokstav";
+            return false;
+        }
+        else if (!hasUpperChar.IsMatch(password))
+        {
+            errorMessage = "Lösenordet måste innehålla minst en stor bokstav";
+            return false;
+        }
+        else if (!hasMinChars.IsMatch(password))
+        {
+            errorMessage = "Lösenordet måste ha minst 8 tecken";
+            return false;
+        }
+        else if (!(hasNumber.IsMatch(password) || hasSymbols.IsMatch(password)))
+        {
+            errorMessage = "Lösenordet måste innehålla minst en siffra eller ett specialtecken";
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 

@@ -31,6 +31,10 @@
         <div class="mb-3 AltAutoWidth">
         <label for="registerPassword" class="form-label"><b>Lösenord</b></label>
         <input type="password" asp-for="Password" class="form-control" id="registerPassword" minlength="8" data-val-length-min="8" required>
+        @if (!String.IsNullOrWhiteSpace(@Model.PasswordError))
+        {
+            <div id="passwordHelp" class="form-text"><i>@Model.PasswordError</i></div>
+        }
         </div>
 
         @if (cookieValue == "1")
