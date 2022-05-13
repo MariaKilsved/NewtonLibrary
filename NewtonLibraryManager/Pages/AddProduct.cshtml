@@ -8,8 +8,10 @@
     cookieValue1 = Request.Cookies["LibraryCookie1"];
 }
 
+@if(cookieValue1 == "True")
+{
 <div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
+<h1 class="display-4">@ViewData["Title"]</h1>
 
 <form method="post" class="mt-3 d-flex align-items-center flex-column">
     <div class="mb-3 AltAutoWidth">
@@ -64,8 +66,14 @@
 
     <button type="submit" class="btn btn-custom">Lägg till</button>
 </form>
+    </div>
+}
+else
+{
+    <p>Sidan är ej tillgänglig.</p>
+}
 
-</div>
+
 
 @section Navigation {
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
