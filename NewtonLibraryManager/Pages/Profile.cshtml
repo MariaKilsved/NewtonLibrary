@@ -8,7 +8,7 @@
 
     @if(cookieValue != null)
     {
-        ViewData["Title"] = @Model.User.FirstName + " " + @Model.User.LastName;
+        ViewData["Title"] = @Model.User1.FirstName + " " + @Model.User1.LastName;
     }
     else
     {
@@ -16,8 +16,27 @@
     }
 }
 
-<div class="text-center">
-    <h1 class="display-4">@Model.ViewData["Title"]</h1>
+<div class="text-start container">
+    @if(Model.User1 != null && Model.User1.Id > 0 && (cookieValue == Model.User1.Id.ToString() || cookieValue1 == "True"))
+    {
+        <h3 class="mb-4">@Model.ViewData["Title"]</h3>
+        <div class="row">
+            <div class="col"><b>Förnamn</b></div>
+            <div class="col">@Model.User1.FirstName</div>
+        </div>
+        <div class="row">
+            <div class="col"><b>Efternamn</b></div>
+            <div class="col">@Model.User1.LastName</div>
+        </div>
+        <div class="row">
+            <div class="col"><b>E-mail</b></div>
+            <div class="col">@Model.User1.EMail</div>
+        </div>
+        <div class="row">
+            <div class="col"><b>Lösenord</b></div>
+            <div class="col">Dolt</div>
+        </div>
+    }
 </div>
 
 @section Navigation {
@@ -33,19 +52,6 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
-                    @if (cookieValue == null) {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Logga in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera dig</a>
-                    </li>
-                    }
-                    @if (cookieValue != null || cookieValue1 != null) {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logga ut</a>
-                    </li>
-                    }
                     @if (cookieValue1 == "True") {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
@@ -55,8 +61,23 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera administratör</a>
+                    </li>
                     }
-
+                    @if (cookieValue != null) {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Profile" asp-route-id="@cookieValue">Profil</a>
+                    </li>
+                    }
+                    @if (cookieValue == null) {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Logga in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera dig</a>
+                    </li>
+                    }
                 </ul>
             </div>
         </div>

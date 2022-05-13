@@ -7,7 +7,7 @@ namespace NewtonLibraryManager.Pages
     {
 
         [BindProperty]
-        public Models.User User { get; set; }
+        public Models.User User1 { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
@@ -17,17 +17,8 @@ namespace NewtonLibraryManager.Pages
             //Uses the user Id determined in the Url to set everything
             Id = id;
 
-            /*
-            List<Models.DisplayProductModel> productList = Handlers.ProductHandler.ShowProduct(Id);
-            Product = productList[0];
-
-            AuthorNames = new List<string>();
-
-            foreach (var prod in productList)
-            {
-                AuthorNames.Add(prod?.FirstName + " " + prod?.LastName);
-            }
-            */
+            //Needs to be User1 instead of User to avoid hiding PageModel.User
+            User1 = Handlers.UserHandler.GetUsers(Int32.Parse(id));
         }
     }
 }

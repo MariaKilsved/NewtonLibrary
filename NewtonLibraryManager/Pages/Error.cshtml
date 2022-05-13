@@ -43,19 +43,6 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
-                    @if (cookieValue == null) {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Logga in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera dig</a>
-                    </li>
-                    }
-                    @if (cookieValue != null || cookieValue1 != null) {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logga ut</a>
-                    </li>
-                    }
                     @if (cookieValue1 == "True") {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
@@ -65,8 +52,23 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera administratör</a>
+                    </li>
                     }
-
+                    @if (cookieValue != null) {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Profile" asp-route-id="@cookieValue">Profil</a>
+                    </li>
+                    }
+                    @if (cookieValue == null) {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Logga in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera dig</a>
+                    </li>
+                    }
                 </ul>
             </div>
         </div>
