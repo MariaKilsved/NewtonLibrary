@@ -35,6 +35,16 @@ public class ProductHandler
         Console.WriteLine("Admin not logged in");
         return false;
     }
+    public static bool DeleteProduct(int id)
+    {
+        if (AccountHandler.AdminLoggedIn)
+        {
+            EntityFramework.Delete.DeleteHandler.DeleteProduct(id);
+            return true;
+        }
+        Console.WriteLine("Admin not logged in");
+        return false;
+    }
 
     public static bool BorrowProduct(int userid, int productId)
     {
