@@ -4,9 +4,13 @@
     ViewData["Title"] = "Registrera dig"; 
     string cookieValue = null;
     string cookieValue1 = null;
+    string cookieValue2 = null;
     cookieValue = Request.Cookies["LibraryCookie"];
     cookieValue1 = Request.Cookies["LibraryCookie1"];
-    if(cookieValue == "1")
+    cookieValue2 = Request.Cookies["LibraryCookie2"];
+    string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
+    string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
+    if(cookieValue == cookieComparer1)
     {
         ViewData["Title"] = "Registrera användare";
     }
@@ -37,7 +41,7 @@
         }
         </div>
 
-        @if (cookieValue == "1")
+        @if (cookieValue == cookieComparer1)
         {
         <div class="form-check p-4 text-start w-auto">
             <input asp-for="IsAdmin" class="form-check-input" type="checkbox" value="false" id="IsAdmin" />
@@ -65,12 +69,12 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
-                    @if (cookieValue1 == "True") {
+                    @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
                     </li>
                     }
-                    @if (cookieValue1 == "True" && cookieValue == "1") {
+                    @if (cookieValue1 == cookieComparerTrue && cookieValue == cookieComparer1) {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
@@ -80,7 +84,7 @@
                     }
                     @if (cookieValue != null) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Profile" asp-route-id="@cookieValue">Profil</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Profile" asp-route-id="@cookieValue2">Profil</a>
                     </li>
                     }
                     @if (cookieValue == null) {

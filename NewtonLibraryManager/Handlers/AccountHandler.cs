@@ -68,6 +68,12 @@ public static class AccountHandler
 
     public static bool DeleteUser(int userId)
     {
+        //Can't delete boss
+        if(userId == 1)
+        {
+            return false;
+        }
+
         var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
 
         try

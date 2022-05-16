@@ -11,6 +11,7 @@ namespace NewtonLibraryManager.Pages
 
             Response.Cookies.Delete("LibraryCookie");
             Response.Cookies.Delete("LibraryCookie1");
+            Response.Cookies.Delete("LibraryCookie2");
 
 
         }

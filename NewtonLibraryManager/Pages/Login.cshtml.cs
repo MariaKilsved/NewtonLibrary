@@ -24,7 +24,7 @@ namespace NewtonLibraryManager.Pages
         public IActionResult OnPost()
         {
             var hashedPass = Models.SecurePasswordHasher.Hash(Password);
-            Console.WriteLine(hashedPass);
+            //Console.WriteLine(hashedPass);
             //Om det �r n�got fel p� det som skrivits in laddas sidan bara om
             if (ModelState.IsValid == false)
                 return Page();
@@ -35,8 +35,11 @@ namespace NewtonLibraryManager.Pages
                 {
                     Expires = DateTime.Now.AddHours(1)
                 };
-                Response.Cookies.Append("LibraryCookie", $"{AccountHandler.CurrentIdLoggedIn}", cookieOptions);
-                Response.Cookies.Append("LibraryCookie1", $"{AccountHandler.AdminLoggedIn}", cookieOptions);
+
+                Response.Cookies.Append("LibraryCookie", Models.SecurePasswordHasher.Hash($"NewtonLibraryManager_{AccountHandler.CurrentIdLoggedIn}"), cookieOptions);
+                Response.Cookies.Append("LibraryCookie1", Models.SecurePasswordHasher.Hash($"NewtonLibraryManager_{AccountHandler.AdminLoggedIn}"), cookieOptions);
+                Response.Cookies.Append("LibraryCookie2", $"{AccountHandler.CurrentIdLoggedIn}", cookieOptions);
+
                 return RedirectToPage("/Index");
             }
 

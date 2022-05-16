@@ -4,11 +4,15 @@
     ViewData["Title"] = "Lägg till produkt";
     string cookieValue = null;
     string cookieValue1 = null;
+    string cookieValue2 = null;
     cookieValue = Request.Cookies["LibraryCookie"];
     cookieValue1 = Request.Cookies["LibraryCookie1"];
+    cookieValue2 = Request.Cookies["LibraryCookie2"];
+    string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
+    string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
 }
 
-@if(cookieValue1 == "True")
+@if(cookieValue1 == cookieComparerTrue)
 {
 <div class="text-center">
 <h1 class="display-4">@ViewData["Title"]</h1>
@@ -88,12 +92,12 @@ else
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
-                    @if (cookieValue1 == "True") {
+                    @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
                     </li>
                     }
-                    @if (cookieValue1 == "True" && cookieValue == "1") {
+                    @if (cookieValue1 == cookieComparerTrue && cookieValue == cookieComparer1) {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
@@ -103,7 +107,7 @@ else
                     }
                     @if (cookieValue != null) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Profile" asp-route-id="@cookieValue">Profil</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Profile" asp-route-id="@cookieValue2">Profil</a>
                     </li>
                     }
                     @if (cookieValue == null) {

@@ -23,16 +23,18 @@ namespace NewtonLibraryManager.Pages
 
         public IActionResult OnPostDelete(int id)
         {
-            if(id != 1 && Handlers.AccountHandler.DeleteUser(id))
-            {
-                int cookieId = Int32.Parse(Request.Cookies["LibraryCookie"]);
+            string selectedIdHash = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + id.ToString());
 
-                if (cookieId == id)
+            if (selectedIdHash != Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1") && Handlers.AccountHandler.DeleteUser(id))
+            {
+
+                if (Request.Cookies["LibraryCookie"] == selectedIdHash)
                 {
                     Response.Cookies.Delete("LibraryCookie");
                     Response.Cookies.Delete("LibraryCookie1");
+                    Response.Cookies.Delete("LibraryCOokie2");
                 }
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Logout");
             }
             else
             {
