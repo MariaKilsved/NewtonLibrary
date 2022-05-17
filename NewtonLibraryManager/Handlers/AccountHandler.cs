@@ -70,11 +70,7 @@ public static class AccountHandler
     {
         //Can't delete boss
         if(userId == 1)
-        {
             return false;
-        }
-
-        var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
 
         try
         {
@@ -94,7 +90,7 @@ public static class AccountHandler
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            errorMessage = "Lösenordet kan inte vara tomt";
+            errorMessage = "Lï¿½senordet kan inte vara tomt";
             return false;
         }
 
@@ -102,33 +98,30 @@ public static class AccountHandler
         var hasUpperChar = new Regex(@"[A-Z]+");
         var hasMinChars = new Regex(@".{8,}");
         var hasLowerChar = new Regex(@"[a-z]+");
-        var hasSymbols = new Regex(@"[!@#$£%^&*()_+=\[{\]};:<>|./?,-]");
+        var hasSymbols = new Regex(@"[!@#$ï¿½%^&*()_+=\[{\]};:<>|./?,-]");
 
 
         if (!hasLowerChar.IsMatch(password))
         {
-            errorMessage = "Lösenordet måste innehålla minst en liten bokstav";
+            errorMessage = "Lï¿½senordet mï¿½ste innehï¿½lla minst en liten bokstav";
             return false;
         }
-        else if (!hasUpperChar.IsMatch(password))
+        if (!hasUpperChar.IsMatch(password))
         {
-            errorMessage = "Lösenordet måste innehålla minst en stor bokstav";
+            errorMessage = "Lï¿½senordet mï¿½ste innehï¿½lla minst en stor bokstav";
             return false;
         }
-        else if (!hasMinChars.IsMatch(password))
+        if (!hasMinChars.IsMatch(password))
         {
-            errorMessage = "Lösenordet måste ha minst 8 tecken";
+            errorMessage = "Lï¿½senordet mï¿½ste ha minst 8 tecken";
             return false;
         }
-        else if (!(hasNumber.IsMatch(password) || hasSymbols.IsMatch(password)))
+        if (!(hasNumber.IsMatch(password) || hasSymbols.IsMatch(password)))
         {
-            errorMessage = "Lösenordet måste innehålla minst en siffra eller ett specialtecken";
+            errorMessage = "Lï¿½senordet mï¿½ste innehï¿½lla minst en siffra eller ett specialtecken";
             return false;
-        }
-        else
-        {
-            return true;
-        }
+        } 
+        return true;
     }
 
     public static void passwordHash(string pass)
