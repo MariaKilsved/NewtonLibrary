@@ -104,4 +104,17 @@ public class ProductHandler
             return queryable.ToList();
         }
     }
+
+    public static int GetProductIdFromIsbn(string isbn)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetProducts()
+            .Where(x => x.Isbn == isbn).ToList();
+        var prod = list.FirstOrDefault();
+
+        if (prod != null)
+            return prod.Id;
+
+        Console.WriteLine("Did not find that isbn in the database.");
+        return 0;
+    }
 }
