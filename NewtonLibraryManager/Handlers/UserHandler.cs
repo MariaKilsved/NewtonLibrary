@@ -32,14 +32,14 @@ namespace NewtonLibraryManager.Handlers
 			return user;
 		}
 
-		public static List<ReservationDetail> getUserReservations(int userId)
+		public static List<ReservationDetail> GetUserReservations(int userId)
         {
 			List<ReservationDetail> reservationDetails = EntityFramework.Read.ReadHandler.GetReservationDetails();
 			reservationDetails = reservationDetails.Where(x => x.UserId == userId).ToList();
 			return reservationDetails;
         }
 
-		public static List<LendingDetail> getUserLoans(int userId)
+		public static List<LendingDetail> GetUserLoans(int userId)
 		{
 			List<LendingDetail> lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
 			lendingDetails = lendingDetails.Where(x => x.UserId == userId).ToList();

@@ -124,7 +124,7 @@ public static class AccountHandler
         return true;
     }
 
-    public static void passwordHash(string pass)
+    public static void PasswordHash(string pass)
     {
         byte[] salt = new byte[32];
         using (var rngCsp = new RSACryptoServiceProvider())

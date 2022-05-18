@@ -73,11 +73,11 @@ public class ProductHandler
         }
     }
 
-    public static List<DisplayProductModel> ShowProduct(string UrlId)
+    public static List<DisplayProductModel> ShowProduct(string urlId)
     {
         using (var db = new NewtonLibraryContext())
         {
-            int id = Int32.Parse(UrlId);
+            int id = Int32.Parse(urlId);
             var queryable = from product in db.Products
                             join ad in db.AuthorDetails on product.Id equals ad.ProductId
                             join language in db.Languages on product.LanguageId equals language.Id

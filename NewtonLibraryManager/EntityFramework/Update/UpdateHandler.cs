@@ -5,7 +5,7 @@ namespace NewtonLibraryManager.EntityFramework.Update
 {
     public static class UpdateHandler
     {
-        public static int updateUser(int userId, User updatedUser)
+        public static int UpdateUser(int userId, User updatedUser)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
             {
@@ -38,7 +38,7 @@ namespace NewtonLibraryManager.EntityFramework.Update
                 }
             }
         }
-        public static int updateAuthor(int authorId, Author updatedAuthor)
+        public static int UpdateAuthor(int authorId, Author updatedAuthor)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
             {
@@ -70,7 +70,7 @@ namespace NewtonLibraryManager.EntityFramework.Update
             }
         }
 
-        public static int updateCategory(int categoryId, Category updatedCategory)
+        public static int UpdateCategory(int categoryId, Category updatedCategory)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
             {
@@ -100,7 +100,7 @@ namespace NewtonLibraryManager.EntityFramework.Update
             }
         }
 
-        public static int updateProduct(int productId, Product updatedProduct)
+        public static int UpdateProduct(int productId, Product updatedProduct)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
             {
@@ -139,7 +139,7 @@ namespace NewtonLibraryManager.EntityFramework.Update
         }
 
 
-        public static int updateLendingDetails(int lendingDetailsId, LendingDetail updatedLendingDetail)
+        public static int UpdateLendingDetails(int lendingDetailsId, LendingDetail updatedLendingDetail)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
             {
@@ -176,7 +176,7 @@ namespace NewtonLibraryManager.EntityFramework.Update
             }
         }
 
-        public static int updateReservationDetails(int reservationDetailId, ReservationDetail updatedReservationDetail)
+        public static int UpdateReservationDetails(int reservationDetailId, ReservationDetail updatedReservationDetail)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
             {

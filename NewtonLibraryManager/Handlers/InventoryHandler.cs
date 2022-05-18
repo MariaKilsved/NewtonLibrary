@@ -7,7 +7,7 @@ namespace NewtonLibraryManager.Handlers
 	public static class InventoryHandler
 	{
         //Returnerar antal böcker i lagret
-		public static int getInventoryAmount()
+		public static int GetInventoryAmount()
         {
             int amt = 0;
 			var products = EntityFramework.Read.ReadHandler.GetProducts();
@@ -19,14 +19,14 @@ namespace NewtonLibraryManager.Handlers
         }
 
         //Returnerar antal lånade produkter
-        public static int getAmountOfBorrowedProducts()
+        public static int GetAmountOfBorrowedProducts()
         {
             var products = EntityFramework.Read.ReadHandler.GetLendingDetails();
             return products.Count();
         }
 
         //Returnerar utlånade böcker fårn ett visst ID
-        public static List<LendingDetail> getBorrowedFromProductId(int productId)
+        public static List<LendingDetail> GetBorrowedFromProductId(int productId)
         {
             var list = EntityFramework.Read.ReadHandler.GetLendingDetails();
             var lendingDetails = list.Where(x => x.ProductId == productId).ToList();
@@ -35,9 +35,9 @@ namespace NewtonLibraryManager.Handlers
 
         //Kollar tidigaste återkommande bok för ett visst ID
         //och returnerar 
-        public static DateTime? returnsToStock(int productId)
+        public static DateTime? ReturnsToStock(int productId)
         {
-            var list = getBorrowedFromProductId(productId);
+            var list = GetBorrowedFromProductId(productId);
             DateTime? borrowedTo = DateTime.MaxValue;
             foreach (var product in list)
             {

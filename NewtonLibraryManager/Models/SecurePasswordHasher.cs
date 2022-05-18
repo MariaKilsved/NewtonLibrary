@@ -18,9 +18,9 @@ namespace NewtonLibraryManager.Models
                 iterationCount: 100,
                 numBytesRequested: 64);
 
-            string Base64encryption = Convert.ToBase64String(encrypted);
-            Console.WriteLine(Base64encryption);
-            return Base64encryption;
+            string base64Encryption = Convert.ToBase64String(encrypted);
+            Console.WriteLine(base64Encryption);
+            return base64Encryption;
         }
 
 

@@ -47,50 +47,50 @@ namespace NewtonLibraryManager.EntityFramework.Read
         public static List<User> GetUsers()
         {
             using NewtonLibraryContext db = new();
-            var Users = db.Users.ToList();
-            return Users;
+            var users = db.Users.ToList();
+            return users;
         }
 
         public static List<Product> GetProducts()
         {
             using NewtonLibraryContext db = new();
-            var Products = db.Products.ToList();
-            return Products;
+            var products = db.Products.ToList();
+            return products;
         }
 
         public static List<Category> GetCategories()
         {
             using NewtonLibraryContext db = new();
-            var Categories = db.Categories.ToList();
-            return Categories;
+            var categories = db.Categories.ToList();
+            return categories;
         }
 
         public static List<Language> GetLanguages()
         {
             using NewtonLibraryContext db = new();
-            var Languages = db.Languages.ToList();
-            return Languages;
+            var languages = db.Languages.ToList();
+            return languages;
         }
 
         public static List<AuthorDetail> GetAuthorDetails()
         {
             using NewtonLibraryContext db = new();
-            var AuthorDetails = db.AuthorDetails.ToList();
-            return AuthorDetails;
+            var authorDetails = db.AuthorDetails.ToList();
+            return authorDetails;
         }
 
         public static List<Models.Type> GetTypes()
         {
             using NewtonLibraryContext db = new();
-            var Types = db.Types.ToList();
-            return Types;
+            var types = db.Types.ToList();
+            return types;
         }
 
         public static List<LendingDetail> GetLendingDetails()
         {
             using NewtonLibraryContext db = new();
-            var LendingDetails = db.LendingDetails.ToList();
-            return LendingDetails;
+            var lendingDetails = db.LendingDetails.ToList();
+            return lendingDetails;
         }
         public static List<ReservationDetail> GetReservationDetails()
         {
@@ -102,8 +102,8 @@ namespace NewtonLibraryManager.EntityFramework.Read
         public static List<Author> GetAuthors()
         {
             using NewtonLibraryContext db = new();
-            var Authors = db.Authors.ToList();
-            return Authors;
+            var authors = db.Authors.ToList();
+            return authors;
         }
 
         //-----------//
