@@ -11,6 +11,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public List<string> AuthorNames { get; set; }
 
+        [BindProperty] 
+        public int LendedOut { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -31,6 +34,9 @@ namespace NewtonLibraryManager.Pages
             {
                 AuthorNames.Add(prod?.FirstName + " " + prod?.LastName);
             }
+
+            //Obtain inventory status
+            LendedOut = Handlers.InventoryHandler.GetNrOfBorrowedFromProductId(Int32.Parse(id));
 
         }
 

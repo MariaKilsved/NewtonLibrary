@@ -10,7 +10,7 @@
     cookieValue2 = Request.Cookies["LibraryCookie2"];
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
-
+    int inStock = Model.Product.NrOfCopies - Model.LendedOut;
     System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 }
 
@@ -54,7 +54,9 @@
           <b>ISBN:</b> @Model.Product.Isbn
         </div>
         <div class="col">
-          <b>Totalt antal ex:</b> @Model.Product.NrOfCopies
+          <b>Totalt antal ex:</b> @Model.Product.NrOfCopies <br />
+          <b>Antal utlånade:</b> @Model.LendedOut <br />
+          <b>Antal i lager:</b> @inStock <br />
         </div>
       </div>
     </div>

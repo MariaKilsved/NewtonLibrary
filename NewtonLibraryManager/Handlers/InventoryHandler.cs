@@ -33,6 +33,14 @@ namespace NewtonLibraryManager.Handlers
             return lendingDetails;
         }
 
+        //Returnerar antalet utlåningar för en viss produkt
+        public static int GetNrOfBorrowedFromProductId(int productId)
+        {
+            var list = EntityFramework.Read.ReadHandler.GetLendingDetails();
+            var lendingDetails = list.Where(x => x.ProductId == productId).ToList();
+            return lendingDetails.Count;
+        }
+
         //Kollar tidigaste återkommande bok för ett visst ID
         //och returnerar 
         public static DateTime? ReturnsToStock(int productId)
