@@ -20,9 +20,11 @@ namespace NewtonLibraryManager.Pages
             //Uses the product Id determined in the Url to set everything
             Id = id;
 
+            //Get product
             List<Models.DisplayProductModel> productList = Handlers.ProductHandler.ShowProduct(Id);
             Product = productList[0];
 
+            //Merge additional author names
             AuthorNames = new List<string>();
 
             foreach(var prod in productList)
@@ -34,39 +36,24 @@ namespace NewtonLibraryManager.Pages
 
         public IActionResult OnPostReserve()
         {
-            string cookieValue = Request.Cookies["LibraryCookie"];
-            int userId = Int32.Parse(cookieValue);
-            int prodId = Int32.Parse(Id);
+            //Compare cookies
+            string cookieValue1 = Request.Cookies["LibraryCookie"];
+            string cookieValue2 = Request.Cookies["LibraryCookie2"];
 
-            if (Handlers.ProductHandler.ReserveProduct(userId, prodId))
+            if (cookieValue1 != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash(cookieValue2) == cookieValue1)
             {
-                return RedirectToPage("/Index");
+                int userId = Int32.Parse(cookieValue2);
+                int prodId = Int32.Parse(Id);
 
+                //Attempt to reserve product
+                if (Handlers.ProductHandler.ReserveProduct(userId, prodId))
+                {
+                    return RedirectToPage("/Index");
+
+                }
             }
-            else
-            {
-                return Page();
-            }
+            
+            return Page();
         }
-        
-        /*
-        public IActionResult OnPostBorrow()
-        {
-            string cookieValue = Request.Cookies["LibraryCookie"];
-            int userId = Int32.Parse(cookieValue);
-            int prodId = Int32.Parse(Id);
-
-            if(Handlers.ProductHandler.BorrowProduct(userId, prodId))
-            {
-                return RedirectToPage("/Index");
-
-            }
-            else
-            {
-                return Page();
-            }
-
-        }
-        */
     }
 }
