@@ -38,8 +38,15 @@
             </div>
             <div class="row">
                 <div class="col"><b>Lösenord</b></div>
+            @if(@Model.User1.Password != null)
+            {
                 <div class="col">Dolt</div>
-            </div>
+            }
+            else
+            {
+                <div class="col">Saknas</div>
+            }
+        </div>
         @if(!(cookieValue == cookieComparerId && cookieValue1 == cookieComparerTrue))
         {
             <form class="text-center mt-4" method="post" asp-page-handler="delete" >
@@ -75,6 +82,9 @@ else
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/UserManagement">Hantera användarkonton</a>
                     </li>
                     }
                     @if (cookieValue1 == cookieComparerTrue && cookieValue == cookieComparer1) {
