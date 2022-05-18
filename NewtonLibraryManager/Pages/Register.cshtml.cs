@@ -48,10 +48,12 @@ namespace NewtonLibraryManager.Pages
                 if (Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
                     return RedirectToPage("/Login");
                 else
-                if (Handlers.AccountHandler.CreateUser(FirstName, LastName, EMail, Password))
+                    Console.WriteLine("Admin failed");
+            
+            if(Handlers.AccountHandler.CreateUser(FirstName,LastName, EMail,Password))
                     return RedirectToPage("/Login");
-
-
+            
+            Console.WriteLine("Failed to register");
             return Page();
         }
     }
