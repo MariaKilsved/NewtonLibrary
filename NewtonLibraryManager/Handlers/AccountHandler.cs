@@ -90,7 +90,7 @@ public static class AccountHandler
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            errorMessage = "L�senordet kan inte vara tomt";
+            errorMessage = "Lösenordet kan inte vara tomt";
             return false;
         }
 
@@ -103,22 +103,22 @@ public static class AccountHandler
 
         if (!hasLowerChar.IsMatch(password))
         {
-            errorMessage = "L�senordet m�ste inneh�lla minst en liten bokstav";
+            errorMessage = "Lösenordet måste innehålla minst en liten bokstav";
             return false;
         }
         if (!hasUpperChar.IsMatch(password))
         {
-            errorMessage = "L�senordet m�ste inneh�lla minst en stor bokstav";
+            errorMessage = "Lösenordet måste innehålla minst en stor bokstav";
             return false;
         }
         if (!hasMinChars.IsMatch(password))
         {
-            errorMessage = "L�senordet m�ste ha minst 8 tecken";
+            errorMessage = "Lösenordet måste ha minst 8 tecken";
             return false;
         }
         if (!(hasNumber.IsMatch(password) || hasSymbols.IsMatch(password)))
         {
-            errorMessage = "L�senordet m�ste inneh�lla minst en siffra eller ett specialtecken";
+            errorMessage = "Lösenordet måste innehålla minst en siffra eller ett specialtecken";
             return false;
         } 
         return true;
