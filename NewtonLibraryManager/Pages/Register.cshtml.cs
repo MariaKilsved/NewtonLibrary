@@ -45,17 +45,11 @@ namespace NewtonLibraryManager.Pages
                 return Page();
 
             if(IsAdmin)
-            {
                 if (Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
-                {
                     return RedirectToPage("/Login");
-                }
-            }
-            else
-            {
+                else
                 if (Handlers.AccountHandler.CreateUser(FirstName, LastName, EMail, Password))
                     return RedirectToPage("/Login");
-            }
 
 
             return Page();
