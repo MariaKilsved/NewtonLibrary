@@ -14,6 +14,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty] 
         public int LendedOut { get; set; }
 
+        [BindProperty]
+        public string ReturnsToStock { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -38,6 +41,8 @@ namespace NewtonLibraryManager.Pages
             //Obtain inventory status
             LendedOut = Handlers.InventoryHandler.GetNrOfBorrowedFromProductId(Int32.Parse(id));
 
+            //Obtain information on when book returns to stock
+            ReturnsToStock = Handlers.InventoryHandler.ReturnsToStock(Int32.Parse(id))?.ToString("MM/dd/yyyy") ?? "-";
         }
 
         

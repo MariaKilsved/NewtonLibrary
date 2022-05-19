@@ -53,6 +53,11 @@
                     <b>Antal utlånade:</b> @Model.LendedOut <br />
 					<b>Antal i lager:</b> @inStock <br />
 				</div>
+                @if(@inStock <= 0) {
+                    <div class="col">
+                        <b>Återkommer i lager:</b> @Model.ReturnsToStock
+                    </div>
+                }
 			</div>
 		</div>
 	</div>
