@@ -64,6 +64,14 @@
     </div>
 
     <div class="mb-3 AltAutoWidth">
+        <label for="authorSelect" class="form-label"><b>Författare</b></label>
+        <div class="d-flex">
+            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" name="authorId"></select>
+            <button class="btn btn-custom ms-1">+</button>
+        </div>
+    </div>
+
+    <div class="mb-3 AltAutoWidth">
         <label for="nrOfCopies" class="form-label"><b>Antal exemplar</b></label>
         <input type="number" asp-for="NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" value="1"/>
     </div>

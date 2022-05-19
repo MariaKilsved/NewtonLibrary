@@ -34,7 +34,10 @@ namespace NewtonLibraryManager.Pages
         public List<SelectListItem> ProdTypes { get; set; }         //Used to make dropdown (select)
 
         [BindProperty]
-        public List<SelectListItem> Categories { get; set; }        ////Used to make dropdown (select)
+        public List<SelectListItem> Categories { get; set; }        //Used to make dropdown (select)
+
+        [BindProperty]
+        public List<SelectListItem> Authors { get; set; }           //Used to make dropdown (select)
 
         [BindProperty]
         public string SelectedCategory { get; set; }                //The chosen option of the dropdown
@@ -42,15 +45,21 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string SelectedProdType { get; set; }                //The chosen option of the dropdown
 
+        [BindProperty]
+        public string SelectedAuthor { get; set; }                   //The chosen option of the dropdown
+
         private List<Models.Type> ProductTypes { get; set; }
 
         private List<Models.Category> ProductCategories { get; set; }
+
+        private List<Models.Author> AuthorList { get; set; }
 
         public void OnGet()
         {
             //Get all product types and categories to display dropdown menus
             ProductTypes = EntityFramework.Read.ReadHandler.GetTypes();
             ProductCategories = EntityFramework.Read.ReadHandler.GetCategories();
+            AuthorList = EntityFramework.Read.ReadHandler.GetAuthors().ToList();
 
             ProdTypes = ProductTypes.Select(a =>
             new SelectListItem
@@ -65,7 +74,14 @@ namespace NewtonLibraryManager.Pages
                 Value = a.Id.ToString(),
                 Text = a.Category1
             }).ToList();
-            
+
+            Authors = AuthorList.OrderBy(author => author.LastName).Select(a =>
+            new SelectListItem
+            {
+                Value = a.Id.ToString(),
+                Text = a.LastName + ", " + a.FirstName
+            }).ToList();
+
         }
         public IActionResult OnPost()
         {
