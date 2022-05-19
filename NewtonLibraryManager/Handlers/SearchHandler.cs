@@ -52,7 +52,6 @@ namespace NewtonLibraryManager.Handlers
                     displayProductModel.Isbn = item.ISBN;
                     displayProductModels.Add(displayProductModel);
                 }
-
                 return displayProductModels;
             }
         }
