@@ -194,3 +194,15 @@ input[type=hidden] {
 .searchBody:nth-child(even) {
     background-color:rgba(0, 0, 0, 0.04);
 }
+
+@media (min-width: 768px) {
+    .setMaxHeight {
+        max-height: 150px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .setMaxHeight {
+        max-height: 170px;
+    }
+}

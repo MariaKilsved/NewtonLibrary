@@ -11,58 +11,53 @@
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
     int inStock = Model.Product.NrOfCopies - Model.LendedOut;
+    string imgSrc = $"/css/img/books_150x225/{Model.Id}.jpg";
     System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 }
 
-<div class="text-start">
-    @if(Model.Id != null)
+@if(@Model.Id != null)
     {
-    <div class="container text-start">
-        <h3 class="mb-4">@Model.Product.Title</h3>
-
-      <div class="row">
-        <div class="col">
-        @if(@Model.AuthorNames != null)
-        {
-        <b>Författare:</b>
-            @for (int i = 0; i < @Model.AuthorNames.Count; i++)
-            {
-                <span class="mb-0 mt-0 pt-0 pb-0">@Model.AuthorNames[i]</span>
-                @if(@Model.AuthorNames[i] != @Model.AuthorNames[^1])
-                {
-                    <br />
-                }
-            }
-        }
-        </div>
-        <div class="col">
-            <b>Kategori:</b> @Model.Product.Category
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <b>Språk:</b> @Model.Product.Language
-        </div>
-        <div class="col">
-            <b>Dewey decimalklassifikation:</b> @Model.Product.DeweyString
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <b>ISBN:</b> @Model.Product.Isbn
-        </div>
-        <div class="col">
-          <b>Totalt antal ex:</b> @Model.Product.NrOfCopies <br />
-          <b>Antal utlånade:</b> @Model.LendedOut <br />
-          <b>Antal i lager:</b> @inStock <br />
-        </div>
-      </div>
-    </div>
-    <div class="container mt-4 text-start beige-bg">@Model.Product.Description</div>
-    }
-</div>
+	<div class="d-flex justify-content-start container">
+		<img src="@imgSrc" alt="@Model.Product.Title" width="150" height="225" />
+		<div class="container">
+            <h3 class="mb-4 col">@Model.Product.Title</h3>
+			<div class="d-flex flex-column flex-wrap justify-content-start setMaxHeight">
+				<div class="col">
+					@if (@Model.AuthorNames != null)
+					{
+						<b>Författare:</b>
+						@for (int i = 0; i < @Model.AuthorNames.Count; i++)
+						{
+							<span class="mb-0 mt-0 pt-0 pb-0">@Model.AuthorNames[i]</span>
+							@if (@Model.AuthorNames[i] != @Model.AuthorNames[^1])
+							{
+								<br />
+							}
+						}
+					}
+				</div>
+                <div class="col">
+					<b>ISBN:</b> @Model.Product.Isbn
+				</div>
+				<div class="col">
+					<b>Kategori:</b> @Model.Product.Category
+				</div>
+                <div class="col">
+					<b>Dewey decimalklassifikation:</b> @Model.Product.DeweyString
+				</div>
+				<div class="col">
+					<b>Språk:</b> @Model.Product.Language
+				</div>
+				<div class="col">
+                    <b>Totalt antal ex:</b> @Model.Product.NrOfCopies <br />
+                    <b>Antal utlånade:</b> @Model.LendedOut <br />
+					<b>Antal i lager:</b> @inStock <br />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-3 text-start beige-bg">@Model.Product.Description</div>
+}
 
 @if(cookieValue != null) {
     <form method=post>
