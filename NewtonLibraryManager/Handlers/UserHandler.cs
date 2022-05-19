@@ -39,6 +39,7 @@ namespace NewtonLibraryManager.Handlers
 			return reservationDetails;
         }
 
+		// also show which product
 		public static List<LendingDetail> GetUserLoans(int userId)
 		{
 			List<LendingDetail> lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();

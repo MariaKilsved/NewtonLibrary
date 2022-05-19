@@ -1,6 +1,4 @@
 ﻿using NewtonLibraryManager.Models;
-using System.Linq;
-using System;
 
 namespace NewtonLibraryManager.Handlers
 {
@@ -9,20 +7,15 @@ namespace NewtonLibraryManager.Handlers
         //Returnerar antal böcker i lagret
 		public static int GetInventoryAmount()
         {
-            int amt = 0;
-			var products = EntityFramework.Read.ReadHandler.GetProducts();
-            foreach (var item in products)
-            {
-                amt = amt + item.NrOfCopies;
-            }
-            return amt;
+            var products = EntityFramework.Read.ReadHandler.GetProducts();
+            return products.Sum(item => item.NrOfCopies);
         }
 
         //Returnerar antal lånade produkter
         public static int GetAmountOfBorrowedProducts()
         {
             var products = EntityFramework.Read.ReadHandler.GetLendingDetails();
-            return products.Count();
+            return products.Count;
         }
 
         //Returnerar utlånade böcker fårn ett visst ID
@@ -48,12 +41,9 @@ namespace NewtonLibraryManager.Handlers
             var list = GetBorrowedFromProductId(productId);
             DateTime? borrowedTo = DateTime.MaxValue;
             foreach (var product in list)
-            {
                 if (product.BorrowedTo < borrowedTo)
-                {
                     borrowedTo = product.BorrowedTo;
-                }
-            }
+            
             return borrowedTo;
         }
     }
