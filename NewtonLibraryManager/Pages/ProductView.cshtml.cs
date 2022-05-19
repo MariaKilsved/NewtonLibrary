@@ -14,6 +14,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty] 
         public int LendedOut { get; set; }
 
+        [BindProperty]
+        public string ReturnsToStock { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -38,15 +41,40 @@ namespace NewtonLibraryManager.Pages
             //Obtain inventory status
             LendedOut = Handlers.InventoryHandler.GetNrOfBorrowedFromProductId(Int32.Parse(id));
 
+            //Obtain information on when book returns to stock
+            ReturnsToStock = Handlers.InventoryHandler.ReturnsToStock(Int32.Parse(id))?.ToString("MM/dd/yyyy") ?? "-";
         }
+
+        
+        public IActionResult OnPostBorrow()
+        {
+            //Compare cookies
+            string cookieValue = Request.Cookies["LibraryCookie"];
+            string cookieValue2 = Request.Cookies["LibraryCookie2"];
+
+            if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
+            {
+                int userId = Int32.Parse(cookieValue2);
+                int prodId = Int32.Parse(Id);
+
+                //Attempt to reserve product
+                if (Handlers.ProductHandler.BorrowProduct(userId, prodId))
+                {
+                    return RedirectToPage("/Index");
+
+                }
+            }
+            return Page();
+        }
+        
 
         public IActionResult OnPostReserve()
         {
             //Compare cookies
-            string cookieValue1 = Request.Cookies["LibraryCookie"];
+            string cookieValue = Request.Cookies["LibraryCookie"];
             string cookieValue2 = Request.Cookies["LibraryCookie2"];
 
-            if (cookieValue1 != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash(cookieValue2) == cookieValue1)
+            if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
             {
                 int userId = Int32.Parse(cookieValue2);
                 int prodId = Int32.Parse(Id);
@@ -57,8 +85,11 @@ namespace NewtonLibraryManager.Pages
                     return RedirectToPage("/Index");
 
                 }
+                Console.WriteLine("User: " + userId);
+                Console.WriteLine("Product: " + prodId);
             }
-            
+			Console.WriteLine("Cookie: " + cookieValue);
+			Console.WriteLine("Cookie 2: " + cookieValue2);
             return Page();
         }
     }
