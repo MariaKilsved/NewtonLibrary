@@ -41,8 +41,19 @@ public static class AccountHandler
 
     public static bool CreateUser(string firstName, string lastName, string email, string password)
     {
+        var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
+        var pass = true;
+
+        //checking if email already exists.
+        foreach (var item in listOfUsers)
+            if (item.EMail == email)
+                pass = false;
         try
         {
+            //pass is false if email already detected in database.
+            if (!pass)
+                throw new Exception("Email already in use.");
+                
             EntityFramework.Create.CreateHandler.CreateUser(firstName, lastName, email, password, false);
             return true;
         }
@@ -54,8 +65,19 @@ public static class AccountHandler
     }
     public static bool CreateAdmin(string firstName, string lastName, string email, string password)
     {
+        var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
+        var pass = true;
+
+        //checking if email already exists.
+        foreach (var item in listOfUsers)
+            if (item.EMail == email)
+                pass = false;
         try
         {
+            //pass is false if email already detected in database.
+            if (!pass)
+                throw new Exception("Email already in use.");
+            
             EntityFramework.Create.CreateHandler.CreateUser(firstName, lastName, email, password, true);
             return true;
         }

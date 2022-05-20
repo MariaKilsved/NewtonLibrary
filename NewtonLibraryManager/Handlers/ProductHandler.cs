@@ -104,6 +104,8 @@ public class ProductHandler
             return queryable.ToList();
         }
     }
+    
+    //public static void EditProduct()
 
     public static int GetProductIdFromIsbn(string isbn)
     {
