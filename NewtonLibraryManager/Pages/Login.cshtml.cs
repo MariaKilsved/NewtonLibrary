@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NewtonLibraryManager.Handlers;
 using System.ComponentModel.DataAnnotations;
+using NewtonLibraryManager.Models;
 
 namespace NewtonLibraryManager.Pages
 {
