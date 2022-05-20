@@ -13,7 +13,7 @@ namespace NewtonLibraryManager.Handlers
 			return admins;
         }
 
-		public static User GetAdmins(int userId)
+		public static User GetAdmin(int userId)
 		{
 			var admins = GetAdmins();
 			var admin = admins.FirstOrDefault(x => x.Id == userId);
@@ -26,7 +26,7 @@ namespace NewtonLibraryManager.Handlers
 			return user;
 		}
 
-		public static User GetUsers(int userId)
+		public static User GetUser(int userId)
 		{
 			User user = EntityFramework.Read.ReadHandler.GetUsers(userId);
 			return user;

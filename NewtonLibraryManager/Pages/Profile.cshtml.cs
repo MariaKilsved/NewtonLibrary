@@ -18,7 +18,7 @@ namespace NewtonLibraryManager.Pages
             Id = id;
 
             //Needs to be User1 instead of User to avoid hiding PageModel.User
-            User1 = Handlers.UserHandler.GetUsers(Int32.Parse(id));
+            User1 = Handlers.UserHandler.GetUser(Int32.Parse(id));
         }
 
         public IActionResult OnPostDelete(int id)
