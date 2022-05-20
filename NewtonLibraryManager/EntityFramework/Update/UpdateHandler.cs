@@ -5,14 +5,14 @@ namespace NewtonLibraryManager.EntityFramework.Update
 {
     public static class UpdateHandler
     {
-        public static int UpdateUser(int userId, User updatedUser)
+        public static void UpdateUser(int userId, User updatedUser)
         {
             using (NewtonLibraryContext db = new NewtonLibraryContext())
             {
                 try
                 {
                     //Get user that is to be updated
-                    User user = Read.ReadHandler.GetUsers(userId);
+                    var user = Read.ReadHandler.GetUsers(userId);
 
                     //Update the retrieved user from DB and replace it with
                     //edited user from form.
@@ -21,20 +21,12 @@ namespace NewtonLibraryManager.EntityFramework.Update
                     user.EMail = updatedUser.EMail;
                     user.IsAdmin = updatedUser.IsAdmin;
                     user.Password = updatedUser.Password;
+                    
+                    db.SaveChanges();
                 }
                 catch (Exception)
                 {
                     throw new Exception("Could not set object properties");
-                }
-
-                //Save changes, return number of rows changed or throw exception
-                try
-                {
-                    return db.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw new Exception("Could not update database");
                 }
             }
         }
