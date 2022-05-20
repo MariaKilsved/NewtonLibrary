@@ -26,7 +26,13 @@ namespace NewtonLibraryManager.Pages
 
             //Needs to be User1 instead of User to avoid hiding PageModel.User
             User1 = Handlers.UserHandler.GetUser(Int32.Parse(id));
-            EditedUser = new Models.User() { Id = User1.Id, EMail = User1.EMail, FirstName = User1.FirstName, LastName = User1.LastName, IsAdmin = User1.IsAdmin, Password = User1.Password };
+            EditedUser = new Models.User() { 
+                Id = User1.Id, 
+                EMail = User1.EMail, 
+                FirstName = User1.FirstName, 
+                LastName = User1.LastName, 
+                IsAdmin = User1.IsAdmin, 
+                Password = User1.Password };
         }
 
         public IActionResult OnPostEdit()
@@ -56,7 +62,7 @@ namespace NewtonLibraryManager.Pages
                 EditedUser.IsAdmin = false;
             }
             
-            EntityFramework.Update.UpdateHandler.UpdateUser(EditedUser.Id, EditedUser);
+            EntityFramework.Update.UpdateHandler.UpdateUser(EditedUser);
             return RedirectToPage("/Index");
         }
 
