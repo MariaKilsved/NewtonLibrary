@@ -21,6 +21,13 @@ namespace NewtonLibraryManager.EntityFramework.Update
                     user.EMail = updatedUser.EMail;
                     user.IsAdmin = updatedUser.IsAdmin;
                     user.Password = updatedUser.Password;
+
+                    Console.WriteLine("Id: " + userId);
+                    Console.WriteLine("updatedUser.FirstName: " + updatedUser.FirstName);
+                    Console.WriteLine("updatedUser.LastName: " + updatedUser.LastName);
+                    Console.WriteLine("updatedUser.EMail: " + updatedUser.EMail);
+                    Console.WriteLine("updatedUser.IsAdmin: " + updatedUser.IsAdmin);
+                    Console.WriteLine("updatedUser.Password: " + updatedUser.Password);
                     
                     db.SaveChanges();
                 }
