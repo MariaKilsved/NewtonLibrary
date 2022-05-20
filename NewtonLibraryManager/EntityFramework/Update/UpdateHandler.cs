@@ -13,6 +13,13 @@ namespace NewtonLibraryManager.EntityFramework.Update
                 {
                     //Get user that is to be updated
                     var user = Read.ReadHandler.GetUsers(userId);
+                    Console.WriteLine("User from GerUsers:");
+                    Console.WriteLine(user.Id);
+                    Console.WriteLine(user.Password);
+                    Console.WriteLine(user.EMail);
+                    Console.WriteLine(user.FirstName);
+                    Console.WriteLine(user.LastName);
+                    Console.WriteLine(user.IsAdmin);
 
                     //Update the retrieved user from DB and replace it with
                     //edited user from form.
