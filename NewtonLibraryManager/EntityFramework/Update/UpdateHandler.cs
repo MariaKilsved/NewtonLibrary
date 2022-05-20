@@ -24,6 +24,15 @@ namespace NewtonLibraryManager.EntityFramework.Update
                 }
                 catch (Exception)
                 {
+                    /*
+                    Console.WriteLine(userId);
+                    Console.WriteLine(updatedUser.FirstName);
+                    Console.WriteLine(updatedUser.LastName);
+                    Console.WriteLine(updatedUser.EMail);
+                    Console.WriteLine(updatedUser.IsAdmin);
+                    Console.WriteLine(updatedUser.Password);
+                    */
+
                     throw new Exception("Could not set object properties");
                 }
 
@@ -34,6 +43,15 @@ namespace NewtonLibraryManager.EntityFramework.Update
                 }
                 catch (Exception)
                 {
+                    /*
+                    Console.WriteLine("Database failure");
+                    Console.WriteLine(userId);
+                    Console.WriteLine(updatedUser.FirstName);
+                    Console.WriteLine(updatedUser.LastName);
+                    Console.WriteLine(updatedUser.EMail);
+                    Console.WriteLine(updatedUser.IsAdmin);
+                    Console.WriteLine(updatedUser.Password);
+                    */
                     throw new Exception("Could not update database");
                 }
             }

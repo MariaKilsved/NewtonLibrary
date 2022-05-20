@@ -22,34 +22,68 @@
 }
     @if(Model.User1 != null && Model.User1.Id > 0 && (cookieValue == cookieComparerId || cookieValue1 == cookieComparerTrue))
     {
-    <div class="text-start container">
+    <div class="text-center container">
+        <form method="post" asp-page-handler="edit" class="d-inline text-start">
             <h3 class="mb-4">@Model.ViewData["Title"]</h3>
             <div class="row">
-                <div class="col"><b>Förnamn</b></div>
-                <div class="col">@Model.User1.FirstName</div>
+                <div class="col-2"><b>Förnamn</b></div>
+                <div class="col col-sm-2">@Model.User1.FirstName</div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                      <input type="text" asp-for="EditedUser.FirstName" class="form-control" id="changeFirstName" placeholder="Nytt förnamn" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30">
+                      <label for="changeFirstName">Nytt efternamn</label>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                <div class="col"><b>Efternamn</b></div>
-                <div class="col">@Model.User1.LastName</div>
+                <div class="col-2"><b>Efternamn</b></div>
+                <div class="col col-sm-2">@Model.User1.LastName</div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                      <input type="text" asp-for="EditedUser.LastName" class="form-control" id="changeLastName" placeholder="Nytt efternamn" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30">
+                      <label for="changeLastName">Nytt efternamn</label>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                <div class="col"><b>E-mail</b></div>
-                <div class="col">@Model.User1.EMail</div>
+                <div class="col-2"><b>E-mail</b></div>
+                <div class="col col-sm-2">@Model.User1.EMail</div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                      <input type="email" asp-for="EditedUser.EMail" class="form-control" id="changeEmail" placeholder="name@example.com" minlength="8" data-val-length-min="8">
+                      <label for="changeEmail">Ny email</label>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <div class="col"><b>Lösenord</b></div>
+            <div class="row mb-4">
+                <div class="col-2"><b>Lösenord</b></div>
             @if(@Model.User1.Password != null)
             {
-                <div class="col">Dolt</div>
+                <div class="col col-sm-2">Dolt</div>
             }
             else
             {
                 <div class="col">Saknas</div>
             }
+            <div class="col">
+                <div class="form-floating">
+                    <input type="password" asp-for="EditedUser.Password" class="form-control" id="changePassword" placeholder="Lösenord" required />
+                    <label for="changePassword">Lösenord</label>
+                    @if (!String.IsNullOrWhiteSpace(@Model.PasswordError))
+                    {
+                        <div id="passwordHelp" class="form-text"><i>@Model.PasswordError</i></div>
+                    }
+                </div>
+            </div>
         </div>
+        @if(cookieValue == cookieComparerId || cookieValue1 == cookieComparerTrue) {
+            <input type="hidden" value="@Model.User1.Id" asp-for="EditedUser.Id"/>
+            <button type="submit" class="btn btn-custom">Spara ändringar</button>
+        }
+        </form>
         @if(!(cookieValue == cookieComparerId && cookieValue1 == cookieComparerTrue))
         {
-            <form class="text-center mt-4" method="post" asp-page-handler="delete" >
+            <form class="text-center mt-4 d-inline" method="post" asp-page-handler="delete" >
                 <input type="hidden" value="@Model.User1.Id" />
                 <button type="submit" class="btn btn-custom">Ta bort konto</button>
             </form>

@@ -206,3 +206,8 @@ input[type=hidden] {
         max-height: 170px;
     }
 }
+
+.form-floating label {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
