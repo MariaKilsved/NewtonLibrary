@@ -1,7 +1,7 @@
 ﻿@page
-@model NewtonLibraryManager.Pages.UserManagementModel
+@model NewtonLibraryManager.Pages.ContactModel
 @{
-    ViewData["Title"] = "Användare";
+    ViewData["Title"] = "Kontakt";
     string cookieValue = null;
     string cookieValue1 = null;
     string cookieValue2 = null;
@@ -10,62 +10,51 @@
     cookieValue2 = Request.Cookies["LibraryCookie2"];
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
+    string cookieComparerId = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2);
 }
 
-<div class="text-center">
-@if (cookieValue1 == cookieComparerTrue)
+@if (cookieValue != null && cookieValue == cookieComparerId)
 {
-    <h1 class="display-4">Administrera användare</h1>
+    <div class="text-start">
+        <h1>Kontakt</h1>
 
-        <div class="container mt-3 searchResults">
-          <div class="row searchHeader">
-            <div class="col-1">
-                Admin
-            </div>
-            <div class="col-3">
-              Förnamn
-            </div>
-            <div class="col-3">
-              Efternamn
-            </div>
-            <div class="col-5">
-              E-mail
-            </div>
-          </div>
-                @if (Model.Users != null)
+        <address>
+            115 41 Stockholm <br />
+            Malmvägen 1 <br />
+            <a class="link-custom" href="tel:08-410 456 00">08-410 456 00</a>
+        </address>
+
+        <div class="text-center">
+            <div class="list-group searchResults p-0">
+                @foreach(var admin in Model.Admins)
                 {
-                    @foreach (var user in Model.Users)
-                    {
-                        <a class="row searchBody" asp-page="/Profile" asp-route-id="@user.Id.ToString()">
-                            <div class="col-1">
-                            @if(@user.IsAdmin == true)
-                            {
-                                <span>Ja</span>
-                            }
-                            else
-                            {
-                                <span>Nej</span>
-                            }
+                    string mail = "mailto:" + @admin.EMail;
+                    string name = @admin.FirstName + " " + @admin.LastName;
+                    <a href="@mail" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@name</h5>
                         </div>
-                            <div class="col-3">
-                                @user.FirstName
-                            </div>
-                            <div class="col-3">
-                                @user.LastName
-                            </div>
-                            <div class="col-5">
-                                @user.EMail
-                            </div>
-                        </a>
-                    }
+                        <p class="mb-1">@admin.EMail</p>
+                        @if(admin.Id == 1)
+                        {
+                            <small>Bibliotekschef</small>
+                        }
+                        else
+                        {
+                            <small>Bibliotekarie</small>
+                        }
+                    </a>
                 }
+            </div>
         </div>
+
+    </div>
 }
 else
 {
-    <p>Sidan är ej tillgänglig.</p>
+    <p>Logga in för att se sidan.</p>
 }
-</div>
+
 
 @section Navigation {
         <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light bg-white border-bottom box-shadow mb-3">
@@ -82,7 +71,7 @@ else
             <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
+                        <a class="nav-link text-dark active" aria-current="page" asp-area="" asp-page="/Index" >Sök</a>
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
@@ -94,7 +83,7 @@ else
                     }
                     @if (cookieValue1 == cookieComparerTrue && cookieValue == cookieComparer1) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" aria-current="page" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera användare</a>

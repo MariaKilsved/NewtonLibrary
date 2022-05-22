@@ -211,3 +211,11 @@ input[type=hidden] {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.link-custom {
+    color: #004d6f;
+}
+
+.link-custom:hover {
+    color: #003349;
+}
