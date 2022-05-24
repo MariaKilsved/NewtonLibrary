@@ -12,6 +12,13 @@ public static class AccountHandler
     public static int CurrentIdLoggedIn => _currentIdLoggedIn;
     public static bool AdminLoggedIn => _adminLoggedIn;
 
+    /// <summary>
+    /// Default login method. Checks if entered e-mail and password exist in the database. If they do, the method returns true and
+    /// sets the AccountHandler variables to true. Also checks if the current user is an admin, if so IsAdmin is set to true.
+    /// </summary>
+    /// <param name="email">User email</param>
+    /// <param name="password">User password</param>
+    /// <returns></returns>
     public static bool LogIn(string email, string password)
     {
         var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
@@ -27,6 +34,9 @@ public static class AccountHandler
         return false;
     }
 
+    /// <summary>
+    /// Method to set the AccountHandler variables back to false when the user is logged out.
+    /// </summary>
     public static void LogOut()
     {
         if (LoggedIn || AdminLoggedIn)
@@ -39,6 +49,17 @@ public static class AccountHandler
             Console.WriteLine("You're not logged in.");
     }
 
+    /// <summary>
+    /// First checks if the entered email is not already in use in the database. If not, the method creates a new
+    /// user with the in-parameters and adds it to the database. Throws exception if anything goes wrong. Returns true
+    /// if everything is successful.
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static bool CreateUser(string firstName, string lastName, string email, string password)
     {
         var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
@@ -63,6 +84,17 @@ public static class AccountHandler
             return false;
         }
     }
+    /// <summary>
+    /// First checks if the entered email is not already in use in the database. If not, the method creates a new
+    /// admin with the in-parameters and adds it to the database. Throws exception if anything goes wrong. Returns true
+    /// if everything is successful.
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static bool CreateAdmin(string firstName, string lastName, string email, string password)
     {
         var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
@@ -88,6 +120,13 @@ public static class AccountHandler
         }
     }
 
+    /// <summary>
+    /// Deletes a user from the database if the in-parameter ID matches a user ID in the database. Returns true if
+    /// successful. Returns false otherwise, or if the user ID is 1, which is the main admin of the system.
+    /// (Can't delete the boss!)
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     public static bool DeleteUser(int userId)
     {
         //Can't delete boss
@@ -106,6 +145,16 @@ public static class AccountHandler
         }
     }
 
+    /// <summary>
+    /// Uses regex to validate if the password is strong enough. Returns true if the following requirements are met:
+    /// - At least one lowercase character.
+    /// - At least one uppercase character.
+    /// - At least eight characters.
+    /// - At least one special character or digit.
+    /// </summary>
+    /// <param name="password"></param>
+    /// <param name="errorMessage"></param>
+    /// <returns></returns>
     public static bool ValidatePassword(string password, out string errorMessage)
     {
         errorMessage = "";
@@ -146,6 +195,10 @@ public static class AccountHandler
         return true;
     }
 
+    /// <summary>
+    /// Method for hashing the password
+    /// </summary>
+    /// <param name="pass"></param>
     public static void PasswordHash(string pass)
     {
         byte[] salt = new byte[32];

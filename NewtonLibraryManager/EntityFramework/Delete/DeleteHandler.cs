@@ -2,9 +2,11 @@ using NewtonLibraryManager.Models;
 
 namespace NewtonLibraryManager.EntityFramework.Delete
 {
+    /// <summary>
+    /// Delete handler for Entity Framework
+    /// </summary>
     public static class DeleteHandler
     {
-
         public static bool DeleteAuthor(int authorId)
         {
             var listOfAuthors = Read.ReadHandler.GetAuthors();

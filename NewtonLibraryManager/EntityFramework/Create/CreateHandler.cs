@@ -1,8 +1,9 @@
 using NewtonLibraryManager.Models;
 
 namespace NewtonLibraryManager.EntityFramework.Create;
-
-
+/// <summary>
+/// Create handler for Entity Framework
+/// </summary>
 public static class CreateHandler
 {
     public static bool CreateProduct(string title, int langId, int catId, 

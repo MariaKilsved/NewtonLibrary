@@ -6,6 +6,10 @@ namespace NewtonLibraryManager.Handlers
 {
 	public static class UserHandler
 	{
+		/// <summary>
+		///	Returns a list of admin users from the database.
+		/// </summary>
+		/// <returns></returns>
 		public static List<User> GetAdmins()
         {
 			var list = EntityFramework.Read.ReadHandler.GetUsers();
@@ -13,6 +17,11 @@ namespace NewtonLibraryManager.Handlers
 			return admins;
         }
 
+		/// <summary>
+		/// Returns a specific admin from the database.
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
 		public static User GetAdmin(int userId)
 		{
 			var admins = GetAdmins();
@@ -20,18 +29,32 @@ namespace NewtonLibraryManager.Handlers
 			return admin;
 		}
 
+		/// <summary>
+		/// Returns a list of all users from the database.
+		/// </summary>
+		/// <returns></returns>
 		public static List<User> GetUsers()
 		{
 			List<User> user = EntityFramework.Read.ReadHandler.GetUsers();
 			return user;
 		}
 
+		/// <summary>
+		/// Returns a specific user from the database, based on user ID.
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
 		public static User GetUser(int userId)
 		{
 			User user = EntityFramework.Read.ReadHandler.GetUsers(userId);
 			return user;
 		}
 
+		/// <summary>
+		/// Returns a list of reservation details from the database. Based on user ID.
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
 		public static List<ReservationDetail> GetUserReservations(int userId)
         {
 			List<ReservationDetail> reservationDetails = EntityFramework.Read.ReadHandler.GetReservationDetails();
@@ -39,7 +62,12 @@ namespace NewtonLibraryManager.Handlers
 			return reservationDetails;
         }
 
-		// also show which product
+		/// <summary>
+		/// Returns a list of DisplayLoanedProductModel classes. These classes represent a loaned product based on
+		/// user ID. This method is used to display loaned products from a user. 
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
 		public static List<DisplayLoanedProductModel> GetUserLoans(int userId)
 		{
 			List<DisplayLoanedProductModel> loanedProducts = new();

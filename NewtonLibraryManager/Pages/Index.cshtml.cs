@@ -54,7 +54,7 @@ public class IndexModel : PageModel
         Search = Search?.Replace("-", "");
 
 
-        SearchResults = Handlers.SearchHandler.ProductSearch(Search);
+        SearchResults = SearchHandler.ProductSearch(Search);
 
         SearchCompleted = true;
     }
