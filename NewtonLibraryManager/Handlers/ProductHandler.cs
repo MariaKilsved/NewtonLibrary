@@ -73,6 +73,36 @@ public class ProductHandler
         }
     }
 
+    public static List<DisplayProductModel> ListAllProducts()
+    {
+        using (var db = new NewtonLibraryContext())
+        {
+            var queryable = from product in db.Products
+                            join ad in db.AuthorDetails on product.Id equals ad.ProductId
+                            join language in db.Languages on product.LanguageId equals language.Id
+                            join category in db.Categories on product.CategoryId equals category.Id
+                            join author in db.Authors on ad.AuthorId equals author.Id
+                            join type in db.Types on product.ProductType equals type.Id
+                            select new DisplayProductModel
+                            {
+                                Id = product.Id,
+                                Title = product.Title,
+                                FirstName = author.FirstName,
+                                LastName = author.LastName,
+                                Language = language.Language1,
+                                Category = category.Category1,
+                                NrOfCopies = product.NrOfCopies,
+                                Dewey = product.Dewey,
+                                Description = product.Description,
+                                Isbn = product.Isbn,
+                                ProductType = type.Type1
+                            };
+            queryable = queryable.OrderBy(p => p.Category).ThenBy(p => p.Language).ThenBy(p => p.LastName).ThenBy(p => p.FirstName);
+
+            return queryable.ToList();
+        }
+    }
+
     public static List<DisplayProductModel> ShowProduct(string urlId)
     {
         using (var db = new NewtonLibraryContext())
