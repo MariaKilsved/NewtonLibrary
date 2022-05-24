@@ -18,6 +18,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public List<Models.DisplayLoanedProductModel> UserLoans { get; set; } 
 
+        [BindProperty]
+        public List<Models.DisplayReservedProductModel> UserReservations { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -31,8 +34,10 @@ namespace NewtonLibraryManager.Pages
             //Uses the user Id determined in the Url to set everything
             Id = id;
 
+            int IdAsInt = Int32.Parse(id);
+
             //Needs to be User1 instead of User to avoid hiding PageModel.User
-            User1 = Handlers.UserHandler.GetUser(Int32.Parse(id));
+            User1 = Handlers.UserHandler.GetUser(IdAsInt);
 
             //Deep copy in order to keep frontend and user edits separate
             EditedUser = new Models.User() { 
@@ -44,7 +49,10 @@ namespace NewtonLibraryManager.Pages
                 Password = User1.Password };
 
             //Obtain user loans
-            UserLoans = Handlers.UserHandler.GetUserLoans(Int32.Parse(id));
+            UserLoans = Handlers.UserHandler.GetUserLoans(IdAsInt);
+
+            //Obtain user reservations
+            UserReservations = Handlers.UserHandler.GetUserReservations(IdAsInt);
 
         }
 

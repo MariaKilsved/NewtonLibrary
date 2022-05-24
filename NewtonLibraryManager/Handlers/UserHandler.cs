@@ -51,15 +51,31 @@ namespace NewtonLibraryManager.Handlers
 		}
 
 		/// <summary>
-		/// Returns a list of reservation details from the database. Based on user ID.
+		/// Returns a list of reservations from the database. Based on user ID.
 		/// </summary>
 		/// <param name="userId"></param>
-		/// <returns></returns>
-		public static List<ReservationDetail> GetUserReservations(int userId)
+		/// <returns>List of DisplayReservedProductModel with the reservations.</returns>
+		public static List<DisplayReservedProductModel> GetUserReservations(int userId)
         {
-			List<ReservationDetail> reservationDetails = EntityFramework.Read.ReadHandler.GetReservationDetails();
-			reservationDetails = reservationDetails.Where(x => x.UserId == userId).ToList();
-			return reservationDetails;
+			List<DisplayReservedProductModel> reservedProducts = new();
+
+			using (var db = new NewtonLibraryContext())
+            {
+				var queryable = from rd in db.ReservationDetails
+								join usr in db.Users on rd.UserId equals usr.Id
+								join prdct in db.Products on rd.ProductId equals prdct.Id
+								where usr.Id == userId
+								select new DisplayReservedProductModel
+								{
+									ProductId = prdct.Id,
+									Title = prdct.Title,
+									Isbn = prdct.Isbn,
+									ReservationDate = rd.ReservationDate
+								};
+
+				reservedProducts = queryable.ToList();
+			}
+			return reservedProducts;
         }
 
 		/// <summary>

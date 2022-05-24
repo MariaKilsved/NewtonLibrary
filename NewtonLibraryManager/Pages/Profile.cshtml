@@ -91,7 +91,7 @@
     </div>
     @if(@Model.UserLoans.Count > 0)
     {
-        <h3 class="mt-4">Lånade böcker</h3>
+        <h3 class="mt-4">Lånade produkter</h3>
         <form asp-page-handler="view" method="post">
             <div class="container text-center mt-3 ms-0 searchResults">
               <div class="row searchHeader">
@@ -123,6 +123,40 @@
                     </div>
                     <div class="col">
                         @loan.ToAsString
+                    </div>
+                </a>
+                }
+            </div>
+        </form>
+    }
+        @if(@Model.UserReservations.Count > 0)
+    {
+        <h3 class="mt-4">Reserverade produkter</h3>
+        <form asp-page-handler="ViewReservation" method="post">
+            <div class="container text-center mt-3 ms-0 searchResults">
+              <div class="row searchHeader">
+                <div class="col">
+                  ISBN
+                </div>
+                <div class="col">
+                  Titel
+                </div>
+                <div class="col">
+                  Startdatum
+                </div>
+
+              </div>
+              @foreach (var reservation in Model.UserReservations)
+                {
+                <a asp-page="/ProductView" asp-route-id="@reservation.ProductId" class="row searchBody">
+                    <div class="col">
+                      @reservation.Isbn<input type="hidden" name="id" value="@reservation.ProductId.ToString()" />
+                    </div>
+                    <div class="col">
+                      @reservation.Title
+                    </div>
+                    <div class="col">
+                        @reservation.ReservationDateAsString
                     </div>
                 </a>
                 }
