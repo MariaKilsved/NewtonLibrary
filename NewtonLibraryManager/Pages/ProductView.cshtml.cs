@@ -17,6 +17,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string ReturnsToStock { get; set; }
 
+        [BindProperty]
+        public bool HasLendingDetail { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -47,9 +50,24 @@ namespace NewtonLibraryManager.Pages
 
             //Obtain information on when book returns to stock
             ReturnsToStock = Handlers.InventoryHandler.ReturnsToStock(Int32.Parse(id))?.ToString("MM/dd/yyyy") ?? "-";
+
+            //Check cookies
+            var cookieValue = Request.Cookies["LibraryCookie"];
+            var cookieValue2 = Request.Cookies["LibraryCookie2"];
+            var cookieComparer = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2);
+
+            if (cookieValue != null && cookieValue2 != null && cookieValue == cookieComparer)
+            {
+                //Set HasLendingDetail to true only if a matching LendingDetail exists
+                HasLendingDetail = Handlers.ProductHandler.HasLendingDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+            }
+            else
+            {
+                HasLendingDetail = false;
+            }
         }
 
-        
+
         /// <summary>
         /// When the submit button to borrow is pressed
         /// </summary>
@@ -104,6 +122,54 @@ namespace NewtonLibraryManager.Pages
             }
 			//Console.WriteLine("Cookie: " + cookieValue);
 			//Console.WriteLine("Cookie 2: " + cookieValue2);
+            return Page();
+        }
+
+        /// <summary>
+        /// When the submit button to return a product is pressed
+        /// </summary>
+        /// <returns>Redirect to index or reload page.</returns>
+        public IActionResult OnPostReturn()
+        {
+            //Compare cookies
+            string cookieValue = Request.Cookies["LibraryCookie"];
+            string cookieValue2 = Request.Cookies["LibraryCookie2"];
+            string cookieComparer = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2);
+
+            //Validation using cookies. Cookies are saved as strings and must be converted to int.
+            if (cookieValue != null && cookieValue2 != null && cookieComparer == cookieValue)
+            {
+                int userId = Int32.Parse(cookieValue2);
+                int prodId = Int32.Parse(Id);
+
+                //Attempt to return product
+                if (Handlers.ProductHandler.ReturnProduct(prodId, userId))
+                {
+                    return RedirectToPage("/Index");
+                }
+            }
+            return Page();
+        }
+
+        /// <summary>
+        /// When the submit button to delete a product is pressed. Only available to admins (librarians).
+        /// </summary>
+        /// <returns>Redirect to index or reload page.</returns>
+        public IActionResult OnDelete()
+        {
+            //Compare cookies
+            string cookieValue = Request.Cookies["LibraryCookie1"];
+            string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
+
+            //Validation using cookies. Cookies are saved as strings and must be converted to int.
+            if (cookieValue != null && cookieComparerTrue == cookieValue)
+            {
+                //Attempt to delete product
+                if (Handlers.ProductHandler.DeleteProduct(Int32.Parse(Id)))
+                {
+                    return RedirectToPage("/Index");
+                }
+            }
             return Page();
         }
     }

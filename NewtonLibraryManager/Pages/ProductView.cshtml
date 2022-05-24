@@ -75,6 +75,14 @@
             {
                 <button type="submit" value="reserve" asp-page-handler="Reserve" class="btn btn-custom">Reservera</button>
             }
+            @if(Model.HasLendingDetail)
+            {
+                <button type="submit" value="return" asp-page-handler="Return" class="btn btn-custom ms-1">Lämna tillbaka</button>
+            }
+            @if(cookieValue1 == cookieComparerTrue)
+            {
+                <button type="submit" value="delete" asp-page-handler="delete" class="btn btn-custom ms-1">Ta bort produkt</button>
+            }
         </div>
     </form>
 }

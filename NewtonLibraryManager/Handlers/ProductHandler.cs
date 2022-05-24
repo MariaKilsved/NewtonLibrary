@@ -4,20 +4,22 @@ namespace NewtonLibraryManager.Handlers;
 
 public class ProductHandler
 {
+
     /// <summary>
     /// Should be called when a user returns a product. It sets the return date in the lending details database.
-    /// Returns true if everything went ok. False with an error otherwise.
     /// </summary>
-    /// <param name="prodId"></param>
-    /// <returns></returns>
-    public static bool ReturnProduct(int prodId)
+    /// <param name="prodId">Product Id</param>
+    /// <param name="userId">User Id, optional.</param>
+    /// <returns>Returns true if everything went ok. False with an error otherwise.</returns>
+    public static bool ReturnProduct(int prodId, int userId = 0)
     {
+        userId = (userId == 0) ? AccountHandler.CurrentIdLoggedIn : userId;
         var listOfDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
 
         using (NewtonLibraryContext db = new())
         {
             foreach (var item in listOfDetails)
-                if (item.ProductId == prodId && item.UserId == AccountHandler.CurrentIdLoggedIn)
+                if (item.ProductId == prodId && item.UserId == userId)
                 {
                     item.ReturnDate = DateTime.Now;
                     db.SaveChanges();
@@ -173,7 +175,7 @@ public class ProductHandler
     /// Returns a product ID based off of a product ISBN. Checks for nulls before returning.
     /// </summary>
     /// <param name="isbn"></param>
-    /// <returns></returns>
+    /// <returns>Id of the product. Returns 0 if the product doesn't exist.</returns>
     public static int GetProductIdFromIsbn(string isbn)
     {
         var list = EntityFramework.Read.ReadHandler.GetProducts()
@@ -185,6 +187,21 @@ public class ProductHandler
 
         Console.WriteLine("Did not find that isbn in the database.");
         return 0;
+    }
+
+    /// <summary>
+    /// Check if a LendingDetail exist between a specific user and a specific product
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="productId"></param>
+    /// <returns>True if a LendingDetail exists, False if not.</returns>
+    public static bool HasLendingDetail(int userId, int productId)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetLendingDetails()
+            .Where(ld => (ld.UserId == userId && ld.ProductId == productId))
+            .ToList();
+
+        return (list.Count > 0);
     }
 
     /// <summary>
