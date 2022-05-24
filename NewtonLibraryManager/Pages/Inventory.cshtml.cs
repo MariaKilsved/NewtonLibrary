@@ -15,12 +15,18 @@ namespace NewtonLibraryManager.Pages
         public int AmountOfBorrowedProducts { get; set; }
 
 
+        /// <summary>
+        /// When page is loaded
+        /// </summary>
         public void OnGet()
         {
+            //Get all products
             Products = Handlers.ProductHandler.ListAllProducts();
 
+            //Get sum of all products
             InventoryAmount = Handlers.InventoryHandler.GetInventoryAmount();
 
+            //Get sum of borrowed products
             AmountOfBorrowedProducts = Handlers.InventoryHandler.GetAmountOfBorrowedProducts();
         }
     }

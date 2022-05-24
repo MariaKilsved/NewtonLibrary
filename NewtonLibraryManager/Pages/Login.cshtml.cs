@@ -15,28 +15,36 @@ namespace NewtonLibraryManager.Pages
         public string Password { get; set; }   //Should be hashed before put in User
 
 
+        /// <summary>
+        /// When page is loaded
+        /// </summary>
         public void OnGet()
         {
             //User = new Models.User { IsAdmin = false };
         }
 
-
-        //Detta kommer k�ras n�r man trycker p� submit, d.v.s. anv�ndaren har skrivit in saker
+        /// <summary>
+        /// When a new user is submitted
+        /// </summary>
+        /// <returns>Redirect to a the same page</returns>
         public IActionResult OnPost()
         {
             var hashedPass = Models.SecurePasswordHasher.Hash(Password);
             //Console.WriteLine(hashedPass);
-            //Om det �r n�got fel p� det som skrivits in laddas sidan bara om
+            //If any frontend field is incorrect, the page will reload
             if (ModelState.IsValid == false)
                 return Page();
 
+            //Attempt to log in
             if (AccountHandler.LogIn(EMail, hashedPass))
             {
+                //Set cookie expiration time
                 var cookieOptions = new CookieOptions
                 {
                     Expires = DateTime.Now.AddHours(1)
                 };
 
+                //Append cookies
                 Response.Cookies.Append("LibraryCookie", Models.SecurePasswordHasher.Hash($"NewtonLibraryManager_{AccountHandler.CurrentIdLoggedIn}"), cookieOptions);
                 Response.Cookies.Append("LibraryCookie1", Models.SecurePasswordHasher.Hash($"NewtonLibraryManager_{AccountHandler.AdminLoggedIn}"), cookieOptions);
                 Response.Cookies.Append("LibraryCookie2", $"{AccountHandler.CurrentIdLoggedIn}", cookieOptions);
@@ -44,6 +52,7 @@ namespace NewtonLibraryManager.Pages
                 return RedirectToPage("/Index");
             }
 
+            //Reload page if login failed 
             return Page();
         }
 

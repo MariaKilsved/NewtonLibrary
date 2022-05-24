@@ -31,31 +31,27 @@ public class IndexModel : PageModel
     [BindProperty]
     public bool SearchCompleted { get; set; }
 
+/// <summary>
+/// When page is loaded
+/// </summary>
     public void OnGet()
     {
+        //Set boolean for search not being completed yet
         SearchCompleted = false;
     }
 
-    /*
-    public IActionResult OnPostView(int id)
-    {
-        if (ModelState.IsValid == false)
-            return Page();
-        else
-        {
-            return RedirectToPage("/ProductView?id=" + id.ToString());
-        }
-
-    }
-    */
-
+    /// <summary>
+    /// On submit to search
+    /// </summary>
     public void OnPostSearch()
     {
+        //Remove all hyphens
         Search = Search?.Replace("-", "");
 
-
+        //Retrieve search results
         SearchResults = SearchHandler.ProductSearch(Search);
 
+        //Set boolean for completed search
         SearchCompleted = true;
     }
 
