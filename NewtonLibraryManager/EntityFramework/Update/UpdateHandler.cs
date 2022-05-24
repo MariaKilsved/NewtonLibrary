@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NewtonLibraryManager.EntityFramework.Update
 {
+    /// <summary>
+    /// Update methods with Entity Framework
+    /// </summary>
     public static class UpdateHandler
     {
         public static int UpdateUser(User updatedUser)
