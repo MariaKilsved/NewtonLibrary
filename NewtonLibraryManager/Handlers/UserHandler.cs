@@ -80,6 +80,7 @@ namespace NewtonLibraryManager.Handlers
 					where usr.Id == userId
 					select new
 					{
+						ID = prdct.Id,
 						TITLE = prdct.Title,
 						ISBN = prdct.Isbn,
 						FROM = ld.BorrowedFrom,
@@ -89,6 +90,7 @@ namespace NewtonLibraryManager.Handlers
 				foreach (var item in queryable)
 				{
 					DisplayLoanedProductModel lpdm = new();
+					lpdm.Id = item.ID;
 					lpdm.Title = item.TITLE;
 					lpdm.Isbn = item.ISBN;
 					lpdm.From = item.FROM;

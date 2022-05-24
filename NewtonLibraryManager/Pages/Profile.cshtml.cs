@@ -15,6 +15,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string PasswordError { get; set; }
 
+        [BindProperty]
+        public List<Models.DisplayLoanedProductModel> UserLoans { get; set; } 
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -39,6 +42,10 @@ namespace NewtonLibraryManager.Pages
                 LastName = User1.LastName, 
                 IsAdmin = User1.IsAdmin, 
                 Password = User1.Password };
+
+            //Obtain user loans
+            UserLoans = Handlers.UserHandler.GetUserLoans(Int32.Parse(id));
+
         }
 
         /// <summary>

@@ -89,7 +89,46 @@
             </form>
         }
     </div>
-    <h3>Lånade böcker</h3>
+    @if(@Model.UserLoans.Count > 0)
+    {
+        <h3 class="mt-4">Lånade böcker</h3>
+        <form asp-page-handler="view" method="post">
+            <div class="container text-center mt-3 ms-0 searchResults">
+              <div class="row searchHeader">
+                <div class="col">
+                  ISBN
+                </div>
+                <div class="col">
+                  Titel
+                </div>
+                <div class="col">
+                  Lånad från
+                </div>
+                <div class="col">
+                  Lånad till
+                </div>
+
+              </div>
+              @foreach (var loan in Model.UserLoans)
+                {
+                <a asp-page="/ProductView" asp-route-id="@loan.Id" class="row searchBody">
+                    <div class="col">
+                      @loan.Isbn<input type="hidden" name="id" value="@loan.Id.ToString()" />
+                    </div>
+                    <div class="col">
+                      @loan.Title
+                    </div>
+                    <div class="col">
+                        @loan.FromAsString
+                    </div>
+                    <div class="col">
+                        @loan.ToAsString
+                    </div>
+                </a>
+                }
+            </div>
+        </form>
+    }
 }
 else
 {

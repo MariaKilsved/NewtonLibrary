@@ -55,8 +55,6 @@ namespace NewtonLibraryManager.Pages
             if(IsAdmin)
                 if (Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
                     return RedirectToPage("/Login");
-                else
-                    //Console.WriteLine("Admin failed");
             
             //If a normal user, create the user
             if(Handlers.AccountHandler.CreateUser(FirstName,LastName, EMail,Password))
