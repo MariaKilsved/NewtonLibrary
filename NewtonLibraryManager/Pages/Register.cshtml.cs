@@ -23,37 +23,46 @@ namespace NewtonLibraryManager.Pages
 
         public string PasswordError { get; set; }
 
+        /// <summary>
+        /// On page loading
+        /// </summary>
         public void OnGet()
         {
         }
 
+        /// <summary>
+        /// When submit button to register is pressed
+        /// </summary>
+        /// <returns>Redirect to login or reload page</returns>
         public IActionResult OnPost()
         {
 
-            //Regex
+            //Validate password with regex
             if(!Handlers.AccountHandler.ValidatePassword(Password, out string passwordError))
             {
                 PasswordError = passwordError;
                 return Page();
             }
 
-
+            //Hash password
             Password = Models.SecurePasswordHasher.Hash(Password);
-            //Console.WriteLine(Password);
 
+            //Reload if empty/incorrect frontend fields
             if (ModelState.IsValid == false)
                 return Page();
 
+            //If IsAdmin checkbox is checked, attempt to create an admin
             if(IsAdmin)
                 if (Handlers.AccountHandler.CreateAdmin(FirstName, LastName, EMail, Password))
                     return RedirectToPage("/Login");
                 else
-                    Console.WriteLine("Admin failed");
+                    //Console.WriteLine("Admin failed");
             
+            //If a normal user, create the user
             if(Handlers.AccountHandler.CreateUser(FirstName,LastName, EMail,Password))
                     return RedirectToPage("/Login");
             
-            Console.WriteLine("Failed to register");
+            //Reload page if failed
             return Page();
         }
     }

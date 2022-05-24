@@ -19,6 +19,10 @@ namespace NewtonLibraryManager.Pages
         public string Id { get; set; }
 
 
+        /// <summary>
+        /// Load page
+        /// </summary>
+        /// <param name="id">Id of the user to be displayed</param>
         public void OnGet(string id)
         {
             //Uses the user Id determined in the Url to set everything
@@ -26,6 +30,8 @@ namespace NewtonLibraryManager.Pages
 
             //Needs to be User1 instead of User to avoid hiding PageModel.User
             User1 = Handlers.UserHandler.GetUser(Int32.Parse(id));
+
+            //Deep copy in order to keep frontend and user edits separate
             EditedUser = new Models.User() { 
                 Id = User1.Id, 
                 EMail = User1.EMail, 
@@ -35,8 +41,13 @@ namespace NewtonLibraryManager.Pages
                 Password = User1.Password };
         }
 
+        /// <summary>
+        /// When submit button for updating user is pressed
+        /// </summary>
+        /// <returns>Redirect to index or reload page</returns>
         public IActionResult OnPostEdit()
         {
+            //Must have password
             if (ModelState.IsValid == false || String.IsNullOrWhiteSpace(EditedUser.Password))
             {
                 PasswordError = "Ange lösenord";
@@ -44,35 +55,44 @@ namespace NewtonLibraryManager.Pages
             }
             else
             {
-                //Regex
+                //Regex validation
                 if (!Handlers.AccountHandler.ValidatePassword(EditedUser.Password, out string passwordError))
                 {
                     PasswordError = passwordError;
                     return Page();
                 }
-                //Hashing
+                //Password hashing
                 else
                 {
                     EditedUser.Password = Models.SecurePasswordHasher.Hash(EditedUser.Password);
                 }
             }
 
+            //Set IsAdmin as false if it is null for some reason
             if (EditedUser.IsAdmin == null)
             {
                 EditedUser.IsAdmin = false;
             }
             
+            //Update the user
             EntityFramework.Update.UpdateHandler.UpdateUser(EditedUser);
             return RedirectToPage("/Index");
         }
 
+        /// <summary>
+        /// When the submit button to delete the user is pressed
+        /// </summary>
+        /// <param name="id">Id of the user to be deleted</param>
+        /// <returns>Redirect to index or logot, or reload page</returns>
         public IActionResult OnPostDelete(int id)
         {
+            //Validate user through cookies
             string selectedIdHash = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + id.ToString());
 
+            //Never delete the head librarian (boss)
             if (selectedIdHash != Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1") && Handlers.AccountHandler.DeleteUser(id))
             {
-
+                //Delete cookies and log out if deleting yourself
                 if (Request.Cookies["LibraryCookie"] == selectedIdHash)
                 {
                     Response.Cookies.Delete("LibraryCookie");
@@ -80,11 +100,12 @@ namespace NewtonLibraryManager.Pages
                     Response.Cookies.Delete("LibraryCookie2");
                     return RedirectToPage("/Logout");
                 }
+                //Go to index page if deleting someone else
                 return RedirectToPage("/Index");
             }
             else
             {
-                //Maybe return error page?
+                //Reload page if it fails
                 return Page();
             }
         }

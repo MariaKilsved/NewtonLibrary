@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NewtonLibraryManager.EntityFramework.Read
 {
+    /// <summary>
+    /// Get methods for Entity Framework
+    /// </summary>
     public static class ReadHandler
     {
         public static void Get(string command)

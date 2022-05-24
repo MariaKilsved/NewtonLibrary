@@ -4,6 +4,12 @@ namespace NewtonLibraryManager.Handlers;
 
 public class ProductHandler
 {
+    /// <summary>
+    /// Should be called when a user returns a product. It sets the return date in the lending details database.
+    /// Returns true if everything went ok. False with an error otherwise.
+    /// </summary>
+    /// <param name="prodId"></param>
+    /// <returns></returns>
     public static bool ReturnProduct(int prodId)
     {
         var listOfDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
@@ -34,6 +40,11 @@ public class ProductHandler
         Console.WriteLine("Admin not logged in");
         return false;
     }
+    /// <summary>
+    /// Deletes a product from the database, based on the product ID. Returns true if successful, false otherwise.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public static bool DeleteProduct(int id)
     {
         if (AccountHandler.AdminLoggedIn)
@@ -45,6 +56,13 @@ public class ProductHandler
         return false;
     }
 
+    /// <summary>
+    /// Should be called when a product is borrowed. Creates a lending detail based on user and product ID, with the
+    /// current date and time. Returns true if all is ok, false otherwise.
+    /// </summary>
+    /// <param name="userid"></param>
+    /// <param name="productId"></param>
+    /// <returns></returns>
     public static bool BorrowProduct(int userid, int productId)
     {
         try
@@ -58,6 +76,13 @@ public class ProductHandler
             return false;
         }
     }
+    /// <summary>
+    /// Creates a reservation detail based on user and product ID. Returns true if all is ok, throws exception and
+    /// returns false otherwise.
+    /// </summary>
+    /// <param name="userid"></param>
+    /// <param name="productId"></param>
+    /// <returns></returns>
     public static bool ReserveProduct(int userid, int productId)
     {
         try
@@ -72,6 +97,46 @@ public class ProductHandler
         }
     }
 
+    /// <summary>
+    /// Gets all products in the database, along with their languages, categories, authors, and types.
+    /// </summary>
+    /// <returns>Returns a List<DisplayProductModel> with all products in the database.</returns>
+
+    public static List<DisplayProductModel> ListAllProducts()
+    {
+        using (var db = new NewtonLibraryContext())
+        {
+            var queryable = from product in db.Products
+                            join ad in db.AuthorDetails on product.Id equals ad.ProductId
+                            join language in db.Languages on product.LanguageId equals language.Id
+                            join category in db.Categories on product.CategoryId equals category.Id
+                            join author in db.Authors on ad.AuthorId equals author.Id
+                            join type in db.Types on product.ProductType equals type.Id
+                            select new DisplayProductModel
+                            {
+                                Id = product.Id,
+                                Title = product.Title,
+                                FirstName = author.FirstName,
+                                LastName = author.LastName,
+                                Language = language.Language1,
+                                Category = category.Category1,
+                                NrOfCopies = product.NrOfCopies,
+                                Dewey = product.Dewey,
+                                Description = product.Description,
+                                Isbn = product.Isbn,
+                                ProductType = type.Type1
+                            };
+            queryable = queryable.OrderBy(p => p.Category).ThenBy(p => p.Language).ThenBy(p => p.LastName).ThenBy(p => p.FirstName);
+
+            return queryable.ToList();
+        }
+    }
+
+    /// <summary>
+    /// Creates a model for a display product on the front end. The model can be used as a normal class.
+    /// </summary>
+    /// <param name="urlId"></param>
+    /// <returns></returns>
     public static List<DisplayProductModel> ShowProduct(string urlId)
     {
         using (var db = new NewtonLibraryContext())
@@ -104,8 +169,11 @@ public class ProductHandler
         }
     }
 
-    //public static void EditProduct()
-
+    /// <summary>
+    /// Returns a product ID based off of a product ISBN. Checks for nulls before returning.
+    /// </summary>
+    /// <param name="isbn"></param>
+    /// <returns></returns>
     public static int GetProductIdFromIsbn(string isbn)
     {
         var list = EntityFramework.Read.ReadHandler.GetProducts()

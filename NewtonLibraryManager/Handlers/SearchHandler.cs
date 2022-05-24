@@ -3,9 +3,14 @@ using System.Linq;
 
 namespace NewtonLibraryManager.Handlers
 {
-    public class SearchHandler
+    public static class SearchHandler
     {
-        
+        /// <summary>
+        /// Method for the search function. Creates a DisplayProduct class from the database based on what the user
+        /// searched for. Checks ISBN, Author, Title. Returns a list of these classes, ready to be displayed.
+        /// </summary>
+        /// <param name="search"></param>
+        /// <returns></returns>
         public static List<DisplayProductModel> ProductSearch(string search)
         {
             List<DisplayProductModel> displayProductModels = new();

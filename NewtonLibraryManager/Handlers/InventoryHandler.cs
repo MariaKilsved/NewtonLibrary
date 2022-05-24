@@ -4,21 +4,31 @@ namespace NewtonLibraryManager.Handlers
 {
 	public static class InventoryHandler
 	{
-        //Returnerar antal böcker i lagret
+        /// <summary>
+        /// Returns the amount of all products.
+        /// </summary>
+        /// <returns></returns>
 		public static int GetInventoryAmount()
         {
             var products = EntityFramework.Read.ReadHandler.GetProducts();
             return products.Sum(item => item.NrOfCopies);
         }
 
-        //Returnerar antal lånade produkter
+        /// <summary>
+        /// Returns the amount of borrowed products.
+        /// </summary>
+        /// <returns></returns>
         public static int GetAmountOfBorrowedProducts()
         {
             var products = EntityFramework.Read.ReadHandler.GetLendingDetails();
             return products.Count;
         }
 
-        //Returnerar utlånade böcker fårn ett visst ID
+        /// <summary>
+        /// Returns a list of lending details from the database, based on a product ID
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public static List<LendingDetail> GetBorrowedFromProductId(int productId)
         {
             var list = EntityFramework.Read.ReadHandler.GetLendingDetails();
@@ -26,7 +36,11 @@ namespace NewtonLibraryManager.Handlers
             return lendingDetails;
         }
 
-        //Returnerar antalet utlåningar för en viss produkt
+        /// <summary>
+        /// Returns the amount of lending details based on a product id
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public static int GetNrOfBorrowedFromProductId(int productId)
         {
             var list = EntityFramework.Read.ReadHandler.GetLendingDetails();
@@ -34,8 +48,11 @@ namespace NewtonLibraryManager.Handlers
             return lendingDetails.Count;
         }
 
-        //Kollar tidigaste återkommande bok för ett visst ID
-        //och returnerar 
+        /// <summary>
+        /// Returns the date of the earliest restock of a product, based on its' ID
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public static DateTime? ReturnsToStock(int productId)
         {
             var list = GetBorrowedFromProductId(productId);

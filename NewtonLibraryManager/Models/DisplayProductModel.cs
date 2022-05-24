@@ -14,15 +14,15 @@ public class DisplayProductModel
     public string LastName { get; set; }
     public string ProductType { get; set; }
     public string Authors { get { 
-            if(LastName != null && FirstName != null)
+            if(!String.IsNullOrWhiteSpace(LastName) && !String.IsNullOrWhiteSpace(FirstName))
             {
                 return LastName + ", " + FirstName;
             }
-            else if(FirstName != null)
+            else if(!String.IsNullOrWhiteSpace(FirstName))
             {
                 return FirstName;
             }
-            else if (LastName != null)
+            else if (!String.IsNullOrWhiteSpace(LastName))
             {
                 return LastName;
             }

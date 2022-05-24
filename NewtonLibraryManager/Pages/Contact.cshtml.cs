@@ -8,6 +8,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public List<Models.User> Admins { get; set; }
 
+        /// <summary>
+        /// When page is loaded
+        /// </summary>
         public void OnGet()
         {
             //Get all librarians

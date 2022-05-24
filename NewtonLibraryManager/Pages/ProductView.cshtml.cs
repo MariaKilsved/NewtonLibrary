@@ -21,6 +21,10 @@ namespace NewtonLibraryManager.Pages
         public string Id { get; set; }
 
 
+        /// <summary>
+        /// When the page is loaded
+        /// </summary>
+        /// <param name="id">The id of the specific product being displayed</param>
         public void OnGet(string id)
         {
             //Uses the product Id determined in the Url to set everything
@@ -46,12 +50,17 @@ namespace NewtonLibraryManager.Pages
         }
 
         
+        /// <summary>
+        /// When the submit button to borrow is pressed
+        /// </summary>
+        /// <returns>Redirect to a index or reload same page</returns>
         public IActionResult OnPostBorrow()
         {
             //Compare cookies
             string cookieValue = Request.Cookies["LibraryCookie"];
             string cookieValue2 = Request.Cookies["LibraryCookie2"];
 
+            //Validation using cookies. Cookies are saved as strings and must be converted to int.
             if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
             {
                 int userId = Int32.Parse(cookieValue2);
@@ -68,12 +77,17 @@ namespace NewtonLibraryManager.Pages
         }
         
 
+        /// <summary>
+        /// When the submit button to reserve is pressed
+        /// </summary>
+        /// <returns>Redirect to index or reload page.</returns>
         public IActionResult OnPostReserve()
         {
             //Compare cookies
             string cookieValue = Request.Cookies["LibraryCookie"];
             string cookieValue2 = Request.Cookies["LibraryCookie2"];
 
+            //Validation using cookies. Cookies are saved as strings and must be converted to int.
             if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
             {
                 int userId = Int32.Parse(cookieValue2);
@@ -85,11 +99,11 @@ namespace NewtonLibraryManager.Pages
                     return RedirectToPage("/Index");
 
                 }
-                Console.WriteLine("User: " + userId);
-                Console.WriteLine("Product: " + prodId);
+                //Console.WriteLine("User: " + userId);
+                //Console.WriteLine("Product: " + prodId);
             }
-			Console.WriteLine("Cookie: " + cookieValue);
-			Console.WriteLine("Cookie 2: " + cookieValue2);
+			//Console.WriteLine("Cookie: " + cookieValue);
+			//Console.WriteLine("Cookie 2: " + cookieValue2);
             return Page();
         }
     }
