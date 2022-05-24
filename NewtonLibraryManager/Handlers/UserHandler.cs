@@ -6,6 +6,10 @@ namespace NewtonLibraryManager.Handlers
 {
 	public static class UserHandler
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public static List<User> GetAdmins()
         {
 			var list = EntityFramework.Read.ReadHandler.GetUsers();
