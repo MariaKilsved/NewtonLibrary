@@ -1,5 +1,4 @@
 using NewtonLibraryManager.Models;
-using System.Linq;
 
 namespace NewtonLibraryManager.Handlers;
 
@@ -12,12 +11,12 @@ public class ProductHandler
         using (NewtonLibraryContext db = new())
         {
             foreach (var item in listOfDetails)
-             if (item.ProductId == prodId && item.UserId == AccountHandler.CurrentIdLoggedIn)
-             {
-                 item.ReturnDate = DateTime.Now;
-                 db.SaveChanges();
-                 return true;
-             }
+                if (item.ProductId == prodId && item.UserId == AccountHandler.CurrentIdLoggedIn)
+                {
+                    item.ReturnDate = DateTime.Now;
+                    db.SaveChanges();
+                    return true;
+                }
         }
 
         Console.WriteLine("Did not find relevant information in the database.");
@@ -100,11 +99,11 @@ public class ProductHandler
                                 ProductType = type.Type1
 
                             };
-            
+
             return queryable.ToList();
         }
     }
-    
+
     //public static void EditProduct()
 
     public static int GetProductIdFromIsbn(string isbn)
@@ -118,5 +117,40 @@ public class ProductHandler
 
         Console.WriteLine("Did not find that isbn in the database.");
         return 0;
+    }
+
+    /// <summary>
+    /// Adds a Product/Author/AuthorDetail if it doesnt exist already.
+    /// </summary>
+    /// <param name="product"></param>
+    /// <param name="author"></param>
+    /// <param name="authorDetail"></param>
+    /// <returns></returns>
+    public static bool InsertProduct(Product product, Author author, AuthorDetail authorDetail)
+    {
+        if (!AccountHandler.AdminLoggedIn)
+            return false;
+
+        var ProductList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
+            if (ProductList.Count > 1)
+                return false;
+
+            //If everything is ok, proceed with create!
+        EntityFramework.Create.CreateHandler.CreateProduct(product.Title, product.LanguageId, product.CategoryId, product.NrOfCopies,
+            product.Dewey, product.Description, product.Isbn, product.ProductType);
+
+
+        var authorList = EntityFramework.Read.ReadHandler.GetAuthors().Where(x => x.LastName == author.LastName && x.FirstName == author.FirstName).ToList();
+        if (authorList.Count > 0)
+        {
+            author.FirstName = authorList.FirstOrDefault().FirstName;
+            author.LastName = authorList.FirstOrDefault().LastName;
+        }
+        else
+        {
+            EntityFramework.Create.CreateHandler.CreateAuthor(author.FirstName, author.LastName);
+            EntityFramework.Create.CreateHandler.CreateAuthorDetail(authorDetail.AuthorId, authorDetail.ProductId);
+        }
+        return true;
     }
 }
