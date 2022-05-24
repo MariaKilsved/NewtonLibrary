@@ -48,6 +48,12 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string SelectedAuthor { get; set; }                   //The chosen option of the dropdown
 
+        [BindProperty]
+        public string AuthorFirstName { get; set; }
+
+        [BindProperty]
+        public string AuthorLastName { get; set; }
+
         private List<Models.Type> ProductTypes { get; set; }
 
         private List<Models.Category> ProductCategories { get; set; }
@@ -102,20 +108,18 @@ namespace NewtonLibraryManager.Pages
                 return Page();
             }
 
-            //Set default values
-            int languageId = 1;
-            int categoryId = 1;
-            int productTypeId = 1;
-
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 
+            //Create product and set some values
+            var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies };
+
             //Set selected product type, chosen from dropdown
-            foreach (var prod in ProductTypes)
+            foreach (var pt in ProductTypes)
             {
-                if(prod.Type1 == SelectedProdType)
+                if(pt.Type1 == SelectedProdType)
                 {
-                    productTypeId = prod.Id;
+                    product.ProductType = pt.Id;
                     break;
                 }
             }
@@ -125,7 +129,7 @@ namespace NewtonLibraryManager.Pages
             {
                 if(cat.Category1 == SelectedCategory)
                 {
-                    categoryId = cat.Id;
+                    product.CategoryId = cat.Id;
                     break;
                 }
             }
@@ -133,16 +137,38 @@ namespace NewtonLibraryManager.Pages
             //Set language as Swedish if checkbox is checked
             if(IsSwedish)
             {
-                languageId = 1;
+                product.LanguageId = 1;
             }
             //Set language as English if checkbox is checked
             if(IsEnglish)
             {
-                languageId = 2;
+                product.LanguageId = 2;
             }
 
+            //Create new author object
+            var author = new Models.Author();
+
+            //Set properties if author fields aren't empty
+            if (!String.IsNullOrWhiteSpace(AuthorFirstName) || !String.IsNullOrWhiteSpace(AuthorLastName))
+            {
+                author.FirstName = AuthorFirstName;
+                author.LastName = AuthorLastName;
+            }
+            else
+            {
+                //Split the SelectedAuthor from frontend
+                string[] subs = SelectedAuthor.Split(", ");
+
+                //Set properties
+                author.FirstName = subs[1];
+                author.LastName = subs[0];
+            }
+
+
+
             //Attempt to add product
-            if(Handlers.ProductHandler.AddProduct(Title, languageId, categoryId, NrOfCopies, Dewey, Description, Isbn, productTypeId))
+            /*
+            if (Handlers.ProductHandler.AddProduct(Title, languageId, categoryId, NrOfCopies, Dewey, Description, Isbn, productTypeId))
             {
                 //Should redirect to specific product? Or show confirmation message on page.
                 return RedirectToPage("/ProductSearch");
@@ -151,6 +177,9 @@ namespace NewtonLibraryManager.Pages
             {
                 return RedirectToPage("/ProductSearch");
             }
+            */
+            return RedirectToPage("/ProductSearch");
+
 
         }
     }

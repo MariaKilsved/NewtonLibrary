@@ -67,8 +67,17 @@
         <label for="authorSelect" class="form-label"><b>Författare</b></label>
         <div class="d-flex">
             <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" name="authorId"></select>
-            <button class="btn btn-custom ms-1">+</button>
+            <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseAuthor">+</button>
         </div>
+    <div class="collapse" id="collapseAuthor">
+        <div class="card card-body text-start my-4">
+            <h5 class="d-block">Ny författare</h5>
+            <label for="authorFN" class="form-label d-block"><b>Förnamn</b></label>
+            <input type="text" asp-for="AuthorFirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+            <label for="authorLN" class="form-label d-block"><b>Efternamn</b></label>
+            <input asp-for="AuthorLastName" type="text" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+        </div>
+    </div>
     </div>
 
     <div class="mb-3 AltAutoWidth">
