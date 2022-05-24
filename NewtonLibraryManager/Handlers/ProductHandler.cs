@@ -98,6 +98,11 @@ public class ProductHandler
         }
     }
 
+    /// <summary>
+    /// Gets all products in the database, along with their languages, categories, authors, and types.
+    /// </summary>
+    /// <returns>Returns a List<DisplayProductModel> with all products in the database.</returns>
+
     public static List<DisplayProductModel> ListAllProducts()
     {
         using (var db = new NewtonLibraryContext())
