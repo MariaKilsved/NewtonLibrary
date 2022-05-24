@@ -199,8 +199,8 @@ public class ProductHandler
         if (!AccountHandler.AdminLoggedIn)
             return false;
 
-        var ProductList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
-            if (ProductList.Count > 1)
+        var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
+            if (productList.Count > 1)
                 return false;
 
             //If everything is ok, proceed with create!
@@ -211,8 +211,8 @@ public class ProductHandler
         var authorList = EntityFramework.Read.ReadHandler.GetAuthors().Where(x => x.LastName == author.LastName && x.FirstName == author.FirstName).ToList();
         if (authorList.Count > 0)
         {
-            author.FirstName = authorList.FirstOrDefault().FirstName;
-            author.LastName = authorList.FirstOrDefault().LastName;
+            author.FirstName = authorList.FirstOrDefault()?.FirstName;
+            author.LastName = authorList.FirstOrDefault()?.LastName;
         }
         else
         {
