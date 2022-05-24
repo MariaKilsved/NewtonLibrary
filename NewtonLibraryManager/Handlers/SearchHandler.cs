@@ -8,7 +8,7 @@ namespace NewtonLibraryManager.Handlers
         
         /// <summary>
         /// Method for the search function. Creates a DisplayProduct class from the database based on what the user
-        /// searched for. Checks ISBN, Author, Title
+        /// searched for. Checks ISBN, Author, Title. Returns a list of these classes, ready to be displayed.
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
