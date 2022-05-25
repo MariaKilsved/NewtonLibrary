@@ -81,6 +81,7 @@
             }
             @if(cookieValue1 == cookieComparerTrue)
             {
+                <a class="btn btn-custom ms-1" role="button" asp-page="/EditProduct" asp-route-id="@Model.Id">Ändra produkt</a>
                 <button type="submit" value="delete" asp-page-handler="delete" class="btn btn-custom ms-1">Ta bort produkt</button>
             }
         </div>

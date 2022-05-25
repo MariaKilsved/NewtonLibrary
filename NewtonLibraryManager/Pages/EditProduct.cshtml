@@ -1,7 +1,7 @@
 ﻿@page
-@model NewtonLibraryManager.Pages.AddProductModel
+@model NewtonLibraryManager.Pages.EditProductModel
 @{
-    ViewData["Title"] = "Lägg till produkt";
+    ViewData["Title"] = @Model.Product.Title;
     string cookieValue = null;
     string cookieValue1 = null;
     string cookieValue2 = null;
@@ -10,6 +10,8 @@
     cookieValue2 = Request.Cookies["LibraryCookie2"];
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
+    string imgSrc = $"/css/img/books_150x225/{Model.Id}.jpg";
+    System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 }
 
 @if(cookieValue1 == cookieComparerTrue)
@@ -19,15 +21,15 @@
 
 <form method="post" class="mt-3 d-flex align-items-center flex-column">
     <div class="mb-3 AltAutoWidth">
-        <label for="prodTitle" class="form-label"><b>Titel</b></label>
-        <input type="text" asp-for="Title" class="form-control" id="prodTitle" minlength="4" maxlength="100" data-val-length-min="4" data-val-length-max="100"/>
+        <label for="productTitle" class="form-label"><b>Titel</b></label>
+        <input type="text" asp-for="Product.Title" class="form-control" id="productTitle" minlength="4" maxlength="100" data-val-length-min="4" data-val-length-max="100" placeholder="@Model.Product.Title"/>
     </div>
 
     <div class="d-flex flex-row justify-content-center">
         @foreach(var language in Model.Languages)
         {
             <div class="form-check p-4 text-start w-auto">
-                <input asp-for="LanguageId" class="form-check-input" type="radio" name="language" id="@language.Language1" value="@language.Id">
+                <input asp-for="Product.Language" class="form-check-input" type="radio" name="language" id="@language.Language1" value="@language.Id">
                 <label class="form-check-label" for="@language.Language1">
                 <b>@language.Language1</b>
                 </label>
@@ -37,52 +39,58 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="categorySelect" class="form-label"><b>Kategori</b></label>
-        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="categoryId" id="categorySelect"></select>
+        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="categoryId" id="categorySelect">
+                <option value="">Välj kategori</option>
+        </select>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="dewey" class="form-label"><b>Dewey decimalklassifikation</b></label>
-        <input type="number" asp-for="Dewey" class="form-control" id="dewey" step="0.001" min="0.001" max="999.999" placeholder="839.738"/>
+        <input type="number" asp-for="Product.Dewey" class="form-control" id="dewey" step="0.001" min="0.001" max="999.999" placeholder="@Model.Product.Dewey"/>
     </div>
 
     <div class="mb-3 AltAutoWidth">
       <label for="descriptionTextArea" class="form-label"><b>Beskrivning</b></label>
-      <textarea asp-for="Description" class="form-control" id="descriptionTextArea" rows="3"></textarea>
+      <textarea asp-for="Product.Description" class="form-control" id="descriptionTextArea" rows="3" placeholder="@Model.Product.Description"></textarea>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="isbn" class="form-label"><b>ISBN</b></label>
-        <input type="text" asp-for="Isbn" class="form-control" id="isbn" minlength="10" maxlength="13" data-val-length-min="10" data-val-length-max="13"/>
+        <input type="text" asp-for="Product.Isbn" class="form-control" id="isbn" minlength="10" maxlength="13" data-val-length-min="10" data-val-length-max="13" placeholder="@Model.Product.Isbn"/>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="prodTypeSelect" class="form-label"><b>Produkttyp</b></label>
-        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="prodTypeId"></select>
+        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="prodTypeId">
+            <option value="">Välj produkttyp</option>
+        </select>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="authorSelect" class="form-label"><b>Författare</b></label>
         <div class="d-flex">
-            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" name="authorId"></select>
+            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" name="authorId">
+                <option value="">Välj författare</option>
+            </select>
             <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseAuthor">+</button>
         </div>
     <div class="collapse" id="collapseAuthor">
         <div class="card card-body text-start my-4 pb-4">
             <h5 class="d-block">Ny författare</h5>
             <label for="authorFN" class="form-label d-block"><b>Förnamn</b></label>
-            <input type="text" asp-for="AuthorFirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+            <input type="text" asp-for="Product.FirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" placeholder="@Model.Product.FirstName"/>
             <label for="authorLN" class="form-label d-block"><b>Efternamn</b></label>
-            <input asp-for="AuthorLastName" type="text" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+            <input asp-for="Product.LastName" type="text" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" placeholder="@Model.Product.LastName"/>
         </div>
     </div>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="nrOfCopies" class="form-label"><b>Antal exemplar</b></label>
-        <input type="number" asp-for="NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" value="1"/>
+        <input type="number" asp-for="Product.NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" value="@Model.Product.NrOfCopies"/>
     </div>
 
-    <button type="submit" class="btn btn-custom">Lägg till</button>
+    <button type="submit" class="btn btn-custom">Uppdatera</button>
 </form>
     </div>
 }
@@ -90,8 +98,6 @@ else
 {
     <p>Sidan är ej tillgänglig.</p>
 }
-
-
 
 @section Navigation {
         <nav class="navbar navbar-expand-xl navbar-toggleable-xl navbar-light bg-white border-bottom box-shadow mb-3">
@@ -115,7 +121,7 @@ else
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct" aria-current="page">Lägg till produkt</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct">Lägg till produkt</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/UserManagement">Hantera användarkonton</a>
@@ -143,6 +149,11 @@ else
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera dig</a>
+                    </li>
+                    }
+                    @if (cookieValue != null) {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logga ut</a>
                     </li>
                     }
                 </ul>

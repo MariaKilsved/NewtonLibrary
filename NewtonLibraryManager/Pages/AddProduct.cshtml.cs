@@ -54,6 +54,12 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public string AuthorLastName { get; set; }
 
+        [BindProperty]
+        public List<Models.Language> Languages { get; set; }        //Used to make checkboxes
+
+        [BindProperty, Required]
+        public int LanguageId { get; set; }
+
         private List<Models.Type> ProductTypes { get; set; }
 
         private List<Models.Category> ProductCategories { get; set; }
@@ -69,6 +75,9 @@ namespace NewtonLibraryManager.Pages
             ProductTypes = EntityFramework.Read.ReadHandler.GetTypes();
             ProductCategories = EntityFramework.Read.ReadHandler.GetCategories();
             AuthorList = EntityFramework.Read.ReadHandler.GetAuthors().ToList();
+
+            //Get the languages for checkboxes
+            Languages = EntityFramework.Read.ReadHandler.GetLanguages();
 
             //Create new list of SelectListItem from product types; necessary for dropdown menu
             ProdTypes = ProductTypes.Select(a =>
@@ -93,7 +102,6 @@ namespace NewtonLibraryManager.Pages
                 Value = a.Id.ToString(),
                 Text = a.LastName + ", " + a.FirstName
             }).ToList();
-
         }
 
         /// <summary>
@@ -134,16 +142,9 @@ namespace NewtonLibraryManager.Pages
                 }
             }
 
-            //Set language as Swedish if checkbox is checked
-            if(IsSwedish)
-            {
-                product.LanguageId = 1;
-            }
-            //Set language as English if checkbox is checked
-            if(IsEnglish)
-            {
-                product.LanguageId = 2;
-            }
+            //Set language; will be Swedish if left unchecked
+            LanguageId = (LanguageId == 0) ? 1 : LanguageId;
+            product.LanguageId = LanguageId;
 
             //Create new author object
             var author = new Models.Author();
