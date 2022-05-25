@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using NewtonLibraryManager.Models;
 
 namespace NewtonLibraryManager.Handlers;
 
-public class ProductHandler
+public static class ProductHandler
 {
 
     /// <summary>
@@ -22,6 +23,8 @@ public class ProductHandler
                 if (item.ProductId == prodId && item.UserId == userId)
                 {
                     item.ReturnDate = DateTime.Now;
+                    db.LendingDetails.Attach(item);
+                    db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
                     return true;
                 }
