@@ -33,18 +33,7 @@ public static class ProductHandler
         Console.WriteLine("Did not find relevant information in the database.");
         return false;
     }
-    public static bool AddProduct(string title, int languageId, int categoryId, int nrOfCopies,
-        decimal dewey, string description, string isbn, int productType)
-    {
-        if (AccountHandler.AdminLoggedIn)
-        {
-            EntityFramework.Create.CreateHandler.CreateProduct(title, languageId, categoryId, nrOfCopies, dewey,
-                description, isbn, productType);
-            return true;
-        }
-        Console.WriteLine("Admin not logged in");
-        return false;
-    }
+
     /// <summary>
     /// Deletes a product from the database, based on the product ID. Returns true if successful, false otherwise.
     /// </summary>
@@ -211,34 +200,53 @@ public static class ProductHandler
     /// Adds a Product/Author/AuthorDetail if it doesnt exist already.
     /// </summary>
     /// <param name="product"></param>
-    /// <param name="author"></param>
+    /// <param name="authors"></param>
     /// <param name="authorDetail"></param>
     /// <returns></returns>
-    public static bool InsertProduct(Product product, Author author, AuthorDetail authorDetail)
+    public static bool InsertProduct(Product product, List<Author> authors)
     {
+
         if (!AccountHandler.AdminLoggedIn)
-            return false;
+            throw new Exception("U ARE NOT ADMIN!!!");
 
         var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
-            if (productList.Count > 1)
-                return false;
+        if (productList.Count > 1)
+            throw new Exception("Product already exist");
 
-            //If everything is ok, proceed with create!
-        EntityFramework.Create.CreateHandler.CreateProduct(product.Title, product.LanguageId, product.CategoryId, product.NrOfCopies,
+        //If everything is ok, proceed with create!
+        var prodId = EntityFramework.Create.CreateHandler.CreateProduct(product.Title, product.LanguageId, product.CategoryId, product.NrOfCopies,
             product.Dewey, product.Description, product.Isbn, product.ProductType);
 
 
-        var authorList = EntityFramework.Read.ReadHandler.GetAuthors().Where(x => x.LastName == author.LastName && x.FirstName == author.FirstName).ToList();
-        if (authorList.Count > 0)
+
+        List<int> authorIds = new();
+        var authorList = EntityFramework.Read.ReadHandler.GetAuthors();
+
+        authors.ForEach(x =>
         {
-            author.FirstName = authorList.FirstOrDefault()?.FirstName;
-            author.LastName = authorList.FirstOrDefault()?.LastName;
-        }
-        else
+            authorList.ForEach(d =>
+            {
+                if (x.FirstName == d.FirstName && x.LastName == d.LastName)
+                {
+                    throw new Exception("Author already exist");
+                }
+
+            });
+
+        });
+
+        authors.ForEach(x =>
         {
-            EntityFramework.Create.CreateHandler.CreateAuthor(author.FirstName, author.LastName);
-            EntityFramework.Create.CreateHandler.CreateAuthorDetail(authorDetail.AuthorId, authorDetail.ProductId);
-        }
+            var authorId = EntityFramework.Create.CreateHandler.CreateAuthor(x.FirstName, x.LastName);
+            authorIds.Add(authorId);
+
+        });
+        authorIds.ForEach(x =>
+        {
+            EntityFramework.Create.CreateHandler.CreateAuthorDetail(x, prodId);
+
+        });
+
         return true;
     }
 }
