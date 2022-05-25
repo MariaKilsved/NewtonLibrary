@@ -35,7 +35,7 @@ namespace NewtonLibraryManager.Handlers
 		/// <returns></returns>
 		public static List<User> GetUsers()
 		{
-			List<User> user = EntityFramework.Read.ReadHandler.GetUsers();
+			var user = EntityFramework.Read.ReadHandler.GetUsers();
 			return user;
 		}
 
@@ -46,7 +46,7 @@ namespace NewtonLibraryManager.Handlers
 		/// <returns></returns>
 		public static User GetUser(int userId)
 		{
-			User user = EntityFramework.Read.ReadHandler.GetUsers(userId);
+			var user = EntityFramework.Read.ReadHandler.GetUsers(userId);
 			return user;
 		}
 
