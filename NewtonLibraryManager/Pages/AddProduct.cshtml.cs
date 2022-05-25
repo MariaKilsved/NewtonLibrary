@@ -65,6 +65,21 @@ namespace NewtonLibraryManager.Pages
         /// </summary>
         public void OnGet()
         {
+            #region TESTDATA FOR CREATING A PRODUCT/AUTHOR/AUTHORDETAIL WITH MULTIPLE AUTHORS
+            //var product1 = new Models.Product() { Title = "jajamen", LanguageId = 1, CategoryId = 1, NrOfCopies = 1, Dewey = 0.6M, Description = "jajamen",
+            //Isbn = "123456791", ProductType = 1};
+
+            //var Author1 = new Models.Author() { FirstName = "Fredrik", LastName = "Wiman" };
+            //var Author2 = new Models.Author() { FirstName = "Pontus", LastName = "Hedman" };
+            
+            //List<Models.Author> authors = new();
+
+            //authors.Add(Author1);
+            //authors.Add(Author2);
+
+            //Handlers.ProductHandler.InsertProduct(product1, authors);
+            #endregion
+
             //Get all product types and categories to display dropdown menus
             ProductTypes = EntityFramework.Read.ReadHandler.GetTypes();
             ProductCategories = EntityFramework.Read.ReadHandler.GetCategories();
@@ -112,7 +127,7 @@ namespace NewtonLibraryManager.Pages
             Isbn = Isbn.Replace("-", "");
 
             //Create product and set some values
-            var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies };
+            var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies };           
 
             //Set selected product type, chosen from dropdown
             foreach (var pt in ProductTypes)
@@ -163,8 +178,6 @@ namespace NewtonLibraryManager.Pages
                 author.FirstName = subs[1];
                 author.LastName = subs[0];
             }
-
-
 
             //Attempt to add product
             /*
