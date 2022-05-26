@@ -8,15 +8,10 @@ namespace NewtonLibraryManager.Pages
 {
     public class AddProductModel : PageModel
     {
+        //To properly check for input lengths, separate properties are used
 
         [BindProperty, Required, MinLength(4), MaxLength(100)]
         public string Title { get; set; }
-
-        [BindProperty]
-        public bool IsSwedish { get; set; }
-
-        [BindProperty]
-        public bool IsEnglish { get; set; }
 
         [BindProperty, Required]
         public decimal Dewey { get; set; }
@@ -27,69 +22,87 @@ namespace NewtonLibraryManager.Pages
         [BindProperty, Required, MinLength(10), MaxLength(13)]
         public string Isbn { get; set; }
 
-        [BindProperty]
+        [BindProperty, Required]
         public int NrOfCopies { get; set; }
 
         [BindProperty]
-        public List<SelectListItem> ProdTypes { get; set; }         //Used to make dropdown (select)
+        public List<SelectListItem> ProdTypes { get; set; }             //Used to make the product type dropdown (select)
 
         [BindProperty]
-        public List<SelectListItem> Categories { get; set; }        //Used to make dropdown (select)
+        public List<SelectListItem> Categories { get; set; }            //Used to make the category dropdown (select)
 
         [BindProperty]
-        public List<SelectListItem> Authors { get; set; }           //Used to make dropdown (select)
+        public List<SelectListItem> Authors { get; set; }               //Used to make the author dropdown (select)
 
         [BindProperty]
-        public string SelectedCategory { get; set; }                //The chosen option of the dropdown
+        public List<SelectListItem> NrOfAuthors { get; set; }           //Used to make the number of authors dropdown (select)
 
         [BindProperty]
-        public string SelectedProdType { get; set; }                //The chosen option of the dropdown
+        public string SelectedCategory { get; set; }                    //The chosen option of the category dropdown
 
         [BindProperty]
-        public string SelectedAuthor { get; set; }                   //The chosen option of the dropdown
+        public string SelectedProdType { get; set; }                    //The chosen option of the product type dropdown
 
         [BindProperty]
-        public string AuthorFirstName { get; set; }
+        public string SelectedAuthor { get; set; }                      //The chosen option of the author dropdown
 
         [BindProperty]
-        public string AuthorLastName { get; set; }
+        public string SelectedNrOfAuthors { get; set; }                 //The chosen option of the number of authors dropdown
 
         [BindProperty]
-        public List<Models.Language> Languages { get; set; }        //Used to make checkboxes
+        public List<Models.DisplaySelectedAuthorModel> SelectedAuthors { get; set; }        //The chosen authors
+
+        [BindProperty]
+        public List<Models.Language> Languages { get; set; }            //Used to make checkboxes from available languages
 
         [BindProperty, Required]
-        public int LanguageId { get; set; }
+        public int LanguageId { get; set; }                             //Chosen language Id from checkboxes
 
-        private List<Models.Type> ProductTypes { get; set; }
+        private List<Models.Type> ProductTypes { get; set; }            //All product types in database
 
-        private List<Models.Category> ProductCategories { get; set; }
+        private List<Models.Category> ProductCategories { get; set; }   //All product categories in database
 
-        private List<Models.Author> AuthorList { get; set; }
+        private List<Models.Author> AllAuthorsList { get; set; }        //All authors in database
 
         /// <summary>
         /// When page is loaded
         /// </summary>
         public void OnGet()
         {
-            #region TESTDATA FOR CREATING A PRODUCT/AUTHOR/AUTHORDETAIL WITH MULTIPLE AUTHORS
-            //var product1 = new Models.Product() { Title = "jajamen", LanguageId = 1, CategoryId = 1, NrOfCopies = 1, Dewey = 0.6M, Description = "jajamen",
-            //Isbn = "123456791", ProductType = 1};
+            //Initialize NrOfAuthors to display dropdown menu
+            NrOfAuthors = new List<SelectListItem>();
+            for (int i = 1; i <= 5; i++)
+            {
+                NrOfAuthors.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
+            }
+        }
 
-            //var Author1 = new Models.Author() { FirstName = "Fredrik", LastName = "Wiman" };
-            //var Author2 = new Models.Author() { FirstName = "Pontus", LastName = "Hedman" };
-            
-            //List<Models.Author> authors = new();
+        /// <summary>
+        /// After the number of authors is submitted, the rest of the page is loaded
+        /// </summary>
+        public void OnPostAuthorCount()
+        {
+            //Create the SelectedAuthors list from chosen number of authors, but it's still empty
+            SelectedAuthors = new List<Models.DisplaySelectedAuthorModel>();
 
-            //authors.Add(Author1);
-            //authors.Add(Author2);
+            bool success = Int32.TryParse(SelectedNrOfAuthors, out int selectedNrOfAuthorsInt);
 
-            //Handlers.ProductHandler.InsertProduct(product1, authors);
-            #endregion
+            if(success)
+            {
+                for (int i = 0; i < selectedNrOfAuthorsInt; i++)
+                {
+                    SelectedAuthors.Add(new Models.DisplaySelectedAuthorModel { Author = new Models.Author { FirstName = "", LastName = "" }, FormattedName = "" });
+                }
+            }
+            else
+            {
+                Console.WriteLine("Failed to parse number of authors.");
+            }
 
             //Get all product types and categories to display dropdown menus
             ProductTypes = EntityFramework.Read.ReadHandler.GetTypes();
             ProductCategories = EntityFramework.Read.ReadHandler.GetCategories();
-            AuthorList = EntityFramework.Read.ReadHandler.GetAuthors().ToList();
+            AllAuthorsList = EntityFramework.Read.ReadHandler.GetAuthors().ToList();
 
             //Get the languages for checkboxes
             Languages = EntityFramework.Read.ReadHandler.GetLanguages();
@@ -111,12 +124,13 @@ namespace NewtonLibraryManager.Pages
             }).ToList();
 
             //Create new list of SelectListItem from authors; necessary for dropdown menu
-            Authors = AuthorList.OrderBy(author => author.LastName).Select(a =>
+            Authors = AllAuthorsList.OrderBy(author => author.LastName).Select(a =>
             new SelectListItem
             {
                 Value = a.Id.ToString(),
                 Text = a.LastName + ", " + a.FirstName
             }).ToList();
+
         }
 
         /// <summary>
@@ -134,7 +148,7 @@ namespace NewtonLibraryManager.Pages
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 
-            //Create product and set some values
+            //Create product and set some of the values
             var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies };           
 
             //Set selected product type, chosen from dropdown
@@ -161,40 +175,79 @@ namespace NewtonLibraryManager.Pages
             LanguageId = (LanguageId == 0) ? 1 : LanguageId;
             product.LanguageId = LanguageId;
 
-            //Create new author object
-            var author = new Models.Author();
+            //Turn the List<Models.DisplaySelectedAuthorModel> SelectedAuthors into a List<Models.Author>
+            var newAuthors = new List<Models.Author>();
 
-            //Set properties if author fields aren't empty
-            if (!String.IsNullOrWhiteSpace(AuthorFirstName) || !String.IsNullOrWhiteSpace(AuthorLastName))
+            foreach(var a in SelectedAuthors)
             {
-                author.FirstName = AuthorFirstName;
-                author.LastName = AuthorLastName;
-            }
-            else
-            {
-                //Split the SelectedAuthor from frontend
-                string[] subs = SelectedAuthor.Split(", ");
+                //Add author if named
+                if (a.Author != null && !String.IsNullOrWhiteSpace(a.Author.FirstName) && !String.IsNullOrWhiteSpace(a.Author.LastName))
+                {
+                    //Remove commas just in case
+                    a.Author.FirstName = a.Author.FirstName.Replace(",", "");
+                    a.Author.LastName = a.Author.LastName.Replace(",", "");
 
-                //Set properties
-                author.FirstName = subs[1];
-                author.LastName = subs[0];
+                    newAuthors.Add(a.Author);
+
+                    Console.WriteLine();
+                    Console.WriteLine("Adding author from user input:");
+                    Console.WriteLine("Author first name: " + a.Author.FirstName);
+                    Console.WriteLine("Author last name: " + a.Author.LastName);
+                    Console.WriteLine();
+                }
+                else
+                {
+                    //Create new author from the chosen dropdown (select) string 
+                    string[] subs = a.FormattedName.Split(", ");
+
+                    a.Author.FirstName = subs[1];
+                    a.Author.LastName = subs[0];
+
+                    newAuthors.Add(a.Author);
+
+                    Console.WriteLine();
+                    Console.WriteLine("Adding author from dropdown:");
+                    Console.WriteLine("Author first name: " + a.Author.FirstName);
+                    Console.WriteLine("Author last name: " + a.Author.LastName);
+                    Console.WriteLine();
+
+                }
             }
+            Console.WriteLine();
+            Console.WriteLine("Attempting to add product...");
+            Console.WriteLine();
 
             //Attempt to add product
-            /*
-            if (Handlers.ProductHandler.AddProduct(Title, languageId, categoryId, NrOfCopies, Dewey, Description, Isbn, productTypeId))
+            if (Handlers.ProductHandler.InsertProduct(product, newAuthors))
             {
                 //Should redirect to specific product? Or show confirmation message on page.
-                return RedirectToPage("/ProductSearch");
+
+                //var addedProductList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
+
+                return RedirectToPage("/Index");
             }
             else
             {
-                return RedirectToPage("/ProductSearch");
+                Console.WriteLine();
+                Console.WriteLine("Failed to add product!");
+                Console.WriteLine("Product Title: " + product.Title);
+                Console.WriteLine("Product LanguageId: " + product.LanguageId);
+                Console.WriteLine("Product CategoryId: " + product.CategoryId);
+                Console.WriteLine("Product NrOfCopies: " + product.NrOfCopies);
+                Console.WriteLine("Product Dewey: " + product.Dewey);
+                Console.WriteLine("Product Description: " + product.Description);
+                Console.WriteLine("Product Isbn: " + product.Isbn);
+                Console.WriteLine("Product ProductType: " + product.ProductType);
+                Console.WriteLine();
+                for(int i = 0; i < newAuthors.Count; i++)
+                {
+                    Console.WriteLine($"Author {i + 1} FirstName: {newAuthors[i].FirstName}");
+                    Console.WriteLine($"Author {i + 1} LastName: {newAuthors[i].LastName}");
+                    Console.WriteLine();
+                }
+
+                return RedirectToPage("/Error");
             }
-            */
-            return RedirectToPage("/ProductSearch");
-
-
         }
     }
 }

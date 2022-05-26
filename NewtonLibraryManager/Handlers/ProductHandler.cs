@@ -211,7 +211,7 @@ public static class ProductHandler
 
         var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
         if (productList.Count > 1)
-            throw new Exception("Product already exist");
+            throw new Exception("Product already exists");
 
         //If everything is ok, proceed with create!
         var prodId = EntityFramework.Create.CreateHandler.CreateProduct(product.Title, product.LanguageId, product.CategoryId, product.NrOfCopies,
