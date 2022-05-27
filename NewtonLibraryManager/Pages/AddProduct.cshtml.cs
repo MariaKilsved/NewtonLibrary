@@ -82,21 +82,25 @@ namespace NewtonLibraryManager.Pages
         /// </summary>
         public void OnPostAuthorCount()
         {
-            //Create the SelectedAuthors list from chosen number of authors, but it's still empty
-            SelectedAuthors = new List<Models.DisplaySelectedAuthorModel>();
-
-            bool success = Int32.TryParse(SelectedNrOfAuthors, out int selectedNrOfAuthorsInt);
-
-            if(success)
+            if(SelectedAuthors == null || SelectedAuthors.Count == 0)
             {
-                for (int i = 0; i < selectedNrOfAuthorsInt; i++)
+                //Create the SelectedAuthors list from chosen number of authors, but it's still empty
+                SelectedAuthors = new List<Models.DisplaySelectedAuthorModel>();
+
+                bool success = Int32.TryParse(SelectedNrOfAuthors, out int selectedNrOfAuthorsInt);
+
+                if (success)
                 {
-                    SelectedAuthors.Add(new Models.DisplaySelectedAuthorModel { Author = new Models.Author { FirstName = "", LastName = "" }, FormattedName = "" });
+                    for (int i = 0; i < selectedNrOfAuthorsInt; i++)
+                    {
+                        SelectedAuthors.Add(new Models.DisplaySelectedAuthorModel { Author = new Models.Author { FirstName = "", LastName = "" }, FormattedName = "" });
+                    }
                 }
-            }
-            else
-            {
-                Console.WriteLine("Failed to parse number of authors.");
+                else
+                {
+                    Console.WriteLine("Failed to parse number of authors.");
+                    Console.WriteLine("SelectedNrOfAuthors: " + SelectedNrOfAuthors);
+                }
             }
 
             //Get all product types and categories to display dropdown menus
@@ -137,43 +141,13 @@ namespace NewtonLibraryManager.Pages
         /// Submitting the new product
         /// </summary>
         /// <returns>Redirect to page</returns>
-        public IActionResult OnPost()
+        public IActionResult OnPostAddProduct()
         {
-            //Reload page if invalid inputs
-            if (ModelState.IsValid == false)
-            {
-                return Page();
-            }
-
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 
             //Create product and set some of the values
             var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies };           
-
-            //Set selected product type, chosen from dropdown
-            foreach (var pt in ProductTypes)
-            {
-                if(pt.Type1 == SelectedProdType)
-                {
-                    product.ProductType = pt.Id;
-                    break;
-                }
-            }
-
-            //Set selected product category, chosen from dropdown
-            foreach(var cat in ProductCategories)
-            {
-                if(cat.Category1 == SelectedCategory)
-                {
-                    product.CategoryId = cat.Id;
-                    break;
-                }
-            }
-
-            //Set language; will be Swedish if left unchecked
-            LanguageId = (LanguageId == 0) ? 1 : LanguageId;
-            product.LanguageId = LanguageId;
 
             //Turn the List<Models.DisplaySelectedAuthorModel> SelectedAuthors into a List<Models.Author>
             var newAuthors = new List<Models.Author>();
