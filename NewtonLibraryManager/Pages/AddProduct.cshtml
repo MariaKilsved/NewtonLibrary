@@ -12,22 +12,10 @@
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
 }
 
-@if(cookieValue1 == cookieComparerTrue)
+@if(cookieValue1 == cookieComparerTrue && @Model.SelectedAuthors != null && @Model.SelectedAuthors.Count > 0)
 {
 <div class="text-center">
 <h1 class="display-4">@ViewData["Title"]</h1>
-@if(@Model.SelectedAuthors == null || @Model.SelectedAuthors.Count == 0) {
-<form method="post" class="my-3 d-flex align-items-center flex-column" asp-page-handler="AuthorCount">
-    <div class="mb-3 AltAutoWidth">
-        <label for="selectedNrOfAuthors" class="form-label"><b>Antal författare</b></label>
-        <select asp-for="SelectedNrOfAuthors" asp-items="@Model.NrOfAuthors" class="form-select" name="selectedNrOfAuthors" id="selectedNrOfAuthors"></select>
-    </div>
-    <button type="submit" class="btn btn-custom">Välj</button>
-</form>
-}
-
-@if(@Model.SelectedAuthors != null && @Model.SelectedAuthors.Count > 0)
-{
 <form method="post" asp-page-handler="AddProduct" class="mt-3 d-flex align-items-center flex-column">
 
     @for(int i = 0; i < @Model.SelectedAuthors.Count; i++)
@@ -98,7 +86,6 @@
     </div>
     <button type="submit" class="btn btn-custom">Lägg till</button>
 </form>
-}
 </div>
 }
 else
@@ -130,7 +117,7 @@ else
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/AddProduct" aria-current="page">Lägg till produkt</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/DetermineAuthorCount" aria-current="page">Lägg till produkt</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/UserManagement">Hantera användarkonton</a>

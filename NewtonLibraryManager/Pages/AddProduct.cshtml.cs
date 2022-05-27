@@ -35,9 +35,6 @@ namespace NewtonLibraryManager.Pages
         public List<SelectListItem> Authors { get; set; }               //Used to make the author dropdown (select)
 
         [BindProperty]
-        public List<SelectListItem> NrOfAuthors { get; set; }           //Used to make the number of authors dropdown (select)
-
-        [BindProperty]
         public string SelectedCategory { get; set; }                    //The chosen option of the category dropdown
 
         [BindProperty]
@@ -45,9 +42,6 @@ namespace NewtonLibraryManager.Pages
 
         [BindProperty]
         public string SelectedAuthor { get; set; }                      //The chosen option of the author dropdown
-
-        [BindProperty]
-        public string SelectedNrOfAuthors { get; set; }                 //The chosen option of the number of authors dropdown
 
         [BindProperty]
         public List<Models.DisplaySelectedAuthorModel> SelectedAuthors { get; set; }        //The chosen authors
@@ -64,43 +58,33 @@ namespace NewtonLibraryManager.Pages
 
         private List<Models.Author> AllAuthorsList { get; set; }        //All authors in database
 
+        [BindProperty(SupportsGet = true)]
+        public string AuthorCount { get; set; }
+
         /// <summary>
         /// When page is loaded
         /// </summary>
-        public void OnGet()
+        public void OnGet(string authorCount)
         {
-            //Initialize NrOfAuthors to display dropdown menu
-            NrOfAuthors = new List<SelectListItem>();
-            for (int i = 1; i <= 5; i++)
+            AuthorCount = authorCount;
+
+
+            //Create the SelectedAuthors list from chosen number of authors, but it's still empty
+            SelectedAuthors = new List<Models.DisplaySelectedAuthorModel>();
+
+            bool success = Int32.TryParse(AuthorCount, out int selectedNrOfAuthorsInt);
+
+            if (success)
             {
-                NrOfAuthors.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
+                for (int i = 0; i < selectedNrOfAuthorsInt; i++)
+                {
+                    SelectedAuthors.Add(new Models.DisplaySelectedAuthorModel { Author = new Models.Author { FirstName = "", LastName = "" }, FormattedName = "" });
+                }
             }
-        }
-
-        /// <summary>
-        /// After the number of authors is submitted, the rest of the page is loaded
-        /// </summary>
-        public void OnPostAuthorCount()
-        {
-            if(SelectedAuthors == null || SelectedAuthors.Count == 0)
+            else
             {
-                //Create the SelectedAuthors list from chosen number of authors, but it's still empty
-                SelectedAuthors = new List<Models.DisplaySelectedAuthorModel>();
-
-                bool success = Int32.TryParse(SelectedNrOfAuthors, out int selectedNrOfAuthorsInt);
-
-                if (success)
-                {
-                    for (int i = 0; i < selectedNrOfAuthorsInt; i++)
-                    {
-                        SelectedAuthors.Add(new Models.DisplaySelectedAuthorModel { Author = new Models.Author { FirstName = "", LastName = "" }, FormattedName = "" });
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Failed to parse number of authors.");
-                    Console.WriteLine("SelectedNrOfAuthors: " + SelectedNrOfAuthors);
-                }
+                Console.WriteLine("Failed to parse number of authors.");
+                Console.WriteLine("SelectedNrOfAuthors: " + AuthorCount);
             }
 
             //Get all product types and categories to display dropdown menus
