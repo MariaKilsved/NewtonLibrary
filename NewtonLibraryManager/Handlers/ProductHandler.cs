@@ -120,7 +120,7 @@ public static class ProductHandler
                                 Isbn = product.Isbn,
                                 ProductType = type.Type1
                             };
-            queryable = queryable.OrderBy(p => p.Category).ThenBy(p => p.Language).ThenBy(p => p.LastName).ThenBy(p => p.FirstName);
+            queryable = queryable.OrderBy(p => p.LastName).ThenBy(p => p.FirstName);
 
             return queryable.ToList();
         }
@@ -206,8 +206,10 @@ public static class ProductHandler
     public static bool InsertProduct(Product product, List<Author> authors)
     {
 
+        /*
         if (!AccountHandler.AdminLoggedIn)
             throw new Exception("U ARE NOT ADMIN!!!");
+        */
 
         var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
         if (productList.Count > 1)

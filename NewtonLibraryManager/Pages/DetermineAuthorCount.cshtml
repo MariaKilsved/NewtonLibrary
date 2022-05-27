@@ -17,13 +17,13 @@
 {
 <div class="text-center">
 <h1 class="display-4">@ViewData["Title"]</h1>
-    <div class="my-3 d-flex align-items-center flex-column">
+    <form method="post" asp-page-handler="post" class="my-3 d-flex align-items-center flex-column" >
         <div class="mb-3 AltAutoWidth">
             <label for="selectedNrOfAuthors" class="form-label"><b>Antal författare</b></label>
             <select asp-for="SelectedNrOfAuthors" asp-items="@Model.NrOfAuthors" class="form-select" name="selectedNrOfAuthors" id="selectedNrOfAuthors"></select>
         </div>
-        <a class="btn btn-custom" asp-page="/AddProduct" asp-route-id="@Model.SelectedNrOfAuthors">Välj</a>
-    </div>
+        <button type="submit" class="btn btn-custom">Välj</button>
+    </form>
 </div>
 }
 else

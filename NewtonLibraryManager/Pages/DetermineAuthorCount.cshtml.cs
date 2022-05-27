@@ -15,8 +15,14 @@ namespace NewtonLibraryManager.Pages
         public string SelectedNrOfAuthors { get; set; }                 //The chosen option of the number of authors dropdown
 
 
+        /// <summary>
+        /// When page is loaded
+        /// </summary>
         public void OnGet()
         {
+            //Set default value
+            SelectedNrOfAuthors = "1";
+
             //Initialize NrOfAuthors to display dropdown menu
             NrOfAuthors = new List<SelectListItem>();
             for (int i = 1; i <= 5; i++)
@@ -24,5 +30,15 @@ namespace NewtonLibraryManager.Pages
                 NrOfAuthors.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
             }
         }
+
+        /// <summary>
+        /// When the button is pressed
+        /// </summary>
+        /// <returns>Redirect to AddProduct with the SelectedNrOfAuthors as parameter</returns>
+        public IActionResult OnPost()
+        {
+            return RedirectToPage("/AddProduct", new { nr = SelectedNrOfAuthors });
+        }
+
     }
 }

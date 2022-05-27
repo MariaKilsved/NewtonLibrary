@@ -16,28 +16,29 @@
 {
 <div class="text-center">
 <h1 class="display-4">@ViewData["Title"]</h1>
-<form method="post" asp-page-handler="AddProduct" class="mt-3 d-flex align-items-center flex-column">
+<form method="post" asp-page-handler="post" class="mt-3 d-flex align-items-center flex-column">
 
-    @for(int i = 0; i < @Model.SelectedAuthors.Count; i++)
+    @for(int i = 0; i < Model.SelectedAuthors.Count; i++)
     {
     string authorLabel = $"Författare {i + 1}";
     <div class="mb-3 AltAutoWidth">
         <label for="authorSelect" class="form-label"><b>@authorLabel</b></label>
         <div class="d-flex">
-            <select asp-items="Model.Authors" asp-for="SelectedAuthors[i].FormattedName" class="form-select" aria-label="Författare" name="authorId"></select>
+            <select asp-items="Model.Authors" asp-for="@Model.SelectedAuthors[i].FormattedName" class="form-select" aria-label="Författare" name="authorId"></select>
             <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseAuthor">+</button>
         </div>
         <div class="collapse" id="collapseAuthor">
             <div class="card card-body text-start my-4 pb-4">
                 <h5 class="d-block">Ny författare</h5>
                 <label for="authorFN" class="form-label d-block"><b>Förnamn</b></label>
-                <input type="text" asp-for="SelectedAuthors[i].Author.FirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <input type="text" asp-for="@Model.SelectedAuthors[i].Author.FirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
                 <label for="authorLN" class="form-label d-block"><b>Efternamn</b></label>
-                <input asp-for="SelectedAuthors[i].Author.LastName" type="text" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <input asp-for="@Model.SelectedAuthors[i].Author.LastName" type="text" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
             </div>
         </div>
     </div>        
     }
+    <input type="hidden" name="selectedAuthors" value="@Model.SelectedAuthors" />
 
     <div class="mb-3 AltAutoWidth">
         <label for="prodTitle" class="form-label"><b>Titel</b></label>
@@ -57,8 +58,8 @@
     </div>
 
     <div class="mb-3 AltAutoWidth">
-        <label for="categorySelect" class="form-label"><b>Kategori</b></label>
-        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="categoryId" id="categorySelect"></select>
+        <label for="SelectedCategory" class="form-label"><b>Kategori</b></label>
+        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="SelectedCategory" id="SelectedCategory"></select>
     </div>
 
     <div class="mb-3 AltAutoWidth">
@@ -77,12 +78,12 @@
     </div>
 
     <div class="mb-3 AltAutoWidth">
-        <label for="prodTypeSelect" class="form-label"><b>Produkttyp</b></label>
-        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="prodTypeId"></select>
+        <label for="SelectedProdType" class="form-label"><b>Produkttyp</b></label>
+        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="SelectedProdType" id="SelectedProdType"></select>
     </div>
     <div class="mb-3 AltAutoWidth">
-        <label for="nrOfCopies" class="form-label"><b>Antal exemplar</b></label>
-        <input type="number" asp-for="NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" placeholder="1"/>
+        <label for="NrOfCopies" class="form-label"><b>Antal exemplar</b></label>
+        <input type="number" asp-for="NrOfCopies" class="form-control" id="NrOfCopies" name="NrOfCopies" step="1" min="1" max="100" placeholder="1"/>
     </div>
     <button type="submit" class="btn btn-custom">Lägg till</button>
 </form>

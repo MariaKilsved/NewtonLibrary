@@ -32,19 +32,16 @@ namespace NewtonLibraryManager.Pages
         public List<SelectListItem> Categories { get; set; }            //Used to make the category dropdown (select)
 
         [BindProperty]
-        public List<SelectListItem> Authors { get; set; }               //Used to make the author dropdown (select)
+        public List<SelectListItem> Authors { get; set; }               //Used to make the author dropdown(s) (select)
 
-        [BindProperty]
+        [BindProperty, Required]
         public string SelectedCategory { get; set; }                    //The chosen option of the category dropdown
 
-        [BindProperty]
+        [BindProperty, Required]
         public string SelectedProdType { get; set; }                    //The chosen option of the product type dropdown
 
-        [BindProperty]
-        public string SelectedAuthor { get; set; }                      //The chosen option of the author dropdown
-
-        [BindProperty]
-        public List<Models.DisplaySelectedAuthorModel> SelectedAuthors { get; set; }        //The chosen authors
+        [BindProperty, Required]
+        public List<Models.DisplaySelectedAuthorModel> SelectedAuthors { get; set; }        //The chosen authors from all the author dropdown(s)
 
         [BindProperty]
         public List<Models.Language> Languages { get; set; }            //Used to make checkboxes from available languages
@@ -52,11 +49,11 @@ namespace NewtonLibraryManager.Pages
         [BindProperty, Required]
         public int LanguageId { get; set; }                             //Chosen language Id from checkboxes
 
-        private List<Models.Type> ProductTypes { get; set; }            //All product types in database
+        private List<Models.Type> ProductTypes { get; set; }            //All product types in database, later converted to SelectListItem for dropdown
 
-        private List<Models.Category> ProductCategories { get; set; }   //All product categories in database
+        private List<Models.Category> ProductCategories { get; set; }   //All product categories in database, later converted to SelectListItem for dropdown
 
-        private List<Models.Author> AllAuthorsList { get; set; }        //All authors in database
+        private List<Models.Author> AllAuthorsList { get; set; }        //All authors in database, later converted to SelectListItem for dropdown
 
         [BindProperty(SupportsGet = true)]
         public string AuthorCount { get; set; }
@@ -64,10 +61,10 @@ namespace NewtonLibraryManager.Pages
         /// <summary>
         /// When page is loaded
         /// </summary>
-        public void OnGet(string authorCount)
+        public void OnGet(string nr)
         {
-            AuthorCount = authorCount;
-
+            Console.WriteLine("nr: " + nr);
+            AuthorCount = nr;
 
             //Create the SelectedAuthors list from chosen number of authors, but it's still empty
             SelectedAuthors = new List<Models.DisplaySelectedAuthorModel>();
@@ -104,7 +101,7 @@ namespace NewtonLibraryManager.Pages
             }).ToList();
 
             //Create new list of SelectListItem from product categories; necessary for dropdown menu
-            Categories = ProductCategories.Select(a =>
+            Categories = ProductCategories.OrderBy(pc => pc.Category1).Select(a =>
             new SelectListItem
             {
                 Value = a.Id.ToString(),
@@ -125,13 +122,22 @@ namespace NewtonLibraryManager.Pages
         /// Submitting the new product
         /// </summary>
         /// <returns>Redirect to page</returns>
-        public IActionResult OnPostAddProduct()
+        public IActionResult OnPost()
         {
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 
-            //Create product and set some of the values
-            var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies };           
+            Console.WriteLine();
+            Console.WriteLine("SelectedCategory: " + SelectedCategory);
+            Console.WriteLine("SelectedProdType: " + SelectedProdType);
+            Console.WriteLine();
+
+            //Convert strings to int
+            int SelectedCategoryInt = Int32.Parse(SelectedCategory);
+            int SelectedProdTypeInt = Int32.Parse(SelectedProdType);
+
+            //Create product and set most of the values
+            var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies, CategoryId = SelectedCategoryInt , ProductType = SelectedProdTypeInt };           
 
             //Turn the List<Models.DisplaySelectedAuthorModel> SelectedAuthors into a List<Models.Author>
             var newAuthors = new List<Models.Author>();
@@ -155,6 +161,10 @@ namespace NewtonLibraryManager.Pages
                 }
                 else
                 {
+                    Console.WriteLine();
+                    Console.WriteLine("a.FormattedName: " + a.FormattedName);
+                    Console.WriteLine();
+
                     //Create new author from the chosen dropdown (select) string 
                     string[] subs = a.FormattedName.Split(", ");
 
