@@ -84,9 +84,11 @@ namespace NewtonLibraryManager.EntityFramework.Read
 
         public static List<Models.Type> GetTypes()
         {
-            using NewtonLibraryContext db = new();
-            var types = db.Types.ToList();
-            return types;
+            using (NewtonLibraryContext db = new NewtonLibraryContext())
+            {
+                var types = db.Types.ToList();
+                return types;
+            }
         }
 
         public static List<LendingDetail> GetLendingDetails()
@@ -123,6 +125,19 @@ namespace NewtonLibraryManager.EntityFramework.Read
                 throw new Exception("Could not find author with that ID");
             }
             return author;
+        }
+
+        public static List<AuthorDetail> GetAuthorDetails(int productId)
+        {
+            using NewtonLibraryContext db = new();
+            List<AuthorDetail> authordetails = db.AuthorDetails.Where(x => x.ProductId == productId).ToList();
+
+            if (authordetails == null)
+            {
+                throw new Exception("Could not retrieve Authordetail with provided product ID");
+            }
+
+            return authordetails;
         }
 
         public static Category GetCategories(int categoryId)

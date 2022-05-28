@@ -25,22 +25,26 @@ namespace NewtonLibraryManager.EntityFramework.Delete
             return false;
         }
 
-        public static bool DeleteAuthorDetail(int authordetailId)
+        public static int DeleteAuthorDetail(int productId)
         {
-            var listOfAuthorDetails = Read.ReadHandler.GetAuthorDetails();
+            List<AuthorDetail> authorDetails = Read.ReadHandler.GetAuthorDetails(productId);
 
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in listOfAuthorDetails)
-                    if (item.Id == authordetailId)
-                    {
-                        db.Remove(item);
-                        db.SaveChanges();
-                        return true;
-                    }
+                authorDetails.ForEach(author =>
+                {
+                    db.Remove(author);
+                });
+
+                try
+                {
+                    return db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Could not remove authordetails from database", ex);
+                }
             }
-            Console.WriteLine("DeleteAuthorDetail: ID not found.");
-            return false;
         }
 
         public static bool DeleteCategory(int categoryId)
@@ -114,22 +118,22 @@ namespace NewtonLibraryManager.EntityFramework.Delete
             return false;
         }
 
-        public static bool DeleteProduct(int productId)
+        public static int DeleteProduct(int productId)
         {
-            var listOfProducts = Read.ReadHandler.GetProducts();
+            Product prod = Read.ReadHandler.GetProducts(productId);
 
             using (NewtonLibraryContext db = new())
             {
-                foreach (var item in listOfProducts)
-                    if (item.Id == productId)
-                    {
-                        db.Remove(item);
-                        db.SaveChanges();
-                        return true;
-                    }
+                try
+                {
+                    db.Remove(prod);
+                    return db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Could not remove item from database", ex);
+                }
             }
-            Console.WriteLine("DeleteProduct: ID not found.");
-            return false;
         }
 
         public static bool DeleteType(int typeId)

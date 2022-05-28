@@ -12,6 +12,7 @@
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
 }
 
+
 @if(cookieValue1 == cookieComparerTrue)
 {
 <div class="text-center">
@@ -25,13 +26,13 @@
 
     <div class="d-flex flex-row justify-content-center">
         <div class="form-check p-4 text-start w-auto">
-          <input asp-for="IsSwedish" class="form-check-input" type="radio" name="languageRadio" id="languageRadio1" value="true" checked>
+          <input asp-for="IsSwedish" class="form-check-input" type="radio" name="isSwedish" id="languageRadio1" value="true" checked="checked">
           <label class="form-check-label" for="languageRadio1">
             <b>Svenska</b>
           </label>
         </div>
         <div class="form-check p-4 text-start w-auto">
-          <input asp-for="IsEnglish" class="form-check-input" type="radio" name="languageRadio" id="languageRadio2" value="true">
+          <input asp-for="IsSwedish" class="form-check-input" type="radio" name="isSwedish" id="languageRadio2" value="false">
           <label class="form-check-label" for="languageRadio2">
             <b>Engelska</b>
           </label>
@@ -40,7 +41,7 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="categorySelect" class="form-label"><b>Kategori</b></label>
-        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="categoryId" id="categorySelect"></select>
+        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="SelectedCategory" id="categorySelect"></select>
     </div>
 
     <div class="mb-3 AltAutoWidth">
@@ -60,13 +61,13 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="prodTypeSelect" class="form-label"><b>Produkttyp</b></label>
-        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="prodTypeId"></select>
+        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="SelectedProdType"></select>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="authorSelect" class="form-label"><b>Författare</b></label>
         <div class="d-flex">
-            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" name="authorId"></select>
+            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" name="SelectedAuthor"></select>
             <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseAuthor">+</button>
         </div>
     <div class="collapse" id="collapseAuthor">
