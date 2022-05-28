@@ -214,10 +214,6 @@ public static class ProductHandler
     /// <returns></returns>
     public static bool InsertProduct(Product product, List<Author> authors)
     {
-        //Check if admin.
-        if (!AccountHandler.AdminLoggedIn)
-            throw new Exception("U ARE NOT ADMIN!!!");
-
         //Check if ISBN exists in DB.
         var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
         if (productList.Count > 1)
