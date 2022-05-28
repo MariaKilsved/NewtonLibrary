@@ -7,6 +7,8 @@ public class DisplayLoanedProductModel
     public string Isbn { get; set; }
     public DateTime? From { get; set; }
     public DateTime? To { get; set; }
+    public DateTime? Returned { get; set; }
+
 
     public string FromAsString
     {
@@ -21,6 +23,14 @@ public class DisplayLoanedProductModel
         get
         {
             return To?.ToString("MM/dd/yyyy") ?? "-";
+        }
+    }
+
+    public string ReturnedAsString
+    {
+        get
+        {
+            return Returned?.ToString("MM/dd/yyyy") ?? "-";
         }
     }
 }

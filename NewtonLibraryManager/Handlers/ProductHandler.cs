@@ -12,26 +12,22 @@ public static class ProductHandler
     /// <param name="prodId">Product Id</param>
     /// <param name="userId">User Id, optional.</param>
     /// <returns>Returns true if everything went ok. False with an error otherwise.</returns>
-    public static bool ReturnProduct(int prodId, int userId = 0)
+    public static bool ReturnProduct(int prodId)
     {
-        userId = (userId == 0) ? AccountHandler.CurrentIdLoggedIn : userId;
-        var listOfDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
+        int userId = AccountHandler.CurrentIdLoggedIn;
+        var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
+        var ld = lendingDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
+        ld.ReturnDate = DateTime.Now;
 
-        using (NewtonLibraryContext db = new())
+        try
         {
-            foreach (var item in listOfDetails)
-                if (item.ProductId == prodId && item.UserId == userId)
-                {
-                    item.ReturnDate = DateTime.Now;
-                    db.LendingDetails.Attach(item);
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return true;
-                }
+            EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
+            return true;
         }
-
-        Console.WriteLine("Did not find relevant information in the database.");
-        return false;
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     /// <summary>

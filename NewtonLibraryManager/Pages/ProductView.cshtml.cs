@@ -143,7 +143,7 @@ namespace NewtonLibraryManager.Pages
                 int prodId = Int32.Parse(Id);
 
                 //Attempt to return product
-                if (Handlers.ProductHandler.ReturnProduct(prodId, userId))
+                if (Handlers.ProductHandler.ReturnProduct(prodId))
                 {
                     return RedirectToPage("/Index");
                 }
