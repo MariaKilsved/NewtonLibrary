@@ -132,17 +132,23 @@ namespace NewtonLibraryManager.Pages
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
             Console.WriteLine();
 
-            //Convert strings to int
-            int SelectedCategoryInt = Int32.Parse(SelectedCategory);
-            int SelectedProdTypeInt = Int32.Parse(SelectedProdType);
+            //Create the product and set the values
+            var product = new Models.Product()
             {
-            //Create product and set most of the values
-            var product = new Models.Product() { Title = Title, Isbn = Isbn, Description = Description, Dewey = Dewey, NrOfCopies = NrOfCopies, CategoryId = SelectedCategoryInt , ProductType = SelectedProdTypeInt };           
+                Title = Title,
+                LanguageId = LanguageId,
+                CategoryId = Int32.Parse(SelectedCategory),
+                NrOfCopies = NrOfCopies,
+                Dewey = Dewey,
+                Description = Description,
+                Isbn = Isbn,
+                ProductType = Int32.Parse(SelectedProdType)
+            };
 
             //Turn the List<Models.DisplaySelectedAuthorModel> SelectedAuthors into a List<Models.Author>
             var newAuthors = new List<Models.Author>();
-            {
-            foreach(var a in SelectedAuthors)
+
+            foreach (var a in SelectedAuthors)
             {
                 //Add author if named
                 if (a.Author != null && (!String.IsNullOrWhiteSpace(a.Author.FirstName)) && (!String.IsNullOrWhiteSpace(a.Author.LastName)))
@@ -150,9 +156,9 @@ namespace NewtonLibraryManager.Pages
                     //Remove commas just in case
                     a.Author.FirstName = a.Author.FirstName.Replace(",", "");
                     a.Author.LastName = a.Author.LastName.Replace(",", "");
-                product.LanguageId = 1;
+
                     newAuthors.Add(a.Author);
-            if(IsEnglish)
+
                     Console.WriteLine();
                     Console.WriteLine("Adding author from user input:");
                     Console.WriteLine("Author first name: " + a.Author.FirstName);
@@ -180,15 +186,15 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine();
 
                 }
-            {
+            }
             Console.WriteLine();
             Console.WriteLine("Attempting to add product...");
             Console.WriteLine();
-                //Set properties
-            Console.WriteLine("Attempting to add product...");
+
+            //Attempt to add product
             if (Handlers.ProductHandler.InsertProduct(product, newAuthors))
-            //Create and populate authorlist to be passed in InsertProduct()
-            List<Models.Author> authorList = new();
+            {
+                //Should redirect to specific product? Or show confirmation message on page.
 
                 //var addedProductList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
 
@@ -212,9 +218,9 @@ namespace NewtonLibraryManager.Pages
                 }
 
                 return RedirectToPage("/Index");
-
-            //Attempt to add product
-            /*
+            }
+            else
+            {
                 Console.WriteLine();
                 Console.WriteLine("Failed to add product!");
                 Console.WriteLine("Product Title: " + product.Title);
@@ -236,13 +242,6 @@ namespace NewtonLibraryManager.Pages
 
                 return RedirectToPage("/Error");
             }
-            {
-                return RedirectToPage("/ProductSearch");
-            }
-            */
-            return RedirectToPage("/ProductSearch");
-
-
         }
     }
 }

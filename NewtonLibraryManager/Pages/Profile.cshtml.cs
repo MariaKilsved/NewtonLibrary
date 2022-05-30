@@ -65,7 +65,7 @@ namespace NewtonLibraryManager.Pages
             //Must have password
             if (ModelState.IsValid == false || String.IsNullOrWhiteSpace(EditedUser.Password))
             {
-                PasswordError = "Ange l�senord";
+                PasswordError = "Ange l" + '\x00F6' + "senord";
                 return Page();
             }
             else

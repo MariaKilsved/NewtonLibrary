@@ -49,7 +49,7 @@
         @foreach(var language in Model.Languages)
         {
             <div class="form-check p-4 text-start w-auto">
-                <input asp-for="LanguageId" class="form-check-input" type="radio" name="language" id="@language.Language1" value="@language.Id">
+                <input asp-for="LanguageId" class="form-check-input" type="radio" name="LanguageId" id="@language.Language1" value="@language.Id">
                 <label class="form-check-label" for="@language.Language1">
                 <b>@language.Language1</b>
                 </label>
@@ -83,8 +83,8 @@
         <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="SelectedProdType" id="SelectedProdType"></select>
     </div>
     <div class="mb-3 AltAutoWidth">
-        <label for="nrOfCopies" class="form-label"><b>Antal exemplar</b></label>
-        <input type="number" asp-for="NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" value="1"/>
+        <label for="NrOfCopies" class="form-label"><b>Antal exemplar</b></label>
+        <input type="number" asp-for="NrOfCopies" class="form-control" id="NrOfCopies" name="NrOfCopies" step="1" min="1" max="100" placeholder="1"/>
     </div>
     <button type="submit" class="btn btn-custom">Lägg till</button>
 </form>

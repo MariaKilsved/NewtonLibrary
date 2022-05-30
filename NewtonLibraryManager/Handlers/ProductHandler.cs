@@ -206,20 +206,14 @@ public static class ProductHandler
     /// </summary>
     /// <param name="product"></param>
     /// <param name="authors"></param>
-    /// <param name="authorDetail"></param>
     /// <returns></returns>
     public static bool InsertProduct(Product product, List<Author> authors)
     {
         //Check if ISBN exists in DB.
-        var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
+        var productList = EntityFramework.Read.ReadHandler.GetProducts()
+            .Where(x => x.Isbn == product.Isbn).ToList();
         if (productList.Count > 1)
-            throw new Exception("Product already exists");
-
-        Console.WriteLine();
-        Console.WriteLine("Creating product...");
-        Console.WriteLine("product.Dewey: " + product.Dewey);
-        Console.WriteLine("product.LanguageId" + product.LanguageId);
-        Console.WriteLine();
+            throw new Exception("Product already exist");
 
         //Prepare list of authorIds to be used when creating Authordettails.
         List<int> authorIds = new();
@@ -233,7 +227,7 @@ public static class ProductHandler
         //If it doesnt exist, create new author and save that new new Id and add to id-list.
         authors.ForEach(x =>
         {
-            bool authorExists = false;
+            var authorExists = false;
             authorList.ForEach(d =>
             {
                 if (x.FirstName == d.FirstName && x.LastName == d.LastName)

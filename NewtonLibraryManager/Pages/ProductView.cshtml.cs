@@ -139,7 +139,7 @@ namespace NewtonLibraryManager.Pages
             //Validation using cookies. Cookies are saved as strings and must be converted to int.
             if (cookieValue != null && cookieValue2 != null && cookieComparer == cookieValue)
             {
-                int userId = Int32.Parse(cookieValue2);
+                //int userId = Int32.Parse(cookieValue2);
                 int prodId = Int32.Parse(Id);
 
                 //Attempt to return product
