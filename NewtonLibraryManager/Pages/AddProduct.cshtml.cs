@@ -145,7 +145,7 @@ namespace NewtonLibraryManager.Pages
             foreach(var a in SelectedAuthors)
             {
                 //Add author if named
-                if (a.Author != null && !String.IsNullOrWhiteSpace(a.Author.FirstName) && !String.IsNullOrWhiteSpace(a.Author.LastName))
+                if (a.Author != null && (!String.IsNullOrWhiteSpace(a.Author.FirstName)) && (!String.IsNullOrWhiteSpace(a.Author.LastName)))
                 {
                     //Remove commas just in case
                     a.Author.FirstName = a.Author.FirstName.Replace(",", "");
@@ -192,6 +192,25 @@ namespace NewtonLibraryManager.Pages
 
                 //var addedProductList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
 
+                Console.WriteLine();
+                Console.WriteLine("Successfully added product!");
+                Console.WriteLine("Product Title: " + product.Title);
+                Console.WriteLine("Product LanguageId: " + product.LanguageId);
+                Console.WriteLine("Product CategoryId: " + product.CategoryId);
+                Console.WriteLine("Product NrOfCopies: " + product.NrOfCopies);
+                Console.WriteLine("Product Dewey: " + product.Dewey);
+                Console.WriteLine("Product Description: " + product.Description);
+                Console.WriteLine("Product Isbn: " + product.Isbn);
+                Console.WriteLine("Product ProductType: " + product.ProductType);
+                Console.WriteLine();
+                Console.WriteLine("Product authors:");
+                for (int i = 0; i < newAuthors.Count; i++)
+                {
+                    Console.WriteLine($"Author {i + 1} FirstName: {newAuthors[i].FirstName}");
+                    Console.WriteLine($"Author {i + 1} LastName: {newAuthors[i].LastName}");
+                    Console.WriteLine();
+                }
+
                 return RedirectToPage("/Index");
             }
             else
@@ -207,7 +226,8 @@ namespace NewtonLibraryManager.Pages
                 Console.WriteLine("Product Isbn: " + product.Isbn);
                 Console.WriteLine("Product ProductType: " + product.ProductType);
                 Console.WriteLine();
-                for(int i = 0; i < newAuthors.Count; i++)
+                Console.WriteLine("Product authors:");
+                for (int i = 0; i < newAuthors.Count; i++)
                 {
                     Console.WriteLine($"Author {i + 1} FirstName: {newAuthors[i].FirstName}");
                     Console.WriteLine($"Author {i + 1} LastName: {newAuthors[i].LastName}");

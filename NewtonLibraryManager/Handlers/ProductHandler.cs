@@ -206,14 +206,15 @@ public static class ProductHandler
     public static bool InsertProduct(Product product, List<Author> authors)
     {
 
-        /*
-        if (!AccountHandler.AdminLoggedIn)
-            throw new Exception("U ARE NOT ADMIN!!!");
-        */
-
         var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
         if (productList.Count > 1)
             throw new Exception("Product already exists");
+
+        Console.WriteLine();
+        Console.WriteLine("Creating product...");
+        Console.WriteLine("product.Dewey: " + product.Dewey);
+        Console.WriteLine("product.LanguageId" + product.LanguageId);
+        Console.WriteLine();
 
         //If everything is ok, proceed with create!
         var prodId = EntityFramework.Create.CreateHandler.CreateProduct(product.Title, product.LanguageId, product.CategoryId, product.NrOfCopies,

@@ -55,6 +55,7 @@
                 </label>
             </div>
         }
+        <input type="hidden" name="selectedLanguage" value="@Model.LanguageId" />
     </div>
 
     <div class="mb-3 AltAutoWidth">
@@ -64,7 +65,7 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="dewey" class="form-label"><b>Dewey decimalklassifikation</b></label>
-        <input type="number" asp-for="Dewey" class="form-control" id="dewey" step="0.001" min="0" max="999.999" placeholder="839.738"/>
+        <input type="number" asp-for="Dewey" class="form-control" id="dewey" step="0.001" min="0" max="999.999" placeholder="839.738" value="@Model.Dewey"/>
     </div>
 
     <div class="mb-3 AltAutoWidth">
