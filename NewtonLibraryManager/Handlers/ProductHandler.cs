@@ -17,6 +17,7 @@ public static class ProductHandler
         int userId = AccountHandler.CurrentIdLoggedIn;
         var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
         var ld = lendingDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
+        if (ld == null) return false;
         ld.ReturnDate = DateTime.Now;
 
         try
@@ -24,10 +25,12 @@ public static class ProductHandler
             EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            Console.WriteLine(ex.Message);
         }
+
+        return false;
     }
 
     /// <summary>
@@ -43,16 +46,17 @@ public static class ProductHandler
             {
                 EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(productId);
                 EntityFramework.Delete.DeleteHandler.DeleteProduct(productId);
+                return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine(ex.Message);
             }
         } else
         {
             throw new Exception("Admin not logged in");
         }
-        return true;
+        return false;
     }
 
     /// <summary>
