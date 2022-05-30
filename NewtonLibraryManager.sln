@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewtonLibraryManager", "NewtonLibraryManager\NewtonLibraryManager.csproj", "{8E9E0BF3-0052-4413-A540-497251BA2E07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNewtonLibraryManager.TEST", "TestNewtonLibraryManager.TEST\TestNewtonLibraryManager.TEST.csproj", "{2E01309A-9DEC-4F29-BADF-D1255EC6DFA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8E9E0BF3-0052-4413-A540-497251BA2E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E9E0BF3-0052-4413-A540-497251BA2E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E9E0BF3-0052-4413-A540-497251BA2E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E01309A-9DEC-4F29-BADF-D1255EC6DFA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E01309A-9DEC-4F29-BADF-D1255EC6DFA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E01309A-9DEC-4F29-BADF-D1255EC6DFA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E01309A-9DEC-4F29-BADF-D1255EC6DFA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
