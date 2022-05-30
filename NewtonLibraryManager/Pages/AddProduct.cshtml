@@ -65,7 +65,7 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="dewey" class="form-label"><b>Dewey decimalklassifikation</b></label>
-        <input type="number" asp-for="Dewey" class="form-control" id="dewey" step="0.001" min="0" max="999.999" placeholder="839.738" value="@Model.Dewey"/>
+        <input type="number" asp-for="Dewey" class="form-control" id="dewey" step="0.001" min="0.001" max="999.999" value="839.738"/>
     </div>
 
     <div class="mb-3 AltAutoWidth">
@@ -83,8 +83,8 @@
         <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="SelectedProdType" id="SelectedProdType"></select>
     </div>
     <div class="mb-3 AltAutoWidth">
-        <label for="NrOfCopies" class="form-label"><b>Antal exemplar</b></label>
-        <input type="number" asp-for="NrOfCopies" class="form-control" id="NrOfCopies" name="NrOfCopies" step="1" min="1" max="100" placeholder="1"/>
+        <label for="nrOfCopies" class="form-label"><b>Antal exemplar</b></label>
+        <input type="number" asp-for="NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" value="1"/>
     </div>
     <button type="submit" class="btn btn-custom">Lägg till</button>
 </form>

@@ -143,7 +143,7 @@ namespace NewtonLibraryManager.Pages
                 int prodId = Int32.Parse(Id);
 
                 //Attempt to return product
-                if (Handlers.ProductHandler.ReturnProduct(prodId, userId))
+                if (Handlers.ProductHandler.ReturnProduct(prodId))
                 {
                     return RedirectToPage("/Index");
                 }
@@ -155,7 +155,7 @@ namespace NewtonLibraryManager.Pages
         /// When the submit button to delete a product is pressed. Only available to admins (librarians).
         /// </summary>
         /// <returns>Redirect to index or reload page.</returns>
-        public IActionResult OnDelete()
+        public IActionResult OnPostDelete()
         {
             //Compare cookies
             string cookieValue = Request.Cookies["LibraryCookie1"];

@@ -12,42 +12,47 @@ public static class ProductHandler
     /// <param name="prodId">Product Id</param>
     /// <param name="userId">User Id, optional.</param>
     /// <returns>Returns true if everything went ok. False with an error otherwise.</returns>
-    public static bool ReturnProduct(int prodId, int userId = 0)
+    public static bool ReturnProduct(int prodId)
     {
-        userId = (userId == 0) ? AccountHandler.CurrentIdLoggedIn : userId;
-        var listOfDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
+        int userId = AccountHandler.CurrentIdLoggedIn;
+        var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
+        var ld = lendingDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
+        ld.ReturnDate = DateTime.Now;
 
-        using (NewtonLibraryContext db = new())
+        try
         {
-            foreach (var item in listOfDetails)
-                if (item.ProductId == prodId && item.UserId == userId)
-                {
-                    item.ReturnDate = DateTime.Now;
-                    db.LendingDetails.Attach(item);
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return true;
-                }
+            EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
+            return true;
         }
-
-        Console.WriteLine("Did not find relevant information in the database.");
-        return false;
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     /// <summary>
     /// Deletes a product from the database, based on the product ID. Returns true if successful, false otherwise.
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="productId"></param>
     /// <returns></returns>
-    public static bool DeleteProduct(int id)
+    public static bool DeleteProduct(int productId)
     {
         if (AccountHandler.AdminLoggedIn)
         {
-            EntityFramework.Delete.DeleteHandler.DeleteProduct(id);
-            return true;
+            try
+            {
+                EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(productId);
+                EntityFramework.Delete.DeleteHandler.DeleteProduct(productId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        } else
+        {
+            throw new Exception("Admin not logged in");
         }
-        Console.WriteLine("Admin not logged in");
-        return false;
+        return true;
     }
 
     /// <summary>
@@ -205,7 +210,7 @@ public static class ProductHandler
     /// <returns></returns>
     public static bool InsertProduct(Product product, List<Author> authors)
     {
-
+        //Check if ISBN exists in DB.
         var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
         if (productList.Count > 1)
             throw new Exception("Product already exists");
@@ -216,38 +221,50 @@ public static class ProductHandler
         Console.WriteLine("product.LanguageId" + product.LanguageId);
         Console.WriteLine();
 
-        //If everything is ok, proceed with create!
-        var prodId = EntityFramework.Create.CreateHandler.CreateProduct(product.Title, product.LanguageId, product.CategoryId, product.NrOfCopies,
-            product.Dewey, product.Description, product.Isbn, product.ProductType);
-
-
-
+        //Prepare list of authorIds to be used when creating Authordettails.
         List<int> authorIds = new();
+
+        //Save authors from database.
         var authorList = EntityFramework.Read.ReadHandler.GetAuthors();
 
+        //Go through authors from input.
+        //Check if they exists by comparing every author from database.
+        //If author exists, use author id from "list of authors from database" and add it to id-list.
+        //If it doesnt exist, create new author and save that new new Id and add to id-list.
         authors.ForEach(x =>
         {
+            bool authorExists = false;
             authorList.ForEach(d =>
             {
                 if (x.FirstName == d.FirstName && x.LastName == d.LastName)
                 {
-                    throw new Exception("Author already exist");
+                    authorIds.Add(d.Id);
+                    authorExists = true;
                 }
-
             });
-
+            if (!authorExists)
+            {
+                var authorId = EntityFramework.Create.CreateHandler.CreateAuthor(x.FirstName, x.LastName);
+                authorIds.Add(authorId);
+            }
         });
 
-        authors.ForEach(x =>
-        {
-            var authorId = EntityFramework.Create.CreateHandler.CreateAuthor(x.FirstName, x.LastName);
-            authorIds.Add(authorId);
+        //If everything is ok and no exceptions has been thrown,
+        //proceed with creating product and authordetail
+        var prodId = EntityFramework.Create.CreateHandler.CreateProduct(
+            product.Title,
+            product.LanguageId,
+            product.CategoryId,
+            product.NrOfCopies,
+            product.Dewey,
+            product.Description,
+            product.Isbn,
+            product.ProductType
+        );
 
-        });
         authorIds.ForEach(x =>
         {
             EntityFramework.Create.CreateHandler.CreateAuthorDetail(x, prodId);
-
         });
 
         return true;

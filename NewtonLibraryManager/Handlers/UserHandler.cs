@@ -100,7 +100,8 @@ namespace NewtonLibraryManager.Handlers
 						TITLE = prdct.Title,
 						ISBN = prdct.Isbn,
 						FROM = ld.BorrowedFrom,
-						TO = ld.BorrowedTo
+						TO = ld.BorrowedTo,
+						RETURNED = ld.ReturnDate
 					};
 
 				foreach (var item in queryable)
@@ -111,6 +112,7 @@ namespace NewtonLibraryManager.Handlers
 					lpdm.Isbn = item.ISBN;
 					lpdm.From = item.FROM;
 					lpdm.To = item.TO;
+					lpdm.Returned = item.RETURNED;
 					loanedProducts.Add(lpdm);
 				}
 			}
