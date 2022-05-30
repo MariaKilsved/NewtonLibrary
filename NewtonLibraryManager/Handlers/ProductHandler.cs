@@ -17,17 +17,22 @@ public static class ProductHandler
         int userId = AccountHandler.CurrentIdLoggedIn;
         var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
         var ld = lendingDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
-        ld.ReturnDate = DateTime.Now;
+        if (ld != null)
+        {
+            ld.ReturnDate = DateTime.Now;
 
-        try
-        {
-            EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
-            return true;
+            try
+            {
+                EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
-        catch (Exception)
-        {
-            throw;
-        }
+
+        return false;
     }
 
     /// <summary>
@@ -43,16 +48,17 @@ public static class ProductHandler
             {
                 EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(productId);
                 EntityFramework.Delete.DeleteHandler.DeleteProduct(productId);
+                return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine(ex.Message);
             }
         } else
         {
             throw new Exception("Admin not logged in");
         }
-        return true;
+        return false;
     }
 
     /// <summary>
@@ -206,7 +212,6 @@ public static class ProductHandler
     /// </summary>
     /// <param name="product"></param>
     /// <param name="authors"></param>
-    /// <param name="authorDetail"></param>
     /// <returns></returns>
     public static bool InsertProduct(Product product, List<Author> authors)
     {
