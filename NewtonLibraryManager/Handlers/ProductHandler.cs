@@ -17,19 +17,17 @@ public static class ProductHandler
         int userId = AccountHandler.CurrentIdLoggedIn;
         var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
         var ld = lendingDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
-        if (ld != null)
-        {
-            ld.ReturnDate = DateTime.Now;
+        if (ld == null) return false;
+        ld.ReturnDate = DateTime.Now;
 
-            try
-            {
-                EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+        try
+        {
+            EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
         }
 
         return false;
