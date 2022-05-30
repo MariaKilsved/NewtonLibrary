@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using NewtonLibraryManager.Models;
 
 namespace NewtonLibraryManager.Handlers;
 
-public class ProductHandler
+public static class ProductHandler
 {
 
     /// <summary>
@@ -11,50 +12,50 @@ public class ProductHandler
     /// <param name="prodId">Product Id</param>
     /// <param name="userId">User Id, optional.</param>
     /// <returns>Returns true if everything went ok. False with an error otherwise.</returns>
-    public static bool ReturnProduct(int prodId, int userId = 0)
+    public static bool ReturnProduct(int prodId)
     {
-        userId = (userId == 0) ? AccountHandler.CurrentIdLoggedIn : userId;
-        var listOfDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
+        int userId = AccountHandler.CurrentIdLoggedIn;
+        var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
+        var ld = lendingDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
+        if (ld == null) return false;
+        ld.ReturnDate = DateTime.Now;
 
-        using (NewtonLibraryContext db = new())
+        try
         {
-            foreach (var item in listOfDetails)
-                if (item.ProductId == prodId && item.UserId == userId)
-                {
-                    item.ReturnDate = DateTime.Now;
-                    db.SaveChanges();
-                    return true;
-                }
-        }
-
-        Console.WriteLine("Did not find relevant information in the database.");
-        return false;
-    }
-    public static bool AddProduct(string title, int languageId, int categoryId, int nrOfCopies,
-        decimal dewey, string description, string isbn, int productType)
-    {
-        if (AccountHandler.AdminLoggedIn)
-        {
-            EntityFramework.Create.CreateHandler.CreateProduct(title, languageId, categoryId, nrOfCopies, dewey,
-                description, isbn, productType);
+            EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
             return true;
         }
-        Console.WriteLine("Admin not logged in");
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
         return false;
     }
+
     /// <summary>
     /// Deletes a product from the database, based on the product ID. Returns true if successful, false otherwise.
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="productId"></param>
     /// <returns></returns>
-    public static bool DeleteProduct(int id)
+    public static bool DeleteProduct(int productId)
     {
         if (AccountHandler.AdminLoggedIn)
         {
-            EntityFramework.Delete.DeleteHandler.DeleteProduct(id);
-            return true;
+            try
+            {
+                EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(productId);
+                EntityFramework.Delete.DeleteHandler.DeleteProduct(productId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        } else
+        {
+            throw new Exception("Admin not logged in");
         }
-        Console.WriteLine("Admin not logged in");
         return false;
     }
 
@@ -208,34 +209,61 @@ public class ProductHandler
     /// Adds a Product/Author/AuthorDetail if it doesnt exist already.
     /// </summary>
     /// <param name="product"></param>
-    /// <param name="author"></param>
-    /// <param name="authorDetail"></param>
+    /// <param name="authors"></param>
     /// <returns></returns>
-    public static bool InsertProduct(Product product, Author author, AuthorDetail authorDetail)
+    public static bool InsertProduct(Product product, List<Author> authors)
     {
-        if (!AccountHandler.AdminLoggedIn)
-            return false;
-
+        //Check if ISBN exists in DB.
         var productList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
-            if (productList.Count > 1)
-                return false;
+        if (productList.Count > 1)
+            throw new Exception("Product already exist");
 
-            //If everything is ok, proceed with create!
-        EntityFramework.Create.CreateHandler.CreateProduct(product.Title, product.LanguageId, product.CategoryId, product.NrOfCopies,
-            product.Dewey, product.Description, product.Isbn, product.ProductType);
+        //Prepare list of authorIds to be used when creating Authordettails.
+        List<int> authorIds = new();
 
+        //Save authors from database.
+        var authorList = EntityFramework.Read.ReadHandler.GetAuthors();
 
-        var authorList = EntityFramework.Read.ReadHandler.GetAuthors().Where(x => x.LastName == author.LastName && x.FirstName == author.FirstName).ToList();
-        if (authorList.Count > 0)
+        //Go through authors from input.
+        //Check if they exists by comparing every author from database.
+        //If author exists, use author id from "list of authors from database" and add it to id-list.
+        //If it doesnt exist, create new author and save that new new Id and add to id-list.
+        authors.ForEach(x =>
         {
-            author.FirstName = authorList.FirstOrDefault()?.FirstName;
-            author.LastName = authorList.FirstOrDefault()?.LastName;
-        }
-        else
+            bool authorExists = false;
+            authorList.ForEach(d =>
+            {
+                if (x.FirstName == d.FirstName && x.LastName == d.LastName)
+                {
+                    authorIds.Add(d.Id);
+                    authorExists = true;
+                }
+            });
+            if (!authorExists)
+            {
+                var authorId = EntityFramework.Create.CreateHandler.CreateAuthor(x.FirstName, x.LastName);
+                authorIds.Add(authorId);
+            }
+        });
+
+        //If everything is ok and no exceptions has been thrown,
+        //proceed with creating product and authordetail
+        var prodId = EntityFramework.Create.CreateHandler.CreateProduct(
+            product.Title,
+            product.LanguageId,
+            product.CategoryId,
+            product.NrOfCopies,
+            product.Dewey,
+            product.Description,
+            product.Isbn,
+            product.ProductType
+        );
+
+        authorIds.ForEach(x =>
         {
-            EntityFramework.Create.CreateHandler.CreateAuthor(author.FirstName, author.LastName);
-            EntityFramework.Create.CreateHandler.CreateAuthorDetail(authorDetail.AuthorId, authorDetail.ProductId);
-        }
+            EntityFramework.Create.CreateHandler.CreateAuthorDetail(x, prodId);
+        });
+
         return true;
     }
 }

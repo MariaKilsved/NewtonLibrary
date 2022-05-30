@@ -35,7 +35,7 @@ namespace NewtonLibraryManager.Handlers
 		/// <returns></returns>
 		public static List<User> GetUsers()
 		{
-			List<User> user = EntityFramework.Read.ReadHandler.GetUsers();
+			var user = EntityFramework.Read.ReadHandler.GetUsers();
 			return user;
 		}
 
@@ -46,7 +46,7 @@ namespace NewtonLibraryManager.Handlers
 		/// <returns></returns>
 		public static User GetUser(int userId)
 		{
-			User user = EntityFramework.Read.ReadHandler.GetUsers(userId);
+			var user = EntityFramework.Read.ReadHandler.GetUsers(userId);
 			return user;
 		}
 
@@ -100,7 +100,8 @@ namespace NewtonLibraryManager.Handlers
 						TITLE = prdct.Title,
 						ISBN = prdct.Isbn,
 						FROM = ld.BorrowedFrom,
-						TO = ld.BorrowedTo
+						TO = ld.BorrowedTo,
+						RETURNED = ld.ReturnDate
 					};
 
 				foreach (var item in queryable)
@@ -111,6 +112,7 @@ namespace NewtonLibraryManager.Handlers
 					lpdm.Isbn = item.ISBN;
 					lpdm.From = item.FROM;
 					lpdm.To = item.TO;
+					lpdm.Returned = item.RETURNED;
 					loanedProducts.Add(lpdm);
 				}
 			}

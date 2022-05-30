@@ -6,9 +6,11 @@ namespace NewtonLibraryManager.EntityFramework.Create;
 /// </summary>
 public static class CreateHandler
 {
-    public static bool CreateProduct(string title, int langId, int catId, 
+    public static int CreateProduct(string title, int langId, int catId, 
         int nrOfCopies, decimal dewey, string desc, string isbn, int productType)
     {
+
+        int prodId;
         try
         {
             using (NewtonLibraryContext db = new())
@@ -26,13 +28,13 @@ public static class CreateHandler
                 };
                 db.Add(product);
                 db.SaveChanges();
+                prodId = product.Id;
             }
-            return true;
+            return prodId;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine($"Error: {e.Message}");
-            return false;
+            throw new Exception("Could not add product");
         }
     }
     public static bool CreateLendingDetail(int userId, DateTime from, DateTime to, int productId)
@@ -107,8 +109,9 @@ public static class CreateHandler
         }
     }
     
-    public static bool CreateAuthor(string firstName, string lastName)
+    public static int CreateAuthor(string firstName, string lastName)
     {
+        int authorId;
         try
         {
             using (NewtonLibraryContext db = new())
@@ -120,13 +123,13 @@ public static class CreateHandler
                 };
                 db.Add(author);
                 db.SaveChanges();
+                authorId = author.Id;
             }
-            return true;
+            return authorId;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine($"Error: {ex.Message}");
-            return false;
+            throw new Exception("Could not add author");
         }
     }
     public static bool CreateType(string tp)

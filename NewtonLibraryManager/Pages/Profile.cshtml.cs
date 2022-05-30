@@ -49,7 +49,7 @@ namespace NewtonLibraryManager.Pages
                 Password = User1.Password };
 
             //Obtain user loans
-            UserLoans = Handlers.UserHandler.GetUserLoans(IdAsInt);
+            UserLoans = Handlers.UserHandler.GetUserLoans(IdAsInt).Where(x => x.Returned == null).ToList();
 
             //Obtain user reservations
             UserReservations = Handlers.UserHandler.GetUserReservations(IdAsInt);
@@ -65,7 +65,7 @@ namespace NewtonLibraryManager.Pages
             //Must have password
             if (ModelState.IsValid == false || String.IsNullOrWhiteSpace(EditedUser.Password))
             {
-                PasswordError = "Ange lösenord";
+                PasswordError = "Ange lï¿½senord";
                 return Page();
             }
             else
