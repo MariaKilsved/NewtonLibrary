@@ -12,7 +12,7 @@
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
 }
 
-@if(cookieValue1 == cookieComparerTrue && @Model.SelectedAuthors != null && @Model.SelectedAuthors.Count > 0)
+@if(cookieValue1 == cookieComparerTrue)
 {
 <div class="text-center">
 <h1 class="display-4">@ViewData["Title"]</h1>
@@ -24,16 +24,19 @@
     <div class="mb-3 AltAutoWidth">
         <label for="authorSelect" class="form-label"><b>@authorLabel</b></label>
         <div class="d-flex">
-            <select asp-items="Model.Authors" asp-for="@Model.SelectedAuthors[i].FormattedName" class="form-select" aria-label="Författare" name="authorId"></select>
+            <select asp-items="Model.Authors" asp-for="@Model.SelectedAuthors[i].FormattedName" class="form-select" aria-label="Författare" name="@Model.SelectedAuthors[i].FormattedName"></select>
             <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseAuthor">+</button>
+            <input type="hidden" name="Model.SelectedAuthors[i].FormattedName" value="@Model.SelectedAuthors[i].FormattedName" />
         </div>
         <div class="collapse" id="collapseAuthor">
             <div class="card card-body text-start my-4 pb-4">
                 <h5 class="d-block">Ny författare</h5>
                 <label for="authorFN" class="form-label d-block"><b>Förnamn</b></label>
-                <input type="text" asp-for="@Model.SelectedAuthors[i].Author.FirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <input type="text" asp-for="@Model.SelectedAuthors[i].Author.FirstName" name="@Model.SelectedAuthors[i].Author.FirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
                 <label for="authorLN" class="form-label d-block"><b>Efternamn</b></label>
-                <input asp-for="@Model.SelectedAuthors[i].Author.LastName" type="text" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <input asp-for="@Model.SelectedAuthors[i].Author.LastName" type="text" name="@Model.SelectedAuthors[i].Author.LastName" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <input type="hidden" name="Model.SelectedAuthors[i].Author.FirstName" value="@Model.SelectedAuthors[i].Author.FirstName" />
+                <input type="hidden" name="Model.SelectedAuthors[i].Author.LastName" value="@Model.SelectedAuthors[i].Author.LastName" />
             </div>
         </div>
     </div>        
@@ -65,7 +68,11 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="dewey" class="form-label"><b>Dewey decimalklassifikation</b></label>
-        <input type="number" asp-for="Dewey" class="form-control" id="dewey" step="0.001" min="0.001" max="999.999" value="839.738"/>
+        <input type="text" asp-for="Dewey" class="form-control" id="dewey" minlength="3" maxlength="7" data-val-length-min="3" data-val-length-max="7" placeholder="T.ex. 839.738"/>
+        @if (!String.IsNullOrWhiteSpace(@Model.DeweyError))
+        {
+            <div id="passwordHelp" class="form-text"><i>@Model.DeweyError</i></div>
+        }
     </div>
 
     <div class="mb-3 AltAutoWidth">

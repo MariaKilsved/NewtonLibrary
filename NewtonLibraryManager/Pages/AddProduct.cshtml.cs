@@ -14,7 +14,10 @@ namespace NewtonLibraryManager.Pages
         public string Title { get; set; }
 
         [BindProperty, Required]
-        public decimal Dewey { get; set; }
+        public string Dewey { get; set; }                               //Due to issues with how numbers input behave, this is from a text input
+
+        [BindProperty]
+        public string DeweyError { get; set; }                          //Will print out an error if Dewey has the wrong format
 
         [BindProperty]
         public string Description { get; set; }
@@ -127,6 +130,15 @@ namespace NewtonLibraryManager.Pages
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 
+            //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
+            Dewey = Dewey.Replace('.', ',');
+            bool s = Decimal.TryParse(Dewey, out decimal DeweyDecimal);
+            if(!s)
+            {
+                DeweyError = "M" + '\x00E5' + "ste vara ett nummer mellan 0 och 999.999";
+                return Page();
+            }
+
             Console.WriteLine();
             Console.WriteLine("SelectedCategory: " + SelectedCategory);
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
@@ -139,7 +151,7 @@ namespace NewtonLibraryManager.Pages
                 LanguageId = LanguageId,
                 CategoryId = Int32.Parse(SelectedCategory),
                 NrOfCopies = NrOfCopies,
-                Dewey = Dewey,
+                Dewey = DeweyDecimal,
                 Description = Description,
                 Isbn = Isbn,
                 ProductType = Int32.Parse(SelectedProdType)
