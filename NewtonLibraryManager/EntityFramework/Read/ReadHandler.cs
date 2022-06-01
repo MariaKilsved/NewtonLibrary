@@ -215,7 +215,7 @@ namespace NewtonLibraryManager.EntityFramework.Read
             {
                 throw new Exception("Could not find news with that ID");
             }
-                return newsAndEvent;
+            return newsAndEvent;
         }
     }
 }
