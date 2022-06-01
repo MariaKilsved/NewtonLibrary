@@ -39,23 +39,27 @@ public static class ProductHandler
     /// <returns>Returns true if everything went ok. False with an error otherwise.</returns>
     public static bool ReturnProduct(int prodId)
     {
-        int userId = AccountHandler.CurrentIdLoggedIn;
-        var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
-        var ld = lendingDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
-        if (ld == null) return false;
-        ld.ReturnDate = DateTime.Now;
-
         try
         {
-            EntityFramework.Update.UpdateHandler.UpdateLendingDetails(ld);
-            return true;
+            int userId = AccountHandler.CurrentIdLoggedIn;
+            var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
+            var ld = lendingDetails.Where(x => x.ProductId == prodId && x.UserId == userId).ToList();
+
+            ld.ForEach(x =>
+            {
+                if (x.ReturnDate == null)
+                {
+                    x.ReturnDate = DateTime.Now;
+                    EntityFramework.Update.UpdateHandler.UpdateLendingDetails(x);
+                }
+            });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine(ex.Message);
+            throw;
         }
 
-        return false;
+        return true;
     }
 
     public static bool CancelReservation(int prodId)
