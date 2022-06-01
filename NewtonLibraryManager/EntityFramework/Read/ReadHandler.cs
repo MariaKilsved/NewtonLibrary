@@ -111,6 +111,13 @@ namespace NewtonLibraryManager.EntityFramework.Read
             return authors;
         }
 
+        public static List<NewsAndEvent> GetNewsAndEvents()
+        {
+            using NewtonLibraryContext db = new();
+            var newsAndEvents = db.NewsAndEvents.ToList();
+            return newsAndEvents;
+        }
+
         //-----------//
         //Overloads//
         //---------//
@@ -198,6 +205,17 @@ namespace NewtonLibraryManager.EntityFramework.Read
                 throw new Exception("Could not find reservationdetail with that ID");
             }
             return reservationDetail;
+        }
+
+        public static NewsAndEvent GetNewsAndEvents(int newsAndEventId)
+        {
+            using NewtonLibraryContext db = new();
+            NewsAndEvent newsAndEvent = db.NewsAndEvents.Find(newsAndEventId);
+            if (newsAndEvent == null)
+            {
+                throw new Exception("Could not find news with that ID");
+            }
+                return newsAndEvent;
         }
     }
 }

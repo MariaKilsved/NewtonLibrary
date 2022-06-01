@@ -213,4 +213,20 @@ public static class CreateHandler
             return false;
         }
     }
+
+    public static bool CreateNewsEvent(NewsAndEvent newsevent)
+    {
+        var db = new NewtonLibraryContext();
+        db.Add(newsevent);
+        try
+        {
+            db.SaveChanges();
+            return true;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

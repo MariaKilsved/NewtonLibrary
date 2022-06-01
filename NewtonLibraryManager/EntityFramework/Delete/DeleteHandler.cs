@@ -171,5 +171,23 @@ namespace NewtonLibraryManager.EntityFramework.Delete
             Console.WriteLine("DeleteUser: ID not found.");
             return false;
         }
+
+        public static bool DeleteNewsEvent(int NewsEventId)
+        {
+            var listOfNewsEvents = Read.ReadHandler.GetNewsAndEvents();
+
+            using (NewtonLibraryContext db = new())
+            {
+                foreach (var item in listOfNewsEvents)
+                    if (item.Id == NewsEventId)
+                    {
+                        db.Remove(item);
+                        db.SaveChanges();
+                        return true;
+                    }
+            }
+            return false;
+
+        }
     }
 }

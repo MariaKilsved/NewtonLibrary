@@ -121,5 +121,25 @@ namespace NewtonLibraryManager.EntityFramework.Update
                 }
             }
         }
+
+        public static int UpdateNewsAndEvent(NewsAndEvent updateNewsAndEvent)
+        {
+            using (NewtonLibraryContext db = new NewtonLibraryContext())
+            {
+                db.NewsAndEvents.Attach(updateNewsAndEvent);
+                db.Entry(updateNewsAndEvent).State = EntityState.Modified;
+
+                //Save changes, return number of rows changed or throw exception
+                try
+                {
+                    return db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    throw new Exception("Could not update database", ex);
+                }
+            }
+        }
     }
 }
