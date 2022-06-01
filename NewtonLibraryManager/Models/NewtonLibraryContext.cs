@@ -21,7 +21,7 @@ namespace NewtonLibraryManager.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
         public virtual DbSet<LendingDetail> LendingDetails { get; set; }
-        public virtual DbSet<Necategory> Necategories { get; set; }
+        public virtual DbSet<NECategory> NECategories { get; set; }
         public virtual DbSet<NewsAndEvent> NewsAndEvents { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ReservationDetail> ReservationDetails { get; set; }
@@ -112,7 +112,7 @@ namespace NewtonLibraryManager.Models
                     .HasConstraintName("FK_LendingDetails.UserId");
             });
 
-            modelBuilder.Entity<Necategory>(entity =>
+            modelBuilder.Entity<NECategory>(entity =>
             {
                 entity.ToTable("NECategory");
 

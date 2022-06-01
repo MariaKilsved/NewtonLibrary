@@ -15,8 +15,15 @@
 <div class="text-center">
 @if (cookieValue1 == cookieComparerTrue)
 {
-    <h1 class="display-4">Administrera användare</h1>
-
+        <div class="container mb-3 text-center">
+            <h3>Statistik</h3>
+            <div class="d-inline-flex justify-content-start flex-column text-start">
+                <div><b>Användare som lånat flest produkter: </b>@Model.MostActiveUser</div>
+            </div>
+        </div>
+        <div class="container">
+            <h3 class="mb-0">Alla användare</h3>
+        </div>
         <div class="container mt-3 searchResults">
           <div class="row searchHeader">
             <div class="col-1">

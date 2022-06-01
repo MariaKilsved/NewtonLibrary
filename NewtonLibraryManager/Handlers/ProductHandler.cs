@@ -58,6 +58,26 @@ public static class ProductHandler
         return false;
     }
 
+    public static bool CancelReservation(int prodId)
+    {
+        int userId = AccountHandler.CurrentIdLoggedIn;
+        var reservationDetails = EntityFramework.Read.ReadHandler.GetReservationDetails();
+        var rd = reservationDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
+        if (rd == null) return false;
+        
+        try
+        {
+            EntityFramework.Delete.DeleteHandler.DeleteReservationDetail(rd.Id);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return false;
+
+    }
+
     /// <summary>
     /// Deletes a product from the database, based on the product ID. Returns true if successful, false otherwise.
     /// </summary>
@@ -224,6 +244,21 @@ public static class ProductHandler
     public static bool HasLendingDetail(int userId, int productId)
     {
         var list = EntityFramework.Read.ReadHandler.GetLendingDetails()
+            .Where(ld => (ld.UserId == userId && ld.ProductId == productId))
+            .ToList();
+
+        return (list.Count > 0);
+    }
+
+    /// <summary>
+    /// Check if a ReservationDetail exist between a specific user and a specific product
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="productId"></param>
+    /// <returns>True if a ReservationDetail exists, False if not.</returns>
+    public static bool HasReservationDetail(int userId, int productId)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
             .Where(ld => (ld.UserId == userId && ld.ProductId == productId))
             .ToList();
 

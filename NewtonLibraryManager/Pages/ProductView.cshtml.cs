@@ -20,6 +20,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public bool HasLendingDetail { get; set; }
 
+        [BindProperty]
+        public bool HasReservationDetail { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -60,6 +63,9 @@ namespace NewtonLibraryManager.Pages
             {
                 //Set HasLendingDetail to true only if a matching LendingDetail exists
                 HasLendingDetail = Handlers.ProductHandler.HasLendingDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+
+                //Set HasReservationDetail to true only if a matching ReservationDetail exists
+                HasReservationDetail = Handlers.ProductHandler.HasReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
             }
             else
             {
@@ -122,6 +128,36 @@ namespace NewtonLibraryManager.Pages
             }
 			//Console.WriteLine("Cookie: " + cookieValue);
 			//Console.WriteLine("Cookie 2: " + cookieValue2);
+            return Page();
+        }
+
+        /// <summary>
+        /// When the submit button to reserve is pressed
+        /// </summary>
+        /// <returns>Redirect to index or reload page.</returns>
+        public IActionResult OnPostCancelReservation()
+        {
+            //Compare cookies
+            string cookieValue = Request.Cookies["LibraryCookie"];
+            string cookieValue2 = Request.Cookies["LibraryCookie2"];
+
+            //Validation using cookies. Cookies are saved as strings and must be converted to int.
+            if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
+            {
+                //int userId = Int32.Parse(cookieValue2);
+                int prodId = Int32.Parse(Id);
+
+                //Attempt to reserve product
+                if (Handlers.ProductHandler.CancelReservation(prodId))
+                {
+                    return RedirectToPage("/Index");
+
+                }
+                //Console.WriteLine("User: " + userId);
+                //Console.WriteLine("Product: " + prodId);
+            }
+            //Console.WriteLine("Cookie: " + cookieValue);
+            //Console.WriteLine("Cookie 2: " + cookieValue2);
             return Page();
         }
 
