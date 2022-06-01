@@ -113,7 +113,10 @@ namespace NewtonLibraryManager.Handlers
 					lpdm.From = item.FROM;
 					lpdm.To = item.TO;
 					lpdm.Returned = item.RETURNED;
-					loanedProducts.Add(lpdm);
+                    if (lpdm.Returned == null)
+                    {
+						loanedProducts.Add(lpdm);
+					}
 				}
 			}
 			return loanedProducts;
