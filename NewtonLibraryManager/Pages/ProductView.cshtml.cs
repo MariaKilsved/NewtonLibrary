@@ -20,6 +20,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public bool HasLendingDetail { get; set; }
 
+        [BindProperty]
+        public bool HasReservationDetail { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -60,6 +63,9 @@ namespace NewtonLibraryManager.Pages
             {
                 //Set HasLendingDetail to true only if a matching LendingDetail exists
                 HasLendingDetail = Handlers.ProductHandler.HasLendingDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+
+                //Set HasReservationDetail to true only if a matching ReservationDetail exists
+                HasReservationDetail = Handlers.ProductHandler.HasReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
             }
             else
             {

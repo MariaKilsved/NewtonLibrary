@@ -8,6 +8,7 @@
     cookieValue = Request.Cookies["LibraryCookie"];
     cookieValue1 = Request.Cookies["LibraryCookie1"];
     cookieValue2 = Request.Cookies["LibraryCookie2"];
+    string cookieComparerId = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2);
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
     int inStock = Model.Product.NrOfCopies - Model.LendedOut;
@@ -64,16 +65,20 @@
 	<div class="container mt-3 text-start beige-bg">@Model.Product.Description</div>
 }
 
-@if(cookieValue != null) {
+@if(cookieValue == cookieComparerId) {
     <form method=post>
         <div class="container mt-4 text-center">
             @if(@inStock > 0)
             {
                 <button type="submit" value="borrow" asp-page-handler="Borrow" class="btn btn-custom">Låna</button>
             }
-            else
+            @if(@inStock <= 0 && !Model.HasReservationDetail)
             {
                 <button type="submit" value="reserve" asp-page-handler="Reserve" class="btn btn-custom">Reservera</button>
+            }
+            @if(Model.HasReservationDetail)
+            {
+                <button type="submit" value="cancel" asp-page-handler="CancelReservation" class="btn btn-custom">Avbryt reservation</button>
             }
             @if(Model.HasLendingDetail)
             {
