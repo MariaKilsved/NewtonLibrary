@@ -31,6 +31,7 @@ public class DisplayProductModel
                 return "";
             }
         } }
+    public List<string> AuthorsList { get; set; }
     public string DeweyString { get {
             return Dewey.ToString("000.###", new System.Globalization.CultureInfo("en-US"));
         } }
