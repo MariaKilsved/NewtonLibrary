@@ -130,7 +130,7 @@ namespace NewtonLibraryManager.Pages
             Authors = AllAuthorsList.OrderBy(author => author.LastName).Select(a =>
             new SelectListItem
             {
-                Value = a.Id.ToString(),
+                Value = a.FirstName + "*" + a.LastName,
                 Text = a.LastName + ", " + a.FirstName
             }).ToList();
 
@@ -172,7 +172,7 @@ namespace NewtonLibraryManager.Pages
                 ProductType = Int32.Parse(SelectedProdType)
             };
 
-            //Turn the List<Models.DisplaySelectedAuthorModel> SelectedAuthors into a List<Models.Author>
+            //Create list of authors
             var newAuthors = new List<Models.Author>();
 
             //Loop through authors list. Using SelectedAuthorNames instead of AuthorCountInt in case of page reloads
@@ -190,12 +190,9 @@ namespace NewtonLibraryManager.Pages
                 }
                 else
                 {
-                    //Create new author from the chosen dropdown (select) string
-                    //Get the authors from the dropdown by splitting into substrings
-                    string[] subs = SelectedAuthorNames[i].Split(", ");
+                    var subs = SelectedAuthorNames[i].Split("*");
 
-                    //Add new author to list
-                    newAuthors.Add(new Models.Author { FirstName = subs[1], LastName = subs[0] });
+                    newAuthors.Add(new Models.Author() { FirstName = subs[0], LastName = subs[1] });
                 }
             }
 
