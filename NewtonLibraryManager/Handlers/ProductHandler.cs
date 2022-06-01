@@ -9,6 +9,31 @@ public static class ProductHandler
     /// <summary>
     /// Should be called when a user returns a product. It sets the return date in the lending details database.
     /// </summary>
+    /// <param name="product">Product</param>
+    /// <param name="authors">List of authors.</param>
+    /// <returns>Returns true if everything went ok. Error otherwise.</returns>
+    public static bool updateProduct(Product product, List<Author> authors)
+    {
+        try
+        {
+            EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(product.Id);
+            EntityFramework.Update.UpdateHandler.UpdateProduct(product);
+            authors.ForEach(x =>
+            {
+                EntityFramework.Create.CreateHandler.CreateAuthorDetail(x.Id, product.Id);
+            });
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Should be called when a user returns a product. It sets the return date in the lending details database.
+    /// </summary>
     /// <param name="prodId">Product Id</param>
     /// <param name="userId">User Id, optional.</param>
     /// <returns>Returns true if everything went ok. False with an error otherwise.</returns>

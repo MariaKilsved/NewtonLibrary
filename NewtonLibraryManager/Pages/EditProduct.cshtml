@@ -29,7 +29,7 @@
         @foreach(var language in Model.Languages)
         {
             <div class="form-check p-4 text-start w-auto">
-                <input asp-for="Product.Language" class="form-check-input" type="radio" name="language" id="@language.Language1" value="@language.Id">
+                <input asp-for="Product.Language" class="form-check-input" type="radio" name="Product.Language" id="@language.Language1" value="@language.Id">
                 <label class="form-check-label" for="@language.Language1">
                 <b>@language.Language1</b>
                 </label>
@@ -39,7 +39,7 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="categorySelect" class="form-label"><b>Kategori</b></label>
-        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="categoryId" id="categorySelect">
+        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="SelectedCategory" id="SelectedCategory">
                 <option value="">Välj kategori</option>
         </select>
     </div>
@@ -61,7 +61,7 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="prodTypeSelect" class="form-label"><b>Produkttyp</b></label>
-        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="prodTypeId">
+        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" id="SelectedProdType" name="SelectedProdType">
             <option value="">Välj produkttyp</option>
         </select>
     </div>
@@ -69,7 +69,7 @@
     <div class="mb-3 AltAutoWidth">
         <label for="authorSelect" class="form-label"><b>Författare</b></label>
         <div class="d-flex">
-            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" name="authorId">
+            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" id="SelectedAuthor" name="SelectedAuthor">
                 <option value="">Välj författare</option>
             </select>
             <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseAuthor">+</button>
