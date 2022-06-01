@@ -174,22 +174,22 @@ public static class AccountHandler
 
         if (!hasLowerChar.IsMatch(password))
         {
-            errorMessage = "Lösenordet måste innehålla minst en liten bokstav";
+            errorMessage = "L" + '\x00F6' + "senordet m" + '\x00E5' + "ste inneh" + '\x00E5' + "lla minst en liten bokstav";
             return false;
         }
         if (!hasUpperChar.IsMatch(password))
         {
-            errorMessage = "Lösenordet måste innehålla minst en stor bokstav";
+            errorMessage = "L" + '\x00F6' + "senordet m" + '\x00E5' + "ste inneh" + '\x00E5' + "lla minst en stor bokstav";
             return false;
         }
         if (!hasMinChars.IsMatch(password))
         {
-            errorMessage = "Lösenordet måste ha minst 8 tecken";
+            errorMessage = "L" + '\x00F6' + "senordet m" + '\x00E5' + "ste ha minst 8 tecken";
             return false;
         }
         if (!(hasNumber.IsMatch(password) || hasSymbols.IsMatch(password)))
         {
-            errorMessage = "Lösenordet måste innehålla minst en siffra eller ett specialtecken";
+            errorMessage = "L" + '\x00F6' + "senordet m" + '\x00E5' + "ste inneh" + '\x00E5' + "lla minst en siffra eller ett specialtecken";
             return false;
         } 
         return true;

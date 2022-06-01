@@ -43,8 +43,14 @@ namespace NewtonLibraryManager.Pages
         [BindProperty, Required]
         public string SelectedProdType { get; set; }                    //The chosen option of the product type dropdown
 
-        [BindProperty, Required]
-        public List<Models.DisplaySelectedAuthorModel> SelectedAuthors { get; set; }        //The chosen authors from all the author dropdown(s)
+        [BindProperty]
+        public List<string> AuthorFirstNames { get; set; }              //The chosen author first names from all the author text input(s)
+
+        [BindProperty]
+        public List<string> AuthorLastNames { get; set; }               //The chosen author last names from all the author text input(s)
+
+        [BindProperty]
+        public List<string> SelectedAuthorNames { get; set; }           //The chosen authors from all the author dropdown(s)
 
         [BindProperty]
         public List<Models.Language> Languages { get; set; }            //Used to make checkboxes from available languages
@@ -61,6 +67,9 @@ namespace NewtonLibraryManager.Pages
         [BindProperty(SupportsGet = true)]
         public string AuthorCount { get; set; }
 
+        [BindProperty]
+        public int AuthorCountInt { get; set; }
+
         /// <summary>
         /// When page is loaded
         /// </summary>
@@ -69,16 +78,22 @@ namespace NewtonLibraryManager.Pages
             Console.WriteLine("nr: " + nr);
             AuthorCount = nr;
 
-            //Create the SelectedAuthors list from chosen number of authors, but it's still empty
-            SelectedAuthors = new List<Models.DisplaySelectedAuthorModel>();
+            //Create the Lists to receive author input
+            AuthorFirstNames = new List<string>();
+            AuthorLastNames = new List<string>();
+            SelectedAuthorNames = new List<string>();
 
             bool success = Int32.TryParse(AuthorCount, out int selectedNrOfAuthorsInt);
 
             if (success)
             {
+                AuthorCountInt = selectedNrOfAuthorsInt;    //Set bind property
+
                 for (int i = 0; i < selectedNrOfAuthorsInt; i++)
                 {
-                    SelectedAuthors.Add(new Models.DisplaySelectedAuthorModel { Author = new Models.Author { FirstName = "", LastName = "" }, FormattedName = "" });
+                    AuthorFirstNames.Add("");
+                    AuthorLastNames.Add("");
+                    SelectedAuthorNames.Add("");
                 }
             }
             else
@@ -115,7 +130,7 @@ namespace NewtonLibraryManager.Pages
             Authors = AllAuthorsList.OrderBy(author => author.LastName).Select(a =>
             new SelectListItem
             {
-                Value = a.Id.ToString(),
+                Value = a.FirstName + "*" + a.LastName,
                 Text = a.LastName + ", " + a.FirstName
             }).ToList();
 
@@ -139,6 +154,9 @@ namespace NewtonLibraryManager.Pages
                 return Page();
             }
 
+            //Round Dewey
+            DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
+
             Console.WriteLine();
             Console.WriteLine("SelectedCategory: " + SelectedCategory);
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
@@ -157,48 +175,30 @@ namespace NewtonLibraryManager.Pages
                 ProductType = Int32.Parse(SelectedProdType)
             };
 
-            //Turn the List<Models.DisplaySelectedAuthorModel> SelectedAuthors into a List<Models.Author>
+            //Create list of authors
             var newAuthors = new List<Models.Author>();
 
-            foreach (var a in SelectedAuthors)
+            //Loop through authors list. Using SelectedAuthorNames instead of AuthorCountInt in case of page reloads
+            for (int i = 0; i < SelectedAuthorNames.Count; i++)
             {
-                //Add author if named
-                if (a.Author != null && (!String.IsNullOrWhiteSpace(a.Author.FirstName)) && (!String.IsNullOrWhiteSpace(a.Author.LastName)))
+                //If there is something in the text input fields, use those instead of the select
+                if(!String.IsNullOrWhiteSpace(AuthorFirstNames[i]) && !String.IsNullOrWhiteSpace(AuthorLastNames[i]))
                 {
                     //Remove commas just in case
-                    a.Author.FirstName = a.Author.FirstName.Replace(",", "");
-                    a.Author.LastName = a.Author.LastName.Replace(",", "");
+                    AuthorFirstNames[i].Replace(",", "");
+                    AuthorLastNames[i].Replace(",", "");
 
-                    newAuthors.Add(a.Author);
-
-                    Console.WriteLine();
-                    Console.WriteLine("Adding author from user input:");
-                    Console.WriteLine("Author first name: " + a.Author.FirstName);
-                    Console.WriteLine("Author last name: " + a.Author.LastName);
-                    Console.WriteLine();
+                    //Add new author to list
+                    newAuthors.Add(new Models.Author { FirstName = AuthorFirstNames[i], LastName = AuthorLastNames[i] });
                 }
                 else
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("a.FormattedName: " + a.FormattedName);
-                    Console.WriteLine();
+                    var subs = SelectedAuthorNames[i].Split("*");
 
-                    //Create new author from the chosen dropdown (select) string 
-                    string[] subs = a.FormattedName.Split(", ");
-
-                    a.Author.FirstName = subs[1];
-                    a.Author.LastName = subs[0];
-
-                    newAuthors.Add(a.Author);
-
-                    Console.WriteLine();
-                    Console.WriteLine("Adding author from dropdown:");
-                    Console.WriteLine("Author first name: " + a.Author.FirstName);
-                    Console.WriteLine("Author last name: " + a.Author.LastName);
-                    Console.WriteLine();
-
+                    newAuthors.Add(new Models.Author() { FirstName = subs[0], LastName = subs[1] });
                 }
             }
+
             Console.WriteLine();
             Console.WriteLine("Attempting to add product...");
             Console.WriteLine();
