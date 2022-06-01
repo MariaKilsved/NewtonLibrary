@@ -21,8 +21,6 @@ namespace NewtonLibraryManager.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
         public virtual DbSet<LendingDetail> LendingDetails { get; set; }
-        public virtual DbSet<Necategory> Necategories { get; set; }
-        public virtual DbSet<NewsAndEvent> NewsAndEvents { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ReservationDetail> ReservationDetails { get; set; }
         public virtual DbSet<Type> Types { get; set; }
@@ -112,30 +110,6 @@ namespace NewtonLibraryManager.Models
                     .HasConstraintName("FK_LendingDetails.UserId");
             });
 
-            modelBuilder.Entity<Necategory>(entity =>
-            {
-                entity.ToTable("NECategory");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Category).HasMaxLength(70);
-            });
-
-            modelBuilder.Entity<NewsAndEvent>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-
-                entity.Property(e => e.ContentText).HasColumnType("text");
-
-                entity.Property(e => e.PublishedDate).HasColumnType("date");
-
-                entity.Property(e => e.Title).HasMaxLength(100);
-
-                entity.Property(e => e.Updated).HasColumnType("date");
-            });
-
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("Product");
@@ -199,7 +173,7 @@ namespace NewtonLibraryManager.Models
 
                 entity.Property(e => e.LastName).HasMaxLength(30);
 
-                entity.Property(e => e.Password).HasMaxLength(88);
+                entity.Property(e => e.Password).HasMaxLength(32);
             });
 
             OnModelCreatingPartial(modelBuilder);
