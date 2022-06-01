@@ -31,9 +31,9 @@ namespace NewtonLibraryManager.EntityFramework.Delete
 
             using (NewtonLibraryContext db = new())
             {
-                authorDetails.ForEach(author =>
+                authorDetails.ForEach(authorDetail =>
                 {
-                    db.Remove(author);
+                    db.Remove(authorDetail);
                 });
 
                 try

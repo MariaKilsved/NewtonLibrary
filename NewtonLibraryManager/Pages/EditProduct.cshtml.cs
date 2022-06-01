@@ -88,5 +88,51 @@ namespace NewtonLibraryManager.Pages
                 Text = a.LastName + ", " + a.FirstName
             }).ToList();
         }
+
+        public void OnPost()
+        {
+            Console.WriteLine("lang" + Product.Language);
+            Int32.TryParse(Product.Language, out int lid);
+            Int32.TryParse(SelectedCategory, out int cid);
+            Int32.TryParse(SelectedProdType, out int ptype);
+
+            var prod = EntityFramework.Read.ReadHandler.GetProducts(Int32.Parse(Id));
+
+            prod.Title = Product.Title;
+            prod.LanguageId = lid;
+            prod.CategoryId = cid;
+            prod.NrOfCopies = Product.NrOfCopies;
+            prod.Dewey = Product.Dewey;
+            prod.Description = Product.Description;
+            prod.Isbn = Product.Isbn;
+            prod.ProductType = ptype;
+
+            List<Models.Author> authors = new();
+
+            //If there is something in the text input fields, use those instead of the select
+            if (!String.IsNullOrWhiteSpace(AuthorFirstName) && !String.IsNullOrWhiteSpace(AuthorLastName))
+            {
+                //Remove commas just in case
+                AuthorFirstName.Replace(",", "");
+                AuthorLastName.Replace(",", "");
+
+                //Add new author to list
+                authors.Add(new Models.Author { FirstName = AuthorFirstName, LastName = AuthorLastName});
+            }
+            else
+            {
+                var a = EntityFramework.Read.ReadHandler.GetAuthors(Int32.Parse(SelectedAuthor)) ;
+                authors.Add(a);
+            }
+
+            try
+            {
+                Handlers.ProductHandler.updateProduct(prod, authors);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

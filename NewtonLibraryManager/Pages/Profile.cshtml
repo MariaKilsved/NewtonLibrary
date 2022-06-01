@@ -122,7 +122,14 @@
                         @loan.FromAsString
                     </div>
                     <div class="col">
-                        @loan.ToAsString
+                        @if (DateTime.Now >= loan.To)
+                        {
+                            <input type="submit" value="Låna om" />
+                        }
+                        else
+                        {
+                            @loan.ToAsString
+                        }
                     </div>
                 </a>
                 }
