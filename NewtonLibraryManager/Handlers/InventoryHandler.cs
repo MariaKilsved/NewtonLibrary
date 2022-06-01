@@ -44,7 +44,7 @@ namespace NewtonLibraryManager.Handlers
         public static int GetNrOfBorrowedFromProductId(int productId)
         {
             var list = EntityFramework.Read.ReadHandler.GetLendingDetails();
-            var lendingDetails = list.Where(x => x.ProductId == productId).ToList();
+            var lendingDetails = list.Where(x => x.ProductId == productId && x.ReturnDate == null).ToList();
             return lendingDetails.Count;
         }
 

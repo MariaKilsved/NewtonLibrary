@@ -68,11 +68,11 @@
 @if(cookieValue == cookieComparerId) {
     <form method=post>
         <div class="container mt-4 text-center">
-            @if(@inStock > 0)
+            @if(@inStock > 0 && !Model.HasLendingDetail)
             {
                 <button type="submit" value="borrow" asp-page-handler="Borrow" class="btn btn-custom">Låna</button>
             }
-            @if(@inStock <= 0 && !Model.HasReservationDetail)
+            @if(@inStock <= 0 && !Model.HasReservationDetail && !Model.HasLendingDetail)
             {
                 <button type="submit" value="reserve" asp-page-handler="Reserve" class="btn btn-custom">Reservera</button>
             }
