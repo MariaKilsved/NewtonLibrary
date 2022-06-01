@@ -154,6 +154,9 @@ namespace NewtonLibraryManager.Pages
                 return Page();
             }
 
+            //Round Dewey
+            DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
+
             Console.WriteLine();
             Console.WriteLine("SelectedCategory: " + SelectedCategory);
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
