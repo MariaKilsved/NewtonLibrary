@@ -47,7 +47,23 @@
     </form>
 </div>
 
-@if(Model.SearchCompleted) {
+@if(!Model.SearchCompleted && Model.News.Count > 0)
+{
+    <div class="container text-center mt-3 searchResults">
+        @for(int i = 0; i < @Model.News.Count; i++)
+        {
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title mb-1">@Model.News[i].Title</h5>
+                <i class="d-block text-start mb-2 opacity-75">@Model.News[i].PublishedDate?.ToString("MM/dd/yyyy")</i>
+                <p class="card-text">@Model.News[i].Content</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if(Model.SearchCompleted && Model.SearchResults.Count > 0) {
 <form asp-page-handler="view" method="post">
     <div class="container text-center mt-3 searchResults">
       <div class="row searchHeader">
@@ -70,6 +86,26 @@
             <div class="col-4 col-md-8">
               @result.Title
             </div>
+            <div class="col-4 col-md-2">
+            @if(@result.AuthorsList != null)
+            {
+                @for(int i = 0; i < @result.AuthorsList.Count; i++)
+                {
+                    @if(i != @result.AuthorsList.Count - 1) {
+                        string name = @result.AuthorsList[i] + "; ";
+                        <span>@name</span>
+                    }
+                    else
+                    {
+                        <span>@result.AuthorsList[i]</span>
+                    }
+                }
+            }
+            else if(@result.FirstName != null || @result.LastName != null)
+            {
+                <span>@result.Authors</span>
+            }
+            </div>     
             @if(@result.FirstName != null && @result.LastName != null)
             {
                 <div class="col-4 col-md-2">
@@ -80,6 +116,12 @@
         }
     </div>
 </form>
+}
+@if(Model.SearchCompleted && Model.SearchResults.Count <= 0)
+{
+    <div class="container text-center mt-3">
+        Inga sökresultat.
+    </div>
 }
 
 @section Navigation {
@@ -100,7 +142,10 @@
                         <a class="nav-link text-dark active" aria-current="page" asp-area="" asp-page="/Index" >Sök</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/News">Nyheter</a>
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">

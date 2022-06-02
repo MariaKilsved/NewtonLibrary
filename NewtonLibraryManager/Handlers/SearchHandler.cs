@@ -42,6 +42,9 @@ namespace NewtonLibraryManager.Handlers
                                     ProductType = type.Type1
                                 };
 
+                var testList = queryable.ToList();
+                Console.WriteLine("testList: " + testList[0].Title);
+
                 //GroupBy to account for multiple elements in queryable having the same ID
                 var groupedList = queryable.ToList().GroupBy(x => x.Id, x => x);
 
@@ -50,6 +53,9 @@ namespace NewtonLibraryManager.Handlers
                     var item = i.ToList();
 
                     DisplayProductModel displayProductModel = item[0];
+
+                    Console.WriteLine("displayProductModel: " + displayProductModel.Title);
+
                     displayProductModel.AuthorsList = new List<string>();
     
                     foreach(var itemCopy in item)

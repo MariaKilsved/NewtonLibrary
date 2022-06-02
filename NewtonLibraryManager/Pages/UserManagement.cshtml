@@ -92,19 +92,22 @@ else
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/News">Nyheter</a>
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/DetermineAuthorCount">Lägg till produkt</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/UserManagement" aria-current="page">Hantera användarkonton</a>
+                        <a class="nav-link text-dark active" asp-area="" asp-page="/UserManagement" aria-current="page">Hantera användarkonton</a>
                     </li>
                     }
                     @if (cookieValue1 == cookieComparerTrue && cookieValue == cookieComparer1) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera användare</a>
