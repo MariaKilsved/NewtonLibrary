@@ -124,5 +124,11 @@ namespace NewtonLibraryManager.Pages
                 return Page();
             }
         }
+
+        public IActionResult OnPostReturn(int id)
+        {
+            Console.WriteLine(id);
+            return Page();
+        }
     }
 }
