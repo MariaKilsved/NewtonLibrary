@@ -14,19 +14,6 @@ namespace NewtonLibraryManager.Handlers
             return products.Sum(item => item.NrOfCopies);
         }
 
-        public static bool canBorrow(int prodId)
-        {
-            int prodInStock = EntityFramework.Read.ReadHandler.GetProducts(prodId).NrOfCopies;
-
-            var prodLoaned = EntityFramework.Read.ReadHandler.GetLendingDetails();
-            int lTotal = prodLoaned.Where(x => x.ProductId == prodId && x.ReturnDate == null).ToList().Count;
-
-            var prodReserved = EntityFramework.Read.ReadHandler.GetReservationDetails();
-            int rTotal = prodReserved.Where(x => x.ProductId == prodId).ToList().Count;
-
-            return (prodInStock > lTotal + rTotal);
-        }
-
         /// <summary>
         /// Returns the amount of borrowed products.
         /// </summary>
