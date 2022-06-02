@@ -2,7 +2,7 @@ using NewtonLibraryManager.Models;
 
 namespace NewtonLibraryManager.Handlers;
 
-public class AggregationHandler
+public static class StatisticHandler
 {
     public static int GetMostActiveBorrower()
     {
