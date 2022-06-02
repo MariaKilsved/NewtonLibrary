@@ -141,5 +141,22 @@ namespace NewtonLibraryManager.Pages
 
             return Page();
         }
+
+        public IActionResult OnPostReborrow(int id)
+        {
+            try
+            {
+                if (Handlers.ProductHandler.ReBorrowProduct(User1.Id, id))
+                {
+                    Console.WriteLine("Returned product");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return Page();
+        }
     }
 }

@@ -6,6 +6,21 @@ namespace NewtonLibraryManager.Handlers;
 public static class ProductHandler
 {
 
+    public static bool ReBorrowProduct(int userID, int productId)
+    {
+        int userId = AccountHandler.CurrentIdLoggedIn;
+        try
+        {
+            ReturnProduct(productId);
+            BorrowProduct(userId, productId);
+            return true;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     /// <summary>
     /// Should be called when a user returns a product. It sets the return date in the lending details database.
     /// </summary>

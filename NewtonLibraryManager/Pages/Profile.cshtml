@@ -167,7 +167,7 @@
 						{
 							@if (Handlers.ProductHandler.HasLendingDetail(Model.User1.Id, loan.Id) && !Handlers.ProductHandler.ReservationDetailExists(loan.Id))
 							{
-								<form method="post">
+								<form asp-page-handler="Reborrow" asp-route-id="@loan.Id" method="post">
 									<button type="submit" value="Reborrow" class="btn btn-custom btn-sm">Låna om</button>
 								</form>
 
