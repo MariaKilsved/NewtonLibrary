@@ -4,6 +4,10 @@ namespace NewtonLibraryManager.Handlers;
 
 public static class StatisticHandler
 {
+    /// <summary>
+    /// Obtains the user who has borrowed the most
+    /// </summary>
+    /// <returns>Id of the user</returns>
     public static int GetMostActiveBorrower()
     {
         using (NewtonLibraryContext context = new NewtonLibraryContext())
@@ -26,6 +30,11 @@ public static class StatisticHandler
     }
 
 
+    /// <summary>
+    /// All users who aren't admins
+    /// </summary>
+    /// <returns>List<User> with non-admins</User></returns>
+    /// <exception cref="Exception"></exception>
     public static List<User> GetCustomers()
     {
         using (NewtonLibraryContext db = new())
@@ -45,6 +54,11 @@ public static class StatisticHandler
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static List<DisplayHotBook> HotProducts()
     {
         var hottestBooksToReturn = new List<DisplayHotBook>();
