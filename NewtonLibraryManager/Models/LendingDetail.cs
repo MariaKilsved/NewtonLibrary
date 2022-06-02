@@ -7,9 +7,9 @@ namespace NewtonLibraryManager.Models
     {
         public int Id { get; set; }
         public int? UserId { get; set; }
-        public DateTime? BorrowedFrom { get; set; }
-        public DateTime? BorrowedTo { get; set; }
-        public DateTime? ReturnDate { get; set; }
+        public DateTime BorrowedFrom { get; set; }
+        public DateTime BorrowedTo { get; set; }
+        public DateTime ReturnDate { get; set; }
         public int? ProductId { get; set; }
 
         public virtual Product Product { get; set; }

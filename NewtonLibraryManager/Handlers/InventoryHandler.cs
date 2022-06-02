@@ -63,6 +63,41 @@ namespace NewtonLibraryManager.Handlers
             
             return borrowedTo;
         }
+
+        public static List<DisplayCurrentBorrowedBooks> GetAllBorrowedBooks()
+        {
+            var list = new List<DisplayCurrentBorrowedBooks>();
+            using (var db = new NewtonLibraryContext())
+            {
+                var books = from p in db.Products
+                            join ad in db.AuthorDetails on p.Id equals ad.ProductId
+                            join a in db.Authors on ad.AuthorId equals a.Id
+                            join ld in db.LendingDetails on p.Id equals ld.ProductId
+                            join u in db.Users on ld.UserId equals u.Id
+                            select new DisplayCurrentBorrowedBooks
+                            {
+                                Title = p.Title,
+                                AuthorName = a.FirstName + a.LastName,
+                                Isbn = p.Isbn,
+                                BorrowerName = u.FirstName + u.LastName,
+                                BorrowedFrom = ld.BorrowedFrom,
+                                ReturnDate = ld.ReturnDate
+                            };
+                foreach (var item in books)
+                {
+                    var dp = new DisplayCurrentBorrowedBooks();
+                    dp.Title = item.Title;
+                    dp.AuthorName = item.AuthorName;
+                    dp.Isbn = item.Isbn;
+                    dp.BorrowerName = item.BorrowerName;
+                    dp.BorrowedFrom = item.BorrowedFrom;
+                    dp.ReturnDate = item.ReturnDate;
+
+                    list.Add(dp);
+                }
+            }
+            return list;
+        }
     }
 }
 
