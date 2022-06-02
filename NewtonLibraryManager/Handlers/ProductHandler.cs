@@ -269,6 +269,15 @@ public static class ProductHandler
         return (list.Count > 0);
     }
 
+    public static bool ReservationDetailExists(int productId)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
+            .Where(ld => ld.ProductId == productId)
+            .ToList();
+
+        return (list.Count > 0);
+    }
+
     /// <summary>
     /// Adds a Product/Author/AuthorDetail if it doesnt exist already.
     /// </summary>

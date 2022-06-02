@@ -11,15 +11,38 @@
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
     string cookieComparerId = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + Model.User1.Id.ToString());
 
-    @if(cookieValue != null)
+
+
+    /*@if(cookieValue != null)
     {
         ViewData["Title"] = @Model.User1.FirstName + " " + @Model.User1.LastName;
     }
     else
     {
         ViewData["Title"] = "";
-    }
+    }*/
 }
+
+<div class="container d-flex justify-content-start mt-5 mb-5">
+    <div class="libraryCard">
+        <div class="libraryCard-body">
+            <div class="libraryCard-brand">
+                <img src="~/css/img/librarycard/logo-beige.svg" class="libraryCard-logo" />
+                <img src="~/css/img/librarycard/logo-newton-beige.svg" class="libraryCard-newton" />
+            </div>
+            <div class="libraryCard-text">
+                <span class="libraryCard-heading">Bibliotekskort</span>
+                <span class="libraryCard-name">@Model.User1.FirstName @Model.User1.LastName</span> <br />
+                <span class="libraryCard-name">@Model.User1.EMail</span>
+            </div>
+        </div>
+        <div class="libraryCard-footer">
+            <span class="libraryCard-adress">Malmvägen 1, Stockholm</span>
+            <span class="libraryCard-phone">08-410 456 00</span>
+        </div>
+    </div>
+</div>
+
     @if(Model.User1 != null && Model.User1.Id > 0 && (cookieValue == cookieComparerId || cookieValue1 == cookieComparerTrue))
     {
     <div class="text-center container">
@@ -90,28 +113,6 @@
         }
     </div>
 
-    <div class="container d-flex justify-content-start mt-5">
-        <div class="libraryCard">
-            <div class="libraryCard-body">
-              <div class="libraryCard-brand">
-                <img src="~/css/img/librarycard/logo-beige.svg" class="libraryCard-logo"/>
-                <img src="~/css/img/librarycard/logo-newton-beige.svg" class="libraryCard-newton" />
-              </div>
-              <div class="libraryCard-text">
-                <span class="libraryCard-heading">Bibliotekskort</span>
-                <span class="libraryCard-name">@Model.User1.FirstName @Model.User1.LastName</span> <br />
-                <span class="libraryCard-name">@Model.User1.EMail</span>
-              </div>  
-            </div>
-            <div class="libraryCard-footer">
-              <span class="libraryCard-adress">Malmvägen 1, Stockholm</span>
-              <span class="libraryCard-phone">08-410 456 00</span>
-            </div>
-          </div>
-    </div>
-
-
-
 	@if (@Model.UserLoans.Count > 0)
 	{
 		<h3 class="mt-4">Lånade produkter</h3>
@@ -164,7 +165,7 @@
 					<div class="col d-flex align-items-center justify-content-center">
 						@if (DateTime.Today >= loan.To)
 						{
-							@if (Handlers.InventoryHandler.canBorrow(loan.Id))
+							@if (Handlers.ProductHandler.HasLendingDetail(Model.User1.Id, loan.Id) && !Handlers.ProductHandler.ReservationDetailExists(loan.Id))
 							{
 								<form method="post">
 									<button type="submit" value="Reborrow" class="btn btn-custom btn-sm">Låna om</button>
