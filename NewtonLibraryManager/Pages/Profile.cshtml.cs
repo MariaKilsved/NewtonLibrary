@@ -127,7 +127,18 @@ namespace NewtonLibraryManager.Pages
 
         public IActionResult OnPostReturn(int id)
         {
-            Console.WriteLine(id);
+            try
+            {
+                if (Handlers.ProductHandler.ReturnProduct(id))
+                {
+                    Console.WriteLine("Returned product");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             return Page();
         }
     }

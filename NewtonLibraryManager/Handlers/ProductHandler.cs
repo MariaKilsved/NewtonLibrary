@@ -248,7 +248,7 @@ public static class ProductHandler
     public static bool HasLendingDetail(int userId, int productId)
     {
         var list = EntityFramework.Read.ReadHandler.GetLendingDetails()
-            .Where(ld => (ld.UserId == userId && ld.ProductId == productId))
+            .Where(ld => (ld.UserId == userId && ld.ProductId == productId && ld.ReturnDate == null))
             .ToList();
 
         return (list.Count > 0);

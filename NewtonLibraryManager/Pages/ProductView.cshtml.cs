@@ -62,7 +62,15 @@ namespace NewtonLibraryManager.Pages
             if (cookieValue != null && cookieValue2 != null && cookieValue == cookieComparer)
             {
                 //Set HasLendingDetail to true only if a matching LendingDetail exists
-                HasLendingDetail = Handlers.ProductHandler.HasLendingDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+                var canBorrow = Handlers.InventoryHandler.canBorrow(Int32.Parse(id));
+                var userHasLendingDetail = Handlers.ProductHandler.HasLendingDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+                if (canBorrow && userHasLendingDetail)
+                {
+                    HasLendingDetail = true;
+                } else
+                {
+                    HasLendingDetail = false;
+                }
 
                 //Set HasReservationDetail to true only if a matching ReservationDetail exists
                 HasReservationDetail = Handlers.ProductHandler.HasReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));

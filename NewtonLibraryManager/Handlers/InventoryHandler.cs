@@ -24,13 +24,7 @@ namespace NewtonLibraryManager.Handlers
             var prodReserved = EntityFramework.Read.ReadHandler.GetReservationDetails();
             int rTotal = prodReserved.Where(x => x.ProductId == prodId).ToList().Count;
 
-            if (prodInStock > lTotal + rTotal)
-            {
-                return true;
-            } else
-            {
-                return false;
-            }
+            return (prodInStock > lTotal + rTotal);
         }
 
         /// <summary>
