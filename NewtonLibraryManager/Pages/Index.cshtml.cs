@@ -17,6 +17,10 @@ public class IndexModel : PageModel
     public string Search { get; set; }
 
     [BindProperty]
+    public List<Models.DisplayNewsModel> News { get; set; }
+
+    /*
+    [BindProperty]
     public bool IncludeBooks { get; set; }
 
     [BindProperty]
@@ -24,6 +28,7 @@ public class IndexModel : PageModel
 
     [BindProperty]
     public bool IncludeAudio { get; set; }
+    */
 
     [BindProperty]
     public List<Models.DisplayProductModel> SearchResults { get; set; }
@@ -38,6 +43,9 @@ public class IndexModel : PageModel
     {
         //Set boolean for search not being completed yet
         SearchCompleted = false;
+
+        //Obtain latest news
+        News = NewsHandler.GetNewsForToday();
     }
 
     /// <summary>

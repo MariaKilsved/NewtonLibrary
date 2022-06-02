@@ -123,16 +123,12 @@ namespace NewtonLibraryManager.Pages
                     return RedirectToPage("/Index");
 
                 }
-                //Console.WriteLine("User: " + userId);
-                //Console.WriteLine("Product: " + prodId);
             }
-			//Console.WriteLine("Cookie: " + cookieValue);
-			//Console.WriteLine("Cookie 2: " + cookieValue2);
             return Page();
         }
 
         /// <summary>
-        /// When the submit button to reserve is pressed
+        /// When the submit button to cancel reservation is pressed
         /// </summary>
         /// <returns>Redirect to index or reload page.</returns>
         public IActionResult OnPostCancelReservation()
@@ -140,9 +136,10 @@ namespace NewtonLibraryManager.Pages
             //Compare cookies
             string cookieValue = Request.Cookies["LibraryCookie"];
             string cookieValue2 = Request.Cookies["LibraryCookie2"];
+            string cookieComparer = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2);
 
             //Validation using cookies. Cookies are saved as strings and must be converted to int.
-            if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
+            if (cookieValue != null && cookieValue2 != null && cookieComparer == cookieValue)
             {
                 //int userId = Int32.Parse(cookieValue2);
                 int prodId = Int32.Parse(Id);
@@ -153,11 +150,7 @@ namespace NewtonLibraryManager.Pages
                     return RedirectToPage("/Index");
 
                 }
-                //Console.WriteLine("User: " + userId);
-                //Console.WriteLine("Product: " + prodId);
             }
-            //Console.WriteLine("Cookie: " + cookieValue);
-            //Console.WriteLine("Cookie 2: " + cookieValue2);
             return Page();
         }
 

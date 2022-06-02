@@ -68,11 +68,11 @@
 @if(cookieValue == cookieComparerId) {
     <form method=post>
         <div class="container mt-4 text-center">
-            @if(@inStock > 0)
+            @if(@inStock > 0 && !Model.HasLendingDetail)
             {
                 <button type="submit" value="borrow" asp-page-handler="Borrow" class="btn btn-custom">Låna</button>
             }
-            @if(@inStock <= 0 && !Model.HasReservationDetail)
+            @if(@inStock <= 0 && !Model.HasReservationDetail && !Model.HasLendingDetail)
             {
                 <button type="submit" value="reserve" asp-page-handler="Reserve" class="btn btn-custom">Reservera</button>
             }
@@ -111,7 +111,10 @@
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/News">Nyheter</a>
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
