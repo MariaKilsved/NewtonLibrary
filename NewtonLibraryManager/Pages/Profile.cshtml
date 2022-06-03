@@ -165,7 +165,7 @@
 					<div class="col d-flex align-items-center justify-content-center">
 						@if (DateTime.Today >= loan.To)
 						{
-							@if (Handlers.ProductHandler.HasLendingDetail(Model.User1.Id, loan.Id) && !Handlers.ProductHandler.ReservationDetailExists(loan.Id))
+							@if (Handlers.ProductHandler.HasLendingDetail(Model.User1.Id, loan.Id) && !Handlers.ProductHandler.HasAnyReservationDetail(loan.Id))
 							{
 								<form asp-page-handler="Reborrow" asp-route-id="@loan.Id" method="post">
 									<button type="submit" value="Reborrow" class="btn btn-custom btn-sm">Låna om</button>

@@ -92,9 +92,10 @@ namespace NewtonLibraryManager.Pages
         public void OnPost()
         {
             Console.WriteLine("lang" + Product.Language);
-            Int32.TryParse(Product.Language, out int lid);
-            Int32.TryParse(SelectedCategory, out int cid);
-            Int32.TryParse(SelectedProdType, out int ptype);
+
+            int lid = Int32.Parse(Product.Language);
+            int cid = Int32.Parse(SelectedCategory);
+            int ptype = Int32.Parse(SelectedProdType);
 
             var prod = EntityFramework.Read.ReadHandler.GetProducts(Int32.Parse(Id));
 
@@ -113,8 +114,8 @@ namespace NewtonLibraryManager.Pages
             if (!String.IsNullOrWhiteSpace(AuthorFirstName) && !String.IsNullOrWhiteSpace(AuthorLastName))
             {
                 //Remove commas just in case
-                AuthorFirstName.Replace(",", "");
-                AuthorLastName.Replace(",", "");
+                AuthorFirstName = AuthorFirstName.Replace(",", "");
+                AuthorLastName = AuthorLastName.Replace(",", "");
 
                 //Add new author to list
                 authors.Add(new Models.Author { FirstName = AuthorFirstName, LastName = AuthorLastName});
@@ -127,7 +128,7 @@ namespace NewtonLibraryManager.Pages
 
             try
             {
-                Handlers.ProductHandler.updateProduct(prod, authors);
+                Handlers.ProductHandler.UpdateProduct(prod, authors);
             }
             catch (Exception)
             {

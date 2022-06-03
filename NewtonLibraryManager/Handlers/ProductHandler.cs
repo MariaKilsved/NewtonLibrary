@@ -8,11 +8,11 @@ public static class ProductHandler
 
     public static bool ReBorrowProduct(int userID, int productId)
     {
-        int userId = AccountHandler.CurrentIdLoggedIn;
+        //int userId = AccountHandler.CurrentIdLoggedIn;
         try
         {
             ReturnProduct(productId);
-            BorrowProduct(userId, productId);
+            BorrowProduct(userID, productId);
             return true;
         }
         catch (Exception)
@@ -27,7 +27,7 @@ public static class ProductHandler
     /// <param name="product">Product</param>
     /// <param name="authors">List of authors.</param>
     /// <returns>Returns true if everything went ok. Error otherwise.</returns>
-    public static bool updateProduct(Product product, List<Author> authors)
+    public static bool UpdateProduct(Product product, List<Author> authors)
     {
         try
         {
@@ -275,7 +275,7 @@ public static class ProductHandler
     /// <param name="userId"></param>
     /// <param name="productId"></param>
     /// <returns>True if a ReservationDetail exists, False if not.</returns>
-    public static bool HasReservationDetail(int userId, int productId)
+    public static bool HasCommonReservationDetail(int userId, int productId)
     {
         var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
             .Where(ld => (ld.UserId == userId && ld.ProductId == productId))
@@ -284,7 +284,12 @@ public static class ProductHandler
         return (list.Count > 0);
     }
 
-    public static bool ReservationDetailExists(int productId)
+    /// <summary>
+    /// Check if any ReservationDetail exist for a specific product
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns>True if a ReservationDetail exists, False if not.</returns>
+    public static bool HasAnyReservationDetail(int productId)
     {
         var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
             .Where(ld => ld.ProductId == productId)

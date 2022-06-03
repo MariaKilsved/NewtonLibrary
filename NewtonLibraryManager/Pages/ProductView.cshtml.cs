@@ -21,7 +21,10 @@ namespace NewtonLibraryManager.Pages
         public bool HasLendingDetail { get; set; }
 
         [BindProperty]
-        public bool HasReservationDetail { get; set; }
+        public bool HasCommonReservationDetail { get; set; }
+
+        [BindProperty]
+        public bool HasAnyReservationDetail { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
@@ -64,13 +67,16 @@ namespace NewtonLibraryManager.Pages
                 //Set HasLendingDetail to true only if a matching LendingDetail exists
                 HasLendingDetail = Handlers.ProductHandler.HasLendingDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
 
-                //Set HasReservationDetail to true only if a matching ReservationDetail exists
-                HasReservationDetail = Handlers.ProductHandler.HasReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+                //Set HasCommonReservationDetail to true only if a matching ReservationDetail exists
+                HasCommonReservationDetail = Handlers.ProductHandler.HasCommonReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
             }
             else
             {
                 HasLendingDetail = false;
             }
+
+            //Set HasAnyReservationDetail to true if product has any ReservationDetail
+            HasAnyReservationDetail = Handlers.ProductHandler.HasAnyReservationDetail(Int32.Parse(id));
         }
 
 
@@ -174,6 +180,32 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to return product
                 if (Handlers.ProductHandler.ReturnProduct(prodId))
                 {
+                    return RedirectToPage("/Index");
+                }
+            }
+            return Page();
+        }
+
+        /// <summary>
+        /// When the button to re-borrow a product is pressed.
+        /// </summary>
+        /// <returns>Redirect to index or reload page.</returns>
+        public IActionResult OnPostReborrow()
+        {
+            //Compare cookies
+            string cookieValue = Request.Cookies["LibraryCookie"];
+            string cookieValue2 = Request.Cookies["LibraryCookie2"];
+
+            //Validation using cookies. Cookies are saved as strings and must be converted to int.
+            if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
+            {
+                int userId = Int32.Parse(cookieValue2);
+                int prodId = Int32.Parse(Id);
+
+                //Attempt to reserve product
+                if (Handlers.ProductHandler.ReBorrowProduct(userId, prodId))
+                {
+                    Console.WriteLine("Re-borrwed product");
                     return RedirectToPage("/Index");
                 }
             }
