@@ -36,16 +36,27 @@ public class IndexModel : PageModel
     [BindProperty]
     public bool SearchCompleted { get; set; }
 
-/// <summary>
-/// When page is loaded
-/// </summary>
-    public void OnGet()
+    [BindProperty]
+    public bool ShowModal { get; set; }
+
+    [BindProperty]
+    public string ModalBody { get; set; }
+
+
+    /// <summary>
+    /// When page is loaded
+    /// </summary>
+    public void OnGet(bool showModal = false, string modalBody = "")
     {
         //Set boolean for search not being completed yet
         SearchCompleted = false;
 
         //Obtain latest news
         News = NewsHandler.GetNewsForToday();
+
+        //Show modal if necessary
+        ShowModal = showModal;
+        ModalBody = modalBody;
     }
 
     /// <summary>

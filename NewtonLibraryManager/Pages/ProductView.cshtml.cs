@@ -235,7 +235,7 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to delete product
                 if (Handlers.ProductHandler.DeleteProduct(Int32.Parse(Id)))
                 {
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/Index", new { showModal = true, modalBody = "Produkt borttagen" });
                 }
             }
             return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att ta bort produkten" });
