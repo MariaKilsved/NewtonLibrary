@@ -299,6 +299,21 @@ public static class ProductHandler
     }
 
     /// <summary>
+    /// Checks which user is first in line among everyone who is reserving a product
+    /// </summary>
+    /// <param name="productId">Id of the product for which reservations are checked</param>
+    /// <returns>Id of the user first in line, or 0 if there is no queue.</returns>
+    public static int GetFirstReservationIdInQueue(int productId)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
+        .Where(ld => ld.ProductId == productId)
+        .OrderBy(ld => ld.ReservationDate)
+        .ToList();
+
+        return list[0].UserId ?? 0;
+    }
+
+    /// <summary>
     /// Adds a Product/Author/AuthorDetail if it doesnt exist already.
     /// </summary>
     /// <param name="product"></param>
