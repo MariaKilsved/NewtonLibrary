@@ -26,6 +26,12 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public bool HasAnyReservationDetail { get; set; }
 
+        [BindProperty]
+        public bool ShowModal { get; set; }
+
+        [BindProperty]
+        public string ModalBody { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
@@ -34,7 +40,7 @@ namespace NewtonLibraryManager.Pages
         /// When the page is loaded
         /// </summary>
         /// <param name="id">The id of the specific product being displayed</param>
-        public void OnGet(string id)
+        public void OnGet(string id, bool showModal = false, string modalBody = "")
         {
             //Uses the product Id determined in the Url to set everything
             Id = id;
@@ -77,6 +83,10 @@ namespace NewtonLibraryManager.Pages
 
             //Set HasAnyReservationDetail to true if product has any ReservationDetail
             HasAnyReservationDetail = Handlers.ProductHandler.HasAnyReservationDetail(Int32.Parse(id));
+
+            //Show modal if necessary
+            ShowModal = showModal;
+            ModalBody = modalBody;
         }
 
 
@@ -99,13 +109,12 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.BorrowProduct(userId, prodId))
                 {
-                    return RedirectToPage("/Index");
-
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt lånad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Lån misslyckades" });
         }
-        
+
 
         /// <summary>
         /// When the submit button to reserve is pressed
@@ -126,11 +135,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.ReserveProduct(userId, prodId))
                 {
-                    return RedirectToPage("/Index");
-
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt reserverad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Reservation misslyckades" });
         }
 
         /// <summary>
@@ -153,11 +161,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.CancelReservation(prodId))
                 {
-                    return RedirectToPage("/Index");
-
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Reservation avslutad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att avsluta reservationen" });
         }
 
         /// <summary>
@@ -180,10 +187,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to return product
                 if (Handlers.ProductHandler.ReturnProduct(prodId))
                 {
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt återlämnad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Återlämningen misslyckades" });
         }
 
         /// <summary>
@@ -205,11 +212,11 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.ReBorrowProduct(userId, prodId))
                 {
-                    Console.WriteLine("Re-borrwed product");
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt har lånats om" });
                 }
+
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att låna om produkten" });
         }
 
         /// <summary>
@@ -231,7 +238,7 @@ namespace NewtonLibraryManager.Pages
                     return RedirectToPage("/Index");
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att ta bort produkten" });
         }
     }
 }

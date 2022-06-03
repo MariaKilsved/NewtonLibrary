@@ -98,6 +98,27 @@
     </form>
 }
 
+@if(@Model.ShowModal)
+{
+    <div class="modal fade show" id="staticBackdrop" style="display: block;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">@Model.ModalBody</h5>
+            <a class="btn-close" role="button" asp-page="/ProductView" asp-route-id="@Model.Id" asp-route-showModal="False"></a>
+          </div>
+          <div class="modal-body">
+            @Model.ModalBody
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-custom" role="button" asp-page="/ProductView" asp-route-id="@Model.Id" asp-route-showModal="False">Ok</a>
+            <a class="btn btn-custom" role="button" asp-page="/Index">Gå till start</a>
+          </div>
+        </div>
+      </div>
+    </div>
+}
+
 @section Navigation {
         <nav class="navbar navbar-expand-xl navbar-toggleable-xl navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
