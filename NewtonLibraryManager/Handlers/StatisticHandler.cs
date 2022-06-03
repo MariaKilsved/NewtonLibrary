@@ -31,7 +31,7 @@ public static class StatisticHandler
 
 
     /// <summary>
-    /// All users who aren't admins
+    /// Gets all users who aren't admins
     /// </summary>
     /// <returns>List<User> with non-admins</User></returns>
     /// <exception cref="Exception"></exception>
@@ -55,7 +55,7 @@ public static class StatisticHandler
     }
 
     /// <summary>
-    /// 
+    /// Returns a list of books that have been borrowed the most
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
