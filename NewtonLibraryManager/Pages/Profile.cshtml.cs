@@ -35,6 +35,8 @@ namespace NewtonLibraryManager.Pages
         /// Load page
         /// </summary>
         /// <param name="id">Id of the user to be displayed</param>
+        /// <param name="showModal">Whether to show a modal or not</param>
+        /// <param name="modalBody">What to put in the body of the modal</param>
         public void OnGet(string id, bool showModal = false, string modalBody = "")
         {
             //Uses the user Id determined in the Url to set everything

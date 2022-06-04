@@ -46,6 +46,8 @@ public class IndexModel : PageModel
     /// <summary>
     /// When page is loaded
     /// </summary>
+    /// <param name="showModal">Whether to show a modal or not</param>
+    /// <param name="modalBody">What to put in the body of the modal</param>
     public void OnGet(bool showModal = false, string modalBody = "")
     {
         //Set boolean for search not being completed yet

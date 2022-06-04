@@ -29,20 +29,50 @@ public static class ProductHandler
     /// <returns>Returns true if everything went ok. Error otherwise.</returns>
     public static bool UpdateProduct(Product product, List<Author> authors)
     {
+        //Prepare list of authorIds to be used when creating Authordettails.
+        List<int> authorIds = new();
+
+        //Save authors from database.
+        var authorList = EntityFramework.Read.ReadHandler.GetAuthors();
+
+        //Go through authors from input.
+        //Check if they exists by comparing every author from database.
+        //If author exists, use author id from "list of authors from database" and add it to id-list.
+        //If it doesnt exist, create new author and save that new new Id and add to id-list.
+        authors.ForEach(x =>
+        {
+            var authorExists = false;
+            authorList.ForEach(d =>
+            {
+                if (x.FirstName == d.FirstName && x.LastName == d.LastName)
+                {
+                    authorIds.Add(d.Id);
+                    authorExists = true;
+                }
+            });
+            if (!authorExists)
+            {
+                var authorId = EntityFramework.Create.CreateHandler.CreateAuthor(x.FirstName, x.LastName);
+                authorIds.Add(authorId);
+            }
+        });
+
+
+        //If everything is ok and no exceptions has been thrown,
+        //proceed with updating product and authordetail
         try
         {
             EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(product.Id);
             EntityFramework.Update.UpdateHandler.UpdateProduct(product);
-            authors.ForEach(x =>
+            authorIds.ForEach(x =>
             {
-                EntityFramework.Create.CreateHandler.CreateAuthorDetail(x.Id, product.Id);
+                EntityFramework.Create.CreateHandler.CreateAuthorDetail(x, product.Id);
             });
         }
         catch (Exception)
         {
             throw;
         }
-
         return true;
     }
 

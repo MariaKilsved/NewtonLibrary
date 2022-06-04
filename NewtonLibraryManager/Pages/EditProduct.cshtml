@@ -10,7 +10,6 @@
     cookieValue2 = Request.Cookies["LibraryCookie2"];
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
-    string imgSrc = $"/css/img/books_150x225/{Model.Id}.jpg";
     System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 }
 
@@ -18,85 +17,110 @@
 {
 <div class="text-center">
 <h1 class="display-4">@ViewData["Title"]</h1>
+<form method="post" asp-page-handler="post" class="mt-3 d-flex align-items-center flex-column">
 
-<form method="post" class="mt-3 d-flex align-items-center flex-column">
+    @for(int i = 0; i < Model.AuthorCount; i++)
+    {
+    string authorLabel = $"Författare {i + 1}";
+    string inputId = $"SelectedAuthorNames{i}";
+    string collapseId = $"collapseAuthor{i}";
+    string collapseId2 = "#" + collapseId;
     <div class="mb-3 AltAutoWidth">
-        <label for="productTitle" class="form-label"><b>Titel</b></label>
-        <input type="text" asp-for="Product.Title" class="form-control" id="productTitle" minlength="4" maxlength="100" data-val-length-min="4" data-val-length-max="100" placeholder="@Model.Product.Title"/>
+        <label for="authorSelect" class="form-label"><b>@authorLabel</b></label>
+        <div class="d-flex">
+            <select asp-items="Model.Authors" asp-for="SelectedAuthorNames[i]" class="form-select" aria-label="Författare" id="@inputId"></select>
+            <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="@collapseId2" aria-expanded="false" aria-controls="@collapseId">+</button>
+        </div>
+        <div class="collapse" id="@collapseId">
+            <div class="card card-body text-start my-4 pb-4">
+                <h5 class="d-block">Ny författare</h5>
+                <label for="AuthorFirstNames[i]" class="form-label d-block"><b>Förnamn</b></label>
+                <input type="text" asp-for="AuthorFirstNames[i]" id="AuthorFirstNames[i]" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <label for="AuthorLastNames[i]" class="form-label d-block"><b>Efternamn</b></label>
+                <input asp-for="AuthorLastNames[i]" type="text" id="AuthorLastNames[i]" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+            </div>
+        </div>
+    </div>        
+    }
+
+    <div class="mb-3 AltAutoWidth">
+        <label for="prodTitle" class="form-label"><b>Titel</b></label>
+        <input type="text" asp-for="Title" class="form-control" id="prodTitle" minlength="4" maxlength="100" data-val-length-min="4" data-val-length-max="100"/>
     </div>
 
     <div class="d-flex flex-row justify-content-center">
         @foreach(var language in Model.Languages)
         {
             <div class="form-check p-4 text-start w-auto">
-                <input asp-for="Product.Language" class="form-check-input" type="radio" name="Product.Language" id="@language.Language1" value="@language.Id">
+                <input asp-for="LanguageId" class="form-check-input" type="radio" name="LanguageId" id="@language.Language1" value="@language.Id">
                 <label class="form-check-label" for="@language.Language1">
                 <b>@language.Language1</b>
                 </label>
             </div>
         }
+        <input type="hidden" name="selectedLanguage" value="@Model.LanguageId" />
     </div>
 
     <div class="mb-3 AltAutoWidth">
-        <label for="categorySelect" class="form-label"><b>Kategori</b></label>
-        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="SelectedCategory" id="SelectedCategory">
-                <option value="">Välj kategori</option>
-        </select>
+        <label for="SelectedCategory" class="form-label"><b>Kategori</b></label>
+        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="SelectedCategory" id="SelectedCategory"></select>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="dewey" class="form-label"><b>Dewey decimalklassifikation</b></label>
-        <input type="number" asp-for="Product.Dewey" class="form-control" id="dewey" step="0.001" min="0.001" max="999.999" placeholder="@Model.Product.Dewey"/>
+        <input type="text" asp-for="Dewey" class="form-control" id="dewey" minlength="3" maxlength="7" data-val-length-min="3" data-val-length-max="7" placeholder="T.ex. 839.738"/>
+        @if (!String.IsNullOrWhiteSpace(@Model.DeweyError))
+        {
+            <div id="passwordHelp" class="form-text"><i>@Model.DeweyError</i></div>
+        }
     </div>
 
     <div class="mb-3 AltAutoWidth">
       <label for="descriptionTextArea" class="form-label"><b>Beskrivning</b></label>
-      <textarea asp-for="Product.Description" class="form-control" id="descriptionTextArea" rows="3" placeholder="@Model.Product.Description"></textarea>
+      <textarea asp-for="Description" class="form-control" id="descriptionTextArea" rows="3"></textarea>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="isbn" class="form-label"><b>ISBN</b></label>
-        <input type="text" asp-for="Product.Isbn" class="form-control" id="isbn" minlength="10" maxlength="13" data-val-length-min="10" data-val-length-max="13" placeholder="@Model.Product.Isbn"/>
+        <input type="text" asp-for="Isbn" class="form-control" id="isbn" minlength="10" maxlength="13" data-val-length-min="10" data-val-length-max="13"/>
     </div>
 
     <div class="mb-3 AltAutoWidth">
-        <label for="prodTypeSelect" class="form-label"><b>Produkttyp</b></label>
-        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" id="SelectedProdType" name="SelectedProdType">
-            <option value="">Välj produkttyp</option>
-        </select>
+        <label for="SelectedProdType" class="form-label"><b>Produkttyp</b></label>
+        <select asp-items="Model.ProdTypes" asp-for="SelectedProdType" class="form-select" aria-label="Produkttyp" name="SelectedProdType" id="SelectedProdType"></select>
     </div>
-
     <div class="mb-3 AltAutoWidth">
-        <label for="authorSelect" class="form-label"><b>Författare</b></label>
-        <div class="d-flex">
-            <select asp-items="Model.Authors" asp-for="SelectedAuthor" class="form-select" aria-label="Författare" id="SelectedAuthor" name="SelectedAuthor">
-                <option value="">Välj författare</option>
-            </select>
-            <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseAuthor">+</button>
-        </div>
-    <div class="collapse" id="collapseAuthor">
-        <div class="card card-body text-start my-4 pb-4">
-            <h5 class="d-block">Ny författare</h5>
-            <label for="authorFN" class="form-label d-block"><b>Förnamn</b></label>
-            <input type="text" asp-for="Product.FirstName" id="authorFN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" placeholder="@Model.Product.FirstName"/>
-            <label for="authorLN" class="form-label d-block"><b>Efternamn</b></label>
-            <input asp-for="Product.LastName" type="text" id="authorLN" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" placeholder="@Model.Product.LastName"/>
-        </div>
+        <label for="NrOfCopies" class="form-label"><b>Antal exemplar</b></label>
+        <input type="number" asp-for="NrOfCopies" class="form-control" id="NrOfCopies" name="NrOfCopies" step="1" min="1" max="100" placeholder="1"/>
     </div>
-    </div>
-
-    <div class="mb-3 AltAutoWidth">
-        <label for="nrOfCopies" class="form-label"><b>Antal exemplar</b></label>
-        <input type="number" asp-for="Product.NrOfCopies" class="form-control" id="nrOfCopies" step="1" min="1" max="100" value="@Model.Product.NrOfCopies"/>
-    </div>
-
-    <button type="submit" class="btn btn-custom">Uppdatera</button>
+    <button type="submit" class="btn btn-custom">Lägg till</button>
 </form>
-    </div>
+</div>
 }
 else
 {
     <p>Sidan är ej tillgänglig.</p>
+}
+
+@if(@Model.ShowModal)
+{
+    <div class="modal fade show" id="staticBackdrop" style="display: block;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">@Model.ModalBody</h5>
+            <a class="btn-close" role="button" asp-page="/EditProduct" asp-route-id="@Model.Id" asp-route-showModal="False"></a>
+          </div>
+          <div class="modal-body">
+            @Model.ModalBody
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-custom" role="button" asp-page="/EditProduct" asp-route-id="@Model.Id" asp-route-showModal="False">Ok</a>
+            <a class="btn btn-custom" role="button" asp-page="/Index">Gå till start</a>
+          </div>
+        </div>
+      </div>
+    </div>
 }
 
 @section Navigation {

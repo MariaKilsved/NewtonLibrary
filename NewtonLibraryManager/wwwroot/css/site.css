@@ -24,6 +24,12 @@ body {
     }
 }
 
+@media print {
+    header {
+        opacity:0;
+    }
+}
+
 .btn-custom {
     color: #fff;
     background-color: #004d6f;

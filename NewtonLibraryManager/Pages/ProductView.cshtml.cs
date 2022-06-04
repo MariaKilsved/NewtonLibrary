@@ -26,6 +26,8 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public bool HasAnyReservationDetail { get; set; }
 
+
+
         [BindProperty]
         public bool ShowModal { get; set; }
 
@@ -40,6 +42,8 @@ namespace NewtonLibraryManager.Pages
         /// When the page is loaded
         /// </summary>
         /// <param name="id">The id of the specific product being displayed</param>
+        /// <param name="showModal">Whether to show a modal or not</param>
+        /// <param name="modalBody">What to put in the body of the modal</param>
         public void OnGet(string id, bool showModal = false, string modalBody = "")
         {
             //Uses the product Id determined in the Url to set everything
