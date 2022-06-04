@@ -26,7 +26,8 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public bool HasAnyReservationDetail { get; set; }
 
-
+        [BindProperty]
+        public int ReservationQueuePosition { get; set; }
 
         [BindProperty]
         public bool ShowModal { get; set; }
@@ -79,10 +80,18 @@ namespace NewtonLibraryManager.Pages
 
                 //Set HasCommonReservationDetail to true only if a matching ReservationDetail exists
                 HasCommonReservationDetail = Handlers.ProductHandler.HasCommonReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+
+                //Set IsFirstReserver to true if user is first in queue for borrowing product
+                if(Handlers.ProductHandler.HasReservationForProduct(Int32.Parse(id), Int32.Parse(cookieValue2), out int queuePosition))
+                {
+                    ReservationQueuePosition = queuePosition;
+                }
             }
             else
             {
                 HasLendingDetail = false;
+                HasCommonReservationDetail = false;
+                ReservationQueuePosition = 0;
             }
 
             //Set HasAnyReservationDetail to true if product has any ReservationDetail

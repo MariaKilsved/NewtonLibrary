@@ -343,6 +343,33 @@ public static class ProductHandler
         return list[0].UserId ?? 0;
     }
 
+
+    /// <summary>
+    /// Checks whether a user is in the reservation queue for a product. 
+    /// </summary>
+    /// <param name="productId">Id of the product being checked</param>
+    /// <param name="userId">Id of the user being checked</param>
+    /// <param name="queuePosition">Out parameter for position in queue</param>
+    /// <returns>Boolean for if the user is queued for the product or not</returns>
+    public static bool HasReservationForProduct(int productId, int userId, out int queuePosition)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
+        .Where(ld => ld.ProductId == productId)
+        .OrderBy(ld => ld.ReservationDate)
+        .ToList();
+
+        for(int i = 0; i < list.Count; i++)
+        {
+            if(list[i].UserId == userId)
+            {
+                queuePosition = i + 1;
+                return true;
+            }
+        }
+        queuePosition = 0;
+        return false;
+    }
+
     /// <summary>
     /// Adds a Product/Author/AuthorDetail if it doesnt exist already.
     /// </summary>
