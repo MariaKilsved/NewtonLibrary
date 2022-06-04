@@ -176,6 +176,13 @@ namespace NewtonLibraryManager.Pages
 
         public IActionResult OnPost()
         {
+            //Copy some of the values from the original if no input was used
+            Title = String.IsNullOrWhiteSpace(Title)? Product.Title : Title;
+            Dewey = String.IsNullOrWhiteSpace(Dewey)? Product.Dewey.ToString() : Dewey;
+            Description = String.IsNullOrWhiteSpace(Description)? Product.Description : Description;
+            Isbn = String.IsNullOrWhiteSpace(Isbn)? Product.Isbn : Isbn;
+            NrOfCopies = (NrOfCopies == 0)? Product.NrOfCopies : NrOfCopies;
+
             //If any frontend field is incorrect, the page will reload
             if (ModelState.IsValid == false)
                 return Page();
