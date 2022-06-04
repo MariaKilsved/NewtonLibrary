@@ -121,7 +121,7 @@ namespace NewtonLibraryManager.Pages
             }
 
             //Set AuthorCount
-            AuthorCount = Product.AuthorsList.Count();
+            AuthorCount = ProductList.Count();
 
             //Create the Lists to receive new author input
             AuthorFirstNames = new List<string>();
@@ -176,6 +176,10 @@ namespace NewtonLibraryManager.Pages
 
         public IActionResult OnPost()
         {
+            //If any frontend field is incorrect, the page will reload
+            if (ModelState.IsValid == false)
+                return Page();
+
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 

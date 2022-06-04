@@ -14,7 +14,6 @@
     int inStock = Model.Product.NrOfCopies - Model.LendedOut;
     int idInt = Int32.Parse(Model.Id);
     string imgSrc = (idInt <= 30) ? $"/css/img/books_150x225/{Model.Id}.jpg" : $"/css/img/books_150x225/NotFound.png";
-    System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 }
 
 @if(@Model.Id != null)

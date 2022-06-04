@@ -10,7 +10,6 @@
     cookieValue2 = Request.Cookies["LibraryCookie2"];
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
-    System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 }
 
 @if(cookieValue1 == cookieComparerTrue)
@@ -28,16 +27,18 @@
     <div class="mb-3 AltAutoWidth">
         <label for="authorSelect" class="form-label"><b>@authorLabel</b></label>
         <div class="d-flex">
-            <select asp-items="Model.Authors" asp-for="SelectedAuthorNames[i]" class="form-select" aria-label="Författare" id="@inputId"></select>
+            <select asp-items="Model.Authors" asp-for="SelectedAuthorNames[i]" class="form-select" aria-label="Författare" id="@inputId">
+                    <option value="">@Model.ProductList[i].Authors</option>
+            </select>
             <button class="btn btn-custom ms-1" type="button" data-bs-toggle="collapse" data-bs-target="@collapseId2" aria-expanded="false" aria-controls="@collapseId">+</button>
         </div>
         <div class="collapse" id="@collapseId">
             <div class="card card-body text-start my-4 pb-4">
                 <h5 class="d-block">Ny författare</h5>
                 <label for="AuthorFirstNames[i]" class="form-label d-block"><b>Förnamn</b></label>
-                <input type="text" asp-for="AuthorFirstNames[i]" id="AuthorFirstNames[i]" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <input type="text" asp-for="AuthorFirstNames[i]" id="AuthorFirstNames[i]" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" placeholder="@Model.ProductList[i].FirstName" />
                 <label for="AuthorLastNames[i]" class="form-label d-block"><b>Efternamn</b></label>
-                <input asp-for="AuthorLastNames[i]" type="text" id="AuthorLastNames[i]" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" />
+                <input asp-for="AuthorLastNames[i]" type="text" id="AuthorLastNames[i]" class="d-block form-control" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30" placeholder="@Model.ProductList[i].LastName"/>
             </div>
         </div>
     </div>        
@@ -45,7 +46,7 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="prodTitle" class="form-label"><b>Titel</b></label>
-        <input type="text" asp-for="Title" class="form-control" id="prodTitle" minlength="4" maxlength="100" data-val-length-min="4" data-val-length-max="100"/>
+        <input type="text" asp-for="Title" class="form-control" id="prodTitle" minlength="4" maxlength="100" data-val-length-min="4" data-val-length-max="100" placeholder="@Model.Product.Title"/>
     </div>
 
     <div class="d-flex flex-row justify-content-center">
@@ -68,7 +69,7 @@
 
     <div class="mb-3 AltAutoWidth">
         <label for="dewey" class="form-label"><b>Dewey decimalklassifikation</b></label>
-        <input type="text" asp-for="Dewey" class="form-control" id="dewey" minlength="3" maxlength="7" data-val-length-min="3" data-val-length-max="7" placeholder="T.ex. 839.738"/>
+        <input type="text" asp-for="Dewey" class="form-control" id="dewey" minlength="3" maxlength="7" data-val-length-min="3" data-val-length-max="7" placeholder="@Model.Product.DeweyString"/>
         @if (!String.IsNullOrWhiteSpace(@Model.DeweyError))
         {
             <div id="passwordHelp" class="form-text"><i>@Model.DeweyError</i></div>
@@ -77,12 +78,12 @@
 
     <div class="mb-3 AltAutoWidth">
       <label for="descriptionTextArea" class="form-label"><b>Beskrivning</b></label>
-      <textarea asp-for="Description" class="form-control" id="descriptionTextArea" rows="3"></textarea>
+      <textarea asp-for="Description" class="form-control" id="descriptionTextArea" rows="3" placeholder="@Model.Product.Description"></textarea>
     </div>
 
     <div class="mb-3 AltAutoWidth">
         <label for="isbn" class="form-label"><b>ISBN</b></label>
-        <input type="text" asp-for="Isbn" class="form-control" id="isbn" minlength="10" maxlength="13" data-val-length-min="10" data-val-length-max="13"/>
+        <input type="text" asp-for="Isbn" class="form-control" id="isbn" minlength="10" maxlength="13" data-val-length-min="10" data-val-length-max="13" placeholder="@Model.Product.Isbn"/>
     </div>
 
     <div class="mb-3 AltAutoWidth">
@@ -91,7 +92,7 @@
     </div>
     <div class="mb-3 AltAutoWidth">
         <label for="NrOfCopies" class="form-label"><b>Antal exemplar</b></label>
-        <input type="number" asp-for="NrOfCopies" class="form-control" id="NrOfCopies" name="NrOfCopies" step="1" min="1" max="100" placeholder="1"/>
+        <input type="number" asp-for="NrOfCopies" class="form-control" id="NrOfCopies" name="NrOfCopies" step="1" min="1" max="100" placeholder="@Model.Product.NrOfCopies"/>
     </div>
     <button type="submit" class="btn btn-custom">Lägg till</button>
 </form>
