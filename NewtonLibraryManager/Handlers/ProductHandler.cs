@@ -15,9 +15,9 @@ public static class ProductHandler
             BorrowProduct(userID, productId);
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            throw new Exception($"Error: {ex.Message}");
         }
     }
 
@@ -86,9 +86,9 @@ public static class ProductHandler
     {
         try
         {
-            int userId = AccountHandler.CurrentIdLoggedIn;
             var lendingDetails = EntityFramework.Read.ReadHandler.GetLendingDetails();
-            var ld = lendingDetails.Where(x => x.ProductId == prodId && x.UserId == userId).ToList();
+            var ld = lendingDetails.Where(x =>
+                x.ProductId == prodId && x.UserId == AccountHandler.CurrentIdLoggedIn).ToList();
 
             ld.ForEach(x =>
             {
@@ -99,9 +99,9 @@ public static class ProductHandler
                 }
             });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            throw new Exception($"Error~{ex.Message}");
         }
 
         return true;
@@ -109,9 +109,9 @@ public static class ProductHandler
 
     public static bool CancelReservation(int prodId)
     {
-        int userId = AccountHandler.CurrentIdLoggedIn;
         var reservationDetails = EntityFramework.Read.ReadHandler.GetReservationDetails();
-        var rd = reservationDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId == userId);
+        var rd = reservationDetails.FirstOrDefault(x => x.ProductId == prodId && x.UserId
+        == AccountHandler.CurrentIdLoggedIn);
         if (rd == null) return false;
         
         try

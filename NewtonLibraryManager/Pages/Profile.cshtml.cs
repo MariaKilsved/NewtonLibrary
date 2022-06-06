@@ -105,11 +105,11 @@ namespace NewtonLibraryManager.Pages
             try
             {
                 EntityFramework.Update.UpdateHandler.UpdateUser(EditedUser);
-                return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Användare uppdaterad" });
+                return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Anvï¿½ndare uppdaterad" });
             }
             catch 
             {
-                return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att uppdatera användare" });
+                return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att uppdatera anvï¿½ndare" });
             }
 
         }
@@ -136,10 +136,10 @@ namespace NewtonLibraryManager.Pages
                     return RedirectToPage("/Logout");
                 }
                 //Go to index page if deleting someone else
-                return RedirectToPage("/Index", new { showModal = true, modalBody = "Användaren borttagen" });
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Anvï¿½ndaren borttagen" });
             }
             //Reload page if it fails
-            return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att ta bort användare" });
+            return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att ta bort anvï¿½ndare" });
         }
 
         public IActionResult OnPostReturn(int id)
@@ -148,8 +148,8 @@ namespace NewtonLibraryManager.Pages
             {
                 if (Handlers.ProductHandler.ReturnProduct(id))
                 {
-                    Console.WriteLine("Returned product");
-                    return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Produkt återlämnad" });
+                                                          Console.WriteLine("Returned product");
+                    return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Produkt ï¿½terlï¿½mnad" });
                 }
             }
             catch (Exception ex)
@@ -158,7 +158,7 @@ namespace NewtonLibraryManager.Pages
                 Console.WriteLine(ex.Message);
             }
 
-            return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att återlämna produkt" });
+            return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att ï¿½terlï¿½mna produkt" });
         }
 
         public IActionResult OnPostReborrow(int id)
@@ -167,7 +167,7 @@ namespace NewtonLibraryManager.Pages
             {
                 if (Handlers.ProductHandler.ReBorrowProduct(User1.Id, id))
                 {
-                    return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Lånade om produkt" });
+                    return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Lï¿½nade om produkt" });
                 }
             }
             catch (Exception ex)
@@ -175,7 +175,7 @@ namespace NewtonLibraryManager.Pages
                 Console.WriteLine(ex.Message);
             }
 
-            return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att låna om produkt" });
+            return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Misslyckades med att lï¿½na om produkt" });
         }
     }
 }

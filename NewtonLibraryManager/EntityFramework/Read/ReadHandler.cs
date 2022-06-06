@@ -8,46 +8,6 @@ namespace NewtonLibraryManager.EntityFramework.Read
     /// </summary>
     public static class ReadHandler
     {
-        public static void Get(string command)
-        {
-
-            switch (command)
-            {
-                case "users":
-                    GetUsers();
-                    break;
-                case "products":
-                    GetProducts();
-                    break;
-                case "categories":
-                    GetCategories();
-                    break;
-                case "languages":
-                    GetLanguages();
-                    break;
-                case "authordetails":
-                    GetAuthorDetails();
-                    break;
-                case "types":
-                    GetTypes();
-                    break;
-                case "lendingdetails":
-                    GetLendingDetails();
-                    break;
-                case "authors":
-                    GetAuthors();
-                    break;
-                case "necategories":
-                    GetNECategories();
-                    break;
-                default:
-                    throw new ArgumentException("Wrong input");
-                    
-
-            }
-        }
-
-
         // READ METHODS
         public static List<User> GetUsers()
         {

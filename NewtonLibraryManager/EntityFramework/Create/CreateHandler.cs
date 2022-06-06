@@ -9,7 +9,6 @@ public static class CreateHandler
     public static int CreateProduct(string title, int langId, int catId, 
         int nrOfCopies, decimal dewey, string desc, string isbn, int productType)
     {
-
         int prodId;
         try
         {

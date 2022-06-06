@@ -23,6 +23,7 @@ public static class AccountHandler
     {
         var listOfUsers = EntityFramework.Read.ReadHandler.GetUsers();
         
+        // Login successful.
         foreach (var user in listOfUsers)
             if (email == user.EMail && password == user.Password)
             {
@@ -46,7 +47,7 @@ public static class AccountHandler
             _adminLoggedIn = false;
         }
         else
-            Console.WriteLine("You're not logged in.");
+            throw new Exception("Could not log you out.");
     }
 
     /// <summary>
@@ -193,19 +194,5 @@ public static class AccountHandler
             return false;
         } 
         return true;
-    }
-
-    /// <summary>
-    /// Method for hashing the password
-    /// </summary>
-    /// <param name="pass"></param>
-    public static void PasswordHash(string pass)
-    {
-        byte[] salt = new byte[32];
-        using (var rngCsp = new RSACryptoServiceProvider())
-        {
-
-
-        }
     }
 }
