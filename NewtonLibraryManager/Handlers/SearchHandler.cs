@@ -44,6 +44,14 @@ namespace NewtonLibraryManager.Handlers
 
                 foreach (var item in queryable)
                 {
+                    var copy = false;
+                    foreach (var displayItem in displayProductModels)
+                        if (displayItem.Title == item.TITLE)
+                            copy = true;
+                    
+                    if (copy)
+                        continue;
+                    
                     DisplayProductModel displayProductModel = new();
                     displayProductModel.Id = item.ID;
                     displayProductModel.Category = item.CAT;
