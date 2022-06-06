@@ -74,11 +74,13 @@ public static class StatisticHandler
                 foreach (var item in hottestBooks)
                 {
                     var dp = new DisplayHotBook();
-                    var product = EntityFramework.Read.ReadHandler.GetProducts(item.Value);
-                    var authorDetail = EntityFramework.Read.ReadHandler.GetAuthorDetails(product.Id);
-                    var authors = EntityFramework.Read.ReadHandler.GetAuthors(product.Id);
-                    dp.Title = product.Title;
-                    dp.AuthorName = authors.FirstName + authors.LastName;
+                    if (item != null)
+                    {
+                        var product = EntityFramework.Read.ReadHandler.GetProducts(item.Value);
+                        var authors = EntityFramework.Read.ReadHandler.GetAuthors(product.Id);
+                        dp.Title = product.Title;
+                        dp.AuthorName = authors.FirstName + authors.LastName;
+                    }
 
                     hottestBooksToReturn.Add(dp);             
                 }
