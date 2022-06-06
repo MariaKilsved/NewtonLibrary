@@ -229,7 +229,7 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine();
                 }
 
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Produkt tillagd" });
             }
             else
             {
@@ -252,7 +252,7 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine();
                 }
 
-                return RedirectToPage("/Error");
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att lägga till produkt" });
             }
         }
     }

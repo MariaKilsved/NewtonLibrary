@@ -6,28 +6,73 @@ namespace NewtonLibraryManager.Handlers;
 public static class ProductHandler
 {
 
+    public static bool ReBorrowProduct(int userID, int productId)
+    {
+        //int userId = AccountHandler.CurrentIdLoggedIn;
+        try
+        {
+            ReturnProduct(productId);
+            BorrowProduct(userID, productId);
+            return true;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     /// <summary>
     /// Should be called when a user returns a product. It sets the return date in the lending details database.
     /// </summary>
     /// <param name="product">Product</param>
     /// <param name="authors">List of authors.</param>
     /// <returns>Returns true if everything went ok. Error otherwise.</returns>
-    public static bool updateProduct(Product product, List<Author> authors)
+    public static bool UpdateProduct(Product product, List<Author> authors)
     {
+        //Prepare list of authorIds to be used when creating Authordettails.
+        List<int> authorIds = new();
+
+        //Save authors from database.
+        var authorList = EntityFramework.Read.ReadHandler.GetAuthors();
+
+        //Go through authors from input.
+        //Check if they exists by comparing every author from database.
+        //If author exists, use author id from "list of authors from database" and add it to id-list.
+        //If it doesnt exist, create new author and save that new new Id and add to id-list.
+        authors.ForEach(x =>
+        {
+            var authorExists = false;
+            authorList.ForEach(d =>
+            {
+                if (x.FirstName == d.FirstName && x.LastName == d.LastName)
+                {
+                    authorIds.Add(d.Id);
+                    authorExists = true;
+                }
+            });
+            if (!authorExists)
+            {
+                var authorId = EntityFramework.Create.CreateHandler.CreateAuthor(x.FirstName, x.LastName);
+                authorIds.Add(authorId);
+            }
+        });
+
+
+        //If everything is ok and no exceptions has been thrown,
+        //proceed with updating product and authordetail
         try
         {
             EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(product.Id);
             EntityFramework.Update.UpdateHandler.UpdateProduct(product);
-            authors.ForEach(x =>
+            authorIds.ForEach(x =>
             {
-                EntityFramework.Create.CreateHandler.CreateAuthorDetail(x.Id, product.Id);
+                EntityFramework.Create.CreateHandler.CreateAuthorDetail(x, product.Id);
             });
         }
         catch (Exception)
         {
             throw;
         }
-
         return true;
     }
 
@@ -248,7 +293,7 @@ public static class ProductHandler
     public static bool HasLendingDetail(int userId, int productId)
     {
         var list = EntityFramework.Read.ReadHandler.GetLendingDetails()
-            .Where(ld => (ld.UserId == userId && ld.ProductId == productId))
+            .Where(ld => (ld.UserId == userId && ld.ProductId == productId && ld.ReturnDate == null))
             .ToList();
 
         return (list.Count > 0);
@@ -260,13 +305,69 @@ public static class ProductHandler
     /// <param name="userId"></param>
     /// <param name="productId"></param>
     /// <returns>True if a ReservationDetail exists, False if not.</returns>
-    public static bool HasReservationDetail(int userId, int productId)
+    public static bool HasCommonReservationDetail(int userId, int productId)
     {
         var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
             .Where(ld => (ld.UserId == userId && ld.ProductId == productId))
             .ToList();
 
         return (list.Count > 0);
+    }
+
+    /// <summary>
+    /// Check if any ReservationDetail exist for a specific product
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns>True if a ReservationDetail exists, False if not.</returns>
+    public static bool HasAnyReservationDetail(int productId)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
+            .Where(ld => ld.ProductId == productId)
+            .ToList();
+
+        return (list.Count > 0);
+    }
+
+    /// <summary>
+    /// Checks which user is first in line among everyone who is reserving a product
+    /// </summary>
+    /// <param name="productId">Id of the product for which reservations are checked</param>
+    /// <returns>Id of the user first in line, or 0 if there is no queue.</returns>
+    public static int GetFirstReservationIdInQueue(int productId)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
+        .Where(ld => ld.ProductId == productId)
+        .OrderBy(ld => ld.ReservationDate)
+        .ToList();
+
+        return list[0].UserId ?? 0;
+    }
+
+
+    /// <summary>
+    /// Checks whether a user is in the reservation queue for a product. 
+    /// </summary>
+    /// <param name="productId">Id of the product being checked</param>
+    /// <param name="userId">Id of the user being checked</param>
+    /// <param name="queuePosition">Out parameter for position in queue</param>
+    /// <returns>Boolean for if the user is queued for the product or not</returns>
+    public static bool HasReservationForProduct(int productId, int userId, out int queuePosition)
+    {
+        var list = EntityFramework.Read.ReadHandler.GetReservationDetails()
+        .Where(ld => ld.ProductId == productId)
+        .OrderBy(ld => ld.ReservationDate)
+        .ToList();
+
+        for(int i = 0; i < list.Count; i++)
+        {
+            if(list[i].UserId == userId)
+            {
+                queuePosition = i + 1;
+                return true;
+            }
+        }
+        queuePosition = 0;
+        return false;
     }
 
     /// <summary>

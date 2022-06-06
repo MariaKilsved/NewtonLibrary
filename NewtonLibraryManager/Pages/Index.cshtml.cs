@@ -17,6 +17,10 @@ public class IndexModel : PageModel
     public string Search { get; set; }
 
     [BindProperty]
+    public List<Models.DisplayNewsModel> News { get; set; }
+
+    /*
+    [BindProperty]
     public bool IncludeBooks { get; set; }
 
     [BindProperty]
@@ -24,6 +28,7 @@ public class IndexModel : PageModel
 
     [BindProperty]
     public bool IncludeAudio { get; set; }
+    */
 
     [BindProperty]
     public List<Models.DisplayProductModel> SearchResults { get; set; }
@@ -31,13 +36,29 @@ public class IndexModel : PageModel
     [BindProperty]
     public bool SearchCompleted { get; set; }
 
-/// <summary>
-/// When page is loaded
-/// </summary>
-    public void OnGet()
+    [BindProperty]
+    public bool ShowModal { get; set; }
+
+    [BindProperty]
+    public string ModalBody { get; set; }
+
+
+    /// <summary>
+    /// When page is loaded
+    /// </summary>
+    /// <param name="showModal">Whether to show a modal or not</param>
+    /// <param name="modalBody">What to put in the body of the modal</param>
+    public void OnGet(bool showModal = false, string modalBody = "")
     {
         //Set boolean for search not being completed yet
         SearchCompleted = false;
+
+        //Obtain latest news
+        News = NewsHandler.GetNewsForToday();
+
+        //Show modal if necessary
+        ShowModal = showModal;
+        ModalBody = modalBody;
     }
 
     /// <summary>

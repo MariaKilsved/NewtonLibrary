@@ -24,6 +24,12 @@ body {
     }
 }
 
+@media print {
+    header {
+        opacity:0;
+    }
+}
+
 .btn-custom {
     color: #fff;
     background-color: #004d6f;
@@ -228,6 +234,92 @@ input[type=hidden] {
     color: #004d6f;
 }
 
-    .link-custom:hover {
-        color: #003349;
+.link-custom:hover {
+    color: #003349;
+}
+
+/*Library card*/
+.libraryCard {
+    background-image: url("img/librarycard/librarycard.svg");
+    background-repeat: no-repeat;
+    width: 332px;
+    height: 210px;
+    color: #f7f2ed;
+}
+
+.libraryCard-body {
+    width: 100%;
+    height: 75%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.libraryCard-brand {
+    width: 40%;
+    text-align: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+.libraryCard-logo {
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 0.25rem;
+    margin-top: 1.75rem;
+}
+
+.libraryCard-newton {
+    width: 4rem;
+    height: auto;
+    margin-top: 0.25rem;
+}
+
+.libraryCard-text {
+    text-align: left;
+    display: block;
+    width: 60%;
+}
+
+.libraryCard-heading {
+    font-size: 1.5rem;
+    display: block;
+    font-weight: 500;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.libraryCard-name {
+    font-size: 0.8rem;
+    display: inline;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #f7f2ed;
+    line-height: 2;
+}
+
+.libraryCard-footer {
+    width: 100%;
+    height: 25%;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    font-size: 0.625rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+/*Only for non-Chromium Edge*/
+@supports (-ms-ime-align:auto) {
+    .libraryCard {
+        background-image: url("img/librarycard/librarycard.png");
     }
+}
+
+/*Only for Internet Explorer*/
+@media all and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .libraryCard {
+        background-image: url("img/librarycard/librarycard.png");
+    }
+}

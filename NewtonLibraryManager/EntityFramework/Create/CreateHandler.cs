@@ -214,10 +214,10 @@ public static class CreateHandler
         }
     }
 
-    public static bool CreateNewsEvent(NewsAndEvent newsevent)
+    public static bool CreateNewsEvent(NewsAndEvent newsEvent)
     {
         var db = new NewtonLibraryContext();
-        db.Add(newsevent);
+        db.Add(newsEvent);
         try
         {
             db.SaveChanges();
@@ -225,8 +225,7 @@ public static class CreateHandler
         }
         catch (Exception)
         {
-
-            throw;
+            throw new Exception("Could not add the News Event to the database");
         }
     }
 }

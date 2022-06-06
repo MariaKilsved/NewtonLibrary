@@ -6,8 +6,8 @@
         public string AuthorName { get; set; }
         public string Isbn { get; set; }
         public string BorrowerName { get; set; }
-        public DateTime BorrowedFrom { get; set; }
-        public DateTime ReturnDate { get; set; }
+        public DateTime? BorrowedFrom { get; set; }
+        public DateTime? ReturnDate { get; set; }
 
     }
 }

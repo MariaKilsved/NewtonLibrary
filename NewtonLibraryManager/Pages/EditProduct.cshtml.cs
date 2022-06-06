@@ -13,32 +13,70 @@ namespace NewtonLibraryManager.Pages
         [BindProperty]
         public List<Models.DisplayProductModel> ProductList { get; set; }
 
-        [BindProperty]
-        public List<SelectListItem> ProdTypes { get; set; }         //Used to make dropdown (select)
+        //To properly check for input lengths, separate properties are used
+
+        [BindProperty, Required, MinLength(4), MaxLength(100)]
+        public string Title { get; set; }
+
+        [BindProperty, Required]
+        public string Dewey { get; set; }                               //Due to issues with how numbers input behave, this is from a text input
 
         [BindProperty]
-        public List<SelectListItem> Categories { get; set; }        //Used to make dropdown (select)
+        public string DeweyError { get; set; }                          //Will print out an error if Dewey has the wrong format
 
         [BindProperty]
-        public List<SelectListItem> Authors { get; set; }           //Used to make dropdown (select)
+        public string Description { get; set; }
+
+        [BindProperty, Required, MinLength(10), MaxLength(13)]
+        public string Isbn { get; set; }
+
+        [BindProperty, Required]
+        public int NrOfCopies { get; set; }
 
         [BindProperty]
-        public string AuthorFirstName { get; set; }
+        public List<SelectListItem> ProdTypes { get; set; }             //Used to make the product type dropdown (select)
 
         [BindProperty]
-        public string AuthorLastName { get; set; }
+        public List<SelectListItem> Categories { get; set; }            //Used to make the category dropdown (select)
 
         [BindProperty]
-        public string SelectedCategory { get; set; }                //The chosen option of the dropdown
+        public List<SelectListItem> Authors { get; set; }               //Used to make the author dropdown(s) (select)
+
+        [BindProperty, Required]
+        public string SelectedCategory { get; set; }                    //The chosen option of the category dropdown
+
+        [BindProperty, Required]
+        public string SelectedProdType { get; set; }                    //The chosen option of the product type dropdown
 
         [BindProperty]
-        public string SelectedProdType { get; set; }                //The chosen option of the dropdown
+        public List<string> AuthorFirstNames { get; set; }              //The chosen author first names from all the author text input(s)
 
         [BindProperty]
-        public string SelectedAuthor { get; set; }                   //The chosen option of the dropdown
+        public List<string> AuthorLastNames { get; set; }               //The chosen author last names from all the author text input(s)
 
         [BindProperty]
-        public List<Models.Language> Languages { get; set; }        //Used to make checkboxes
+        public List<string> SelectedAuthorNames { get; set; }           //The chosen authors from all the author dropdown(s)
+
+        [BindProperty]
+        public List<Models.Language> Languages { get; set; }            //Used to make checkboxes from available languages
+
+        [BindProperty, Required]
+        public int LanguageId { get; set; }                             //Chosen language Id from checkboxes
+
+        private List<Models.Type> ProductTypes { get; set; }            //All product types in database, later converted to SelectListItem for dropdown
+
+        private List<Models.Category> ProductCategories { get; set; }   //All product categories in database, later converted to SelectListItem for dropdown
+
+        private List<Models.Author> AllAuthorsList { get; set; }        //All authors in database, later converted to SelectListItem for dropdown
+
+        [BindProperty]
+        public int AuthorCount { get; set; }
+
+        [BindProperty]
+        public bool ShowModal { get; set; }
+
+        [BindProperty]
+        public string ModalBody { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
@@ -47,19 +85,62 @@ namespace NewtonLibraryManager.Pages
         /// When the page is loaded
         /// </summary>
         /// <param name="id">The id of the specific product being displayed</param>
-        public void OnGet(string id)
+        /// <param name="showModal">Whether to show a modal or not</param>
+        /// <param name="modalBody">What to put in the body of the modal</param>
+
+        public void OnGet(string id, bool showModal = false, string modalBody = "")
         {
             //Uses the product Id determined in the Url to set everything
             Id = id;
 
             //Get product
             ProductList = Handlers.ProductHandler.ShowProduct(Id);
-            Product = ProductList[0];
+            Product = ProductList[0] ?? new Models.DisplayProductModel();
 
-            //Get the contents to fill up the select (dropdown) options
-            List<Models.Type> ProductTypes = EntityFramework.Read.ReadHandler.GetTypes();
-            List<Models.Category> ProductCategories = EntityFramework.Read.ReadHandler.GetCategories();
-            List<Models.Author> AuthorList = EntityFramework.Read.ReadHandler.GetAuthors().ToList();
+            //Set AuthorsList in Product
+            foreach (var i in ProductList)
+            {
+                Product.AuthorsList = new List<string>();
+
+                if (Product.LastName != null && Product.FirstName != null)
+                {
+                    Product.AuthorsList.Add($"{Product.LastName}, {Product.FirstName}");
+                }
+                else if (Product.LastName != null)
+                {
+                    Product.AuthorsList.Add($"{Product.LastName}");
+                }
+                else if (Product.FirstName != null)
+                {
+                    Product.AuthorsList.Add($"{Product.FirstName}");
+                }
+                else
+                {
+                    Product.AuthorsList.Add("");
+                }
+            }
+
+            //Set AuthorCount
+            AuthorCount = ProductList.Count();
+
+            //Create the Lists to receive new author input
+            AuthorFirstNames = new List<string>();
+            AuthorLastNames = new List<string>();
+            SelectedAuthorNames = new List<string>();
+
+
+            //Add to the lists which will take input from frontend
+            for (int i = 0; i < AuthorCount; i++)
+            {
+                AuthorFirstNames.Add("");
+                AuthorLastNames.Add("");
+                SelectedAuthorNames.Add("");
+            }
+
+            //Get all product types and categories to display dropdown menus
+            ProductTypes = EntityFramework.Read.ReadHandler.GetTypes();
+            ProductCategories = EntityFramework.Read.ReadHandler.GetCategories();
+            AllAuthorsList = EntityFramework.Read.ReadHandler.GetAuthors().ToList();
 
             //Get the languages for checkboxes
             Languages = EntityFramework.Read.ReadHandler.GetLanguages();
@@ -73,7 +154,7 @@ namespace NewtonLibraryManager.Pages
             }).ToList();
 
             //Create new list of SelectListItem from product categories; necessary for dropdown menu
-            Categories = ProductCategories.Select(a =>
+            Categories = ProductCategories.OrderBy(pc => pc.Category1).Select(a =>
             new SelectListItem
             {
                 Value = a.Id.ToString(),
@@ -81,57 +162,91 @@ namespace NewtonLibraryManager.Pages
             }).ToList();
 
             //Create new list of SelectListItem from authors; necessary for dropdown menu
-            Authors = AuthorList.OrderBy(author => author.LastName).Select(a =>
+            Authors = AllAuthorsList.OrderBy(author => author.LastName).Select(a =>
             new SelectListItem
             {
-                Value = a.Id.ToString(),
+                Value = a.FirstName + "*" + a.LastName,
                 Text = a.LastName + ", " + a.FirstName
             }).ToList();
+
+            //Show modal if necessary
+            ShowModal = showModal;
+            ModalBody = modalBody;
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
-            Console.WriteLine("lang" + Product.Language);
-            Int32.TryParse(Product.Language, out int lid);
-            Int32.TryParse(SelectedCategory, out int cid);
-            Int32.TryParse(SelectedProdType, out int ptype);
+            //Copy some of the values from the original if no input was used
+            Title = String.IsNullOrWhiteSpace(Title)? Product.Title : Title;
+            Dewey = String.IsNullOrWhiteSpace(Dewey)? Product.Dewey.ToString() : Dewey;
+            Description = String.IsNullOrWhiteSpace(Description)? Product.Description : Description;
+            Isbn = String.IsNullOrWhiteSpace(Isbn)? Product.Isbn : Isbn;
+            NrOfCopies = (NrOfCopies == 0)? Product.NrOfCopies : NrOfCopies;
 
-            var prod = EntityFramework.Read.ReadHandler.GetProducts(Int32.Parse(Id));
+            //If any frontend field is incorrect, the page will reload
+            if (ModelState.IsValid == false)
+                return Page();
 
-            prod.Title = Product.Title;
-            prod.LanguageId = lid;
-            prod.CategoryId = cid;
-            prod.NrOfCopies = Product.NrOfCopies;
-            prod.Dewey = Product.Dewey;
-            prod.Description = Product.Description;
-            prod.Isbn = Product.Isbn;
-            prod.ProductType = ptype;
+            //Remove hyphens from ISBN
+            Isbn = Isbn.Replace("-", "");
 
-            List<Models.Author> authors = new();
-
-            //If there is something in the text input fields, use those instead of the select
-            if (!String.IsNullOrWhiteSpace(AuthorFirstName) && !String.IsNullOrWhiteSpace(AuthorLastName))
+            //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
+            Dewey = Dewey.Replace('.', ',');
+            bool s = Decimal.TryParse(Dewey, out decimal DeweyDecimal);
+            if (!s)
             {
-                //Remove commas just in case
-                AuthorFirstName.Replace(",", "");
-                AuthorLastName.Replace(",", "");
-
-                //Add new author to list
-                authors.Add(new Models.Author { FirstName = AuthorFirstName, LastName = AuthorLastName});
+                DeweyError = "M" + '\x00E5' + "ste vara ett nummer mellan 0 och 999.999";
+                return Page();
             }
-            else
+
+            //Round Dewey
+            DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
+
+            //Create the product and set the values
+            var product = new Models.Product()
             {
-                var a = EntityFramework.Read.ReadHandler.GetAuthors(Int32.Parse(SelectedAuthor)) ;
-                authors.Add(a);
+                Title = Title,
+                LanguageId = LanguageId,
+                CategoryId = Int32.Parse(SelectedCategory),
+                NrOfCopies = NrOfCopies,
+                Dewey = DeweyDecimal,
+                Description = Description,
+                Isbn = Isbn,
+                ProductType = Int32.Parse(SelectedProdType)
+            };
+
+            //Create list of authors
+            var newAuthors = new List<Models.Author>();
+
+            //Loop through authors list. Using SelectedAuthorNames instead of AuthorCount in case of page reloads
+            for (int i = 0; i < SelectedAuthorNames.Count; i++)
+            {
+                //If there is something in the text input fields, use those instead of the select
+                if (!String.IsNullOrWhiteSpace(AuthorFirstNames[i]) && !String.IsNullOrWhiteSpace(AuthorLastNames[i]))
+                {
+                    //Remove commas just in case
+                    AuthorFirstNames[i].Replace(",", "");
+                    AuthorLastNames[i].Replace(",", "");
+
+                    //Add new author to list
+                    newAuthors.Add(new Models.Author { FirstName = AuthorFirstNames[i], LastName = AuthorLastNames[i] });
+                }
+                else
+                {
+                    var subs = SelectedAuthorNames[i].Split("*");
+
+                    newAuthors.Add(new Models.Author() { FirstName = subs[0], LastName = subs[1] });
+                }
             }
 
             try
             {
-                Handlers.ProductHandler.updateProduct(prod, authors);
+                Handlers.ProductHandler.UpdateProduct(product, newAuthors);
+                return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt uppdaterad" });
             }
             catch (Exception)
             {
-                throw;
+                return RedirectToPage("/EditProduct", new { id = Id, showModal = true, modalBody = "Misslyckades med att uppdatera produkt" });
             }
         }
     }

@@ -12,8 +12,8 @@
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
     int inStock = Model.Product.NrOfCopies - Model.LendedOut;
-    string imgSrc = $"/css/img/books_150x225/{Model.Id}.jpg";
-    System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
+    int idInt = Int32.Parse(Model.Id);
+    string imgSrc = (idInt <= 30) ? $"/css/img/books_150x225/{Model.Id}.jpg" : $"/css/img/books_150x225/NotFound.png";
 }
 
 @if(@Model.Id != null)
@@ -68,15 +68,20 @@
 @if(cookieValue == cookieComparerId) {
     <form method=post>
         <div class="container mt-4 text-center">
-            @if(@inStock > 0 && !Model.HasLendingDetail)
+            @if((@inStock > 0 && !Model.HasAnyReservationDetail && !Model.HasLendingDetail) || 
+             (@inStock > 0 && Model.HasAnyReservationDetail && !Model.HasLendingDetail && Model.ReservationQueuePosition <= @inStock))
             {
                 <button type="submit" value="borrow" asp-page-handler="Borrow" class="btn btn-custom">Låna</button>
             }
-            @if(@inStock <= 0 && !Model.HasReservationDetail && !Model.HasLendingDetail)
+            @if(Model.HasLendingDetail && !Model.HasAnyReservationDetail)
+            {
+                <button type="submit" value="reborrow" asp-page-handler="Reborrow" class="btn btn-custom">Låna om</button>
+            }
+            @if(@inStock <= 0 && !Model.HasCommonReservationDetail && !Model.HasLendingDetail)
             {
                 <button type="submit" value="reserve" asp-page-handler="Reserve" class="btn btn-custom">Reservera</button>
             }
-            @if(Model.HasReservationDetail)
+            @if(Model.HasCommonReservationDetail)
             {
                 <button type="submit" value="cancel" asp-page-handler="CancelReservation" class="btn btn-custom">Avbryt reservation</button>
             }
@@ -93,8 +98,29 @@
     </form>
 }
 
+@if(@Model.ShowModal)
+{
+    <div class="modal fade show" id="staticBackdrop" style="display: block;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">@Model.ModalBody</h5>
+            <a class="btn-close" role="button" asp-page="/ProductView" asp-route-id="@Model.Id" asp-route-showModal="False"></a>
+          </div>
+          <div class="modal-body">
+            @Model.ModalBody
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-custom" role="button" asp-page="/ProductView" asp-route-id="@Model.Id" asp-route-showModal="False">Ok</a>
+            <a class="btn btn-custom" role="button" asp-page="/Index">Gå till start</a>
+          </div>
+        </div>
+      </div>
+    </div>
+}
+
 @section Navigation {
-        <nav class="navbar navbar-expand-xl navbar-toggleable-xl navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-xxl navbar-toggleable-xxl navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-page="/Index">
                 <img src="/css/img/logo.svg" alt="" width="24" height="24" class="d-inline-block align-text-top" />
@@ -105,13 +131,16 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-xl-inline-flex justify-content-between">
+            <div class="navbar-collapse collapse d-xxl-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/News">Nyheter</a>
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">

@@ -21,7 +21,19 @@ namespace NewtonLibraryManager.Pages
         public bool HasLendingDetail { get; set; }
 
         [BindProperty]
-        public bool HasReservationDetail { get; set; }
+        public bool HasCommonReservationDetail { get; set; }
+
+        [BindProperty]
+        public bool HasAnyReservationDetail { get; set; }
+
+        [BindProperty]
+        public int ReservationQueuePosition { get; set; }
+
+        [BindProperty]
+        public bool ShowModal { get; set; }
+
+        [BindProperty]
+        public string ModalBody { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
@@ -31,7 +43,9 @@ namespace NewtonLibraryManager.Pages
         /// When the page is loaded
         /// </summary>
         /// <param name="id">The id of the specific product being displayed</param>
-        public void OnGet(string id)
+        /// <param name="showModal">Whether to show a modal or not</param>
+        /// <param name="modalBody">What to put in the body of the modal</param>
+        public void OnGet(string id, bool showModal = false, string modalBody = "")
         {
             //Uses the product Id determined in the Url to set everything
             Id = id;
@@ -64,13 +78,28 @@ namespace NewtonLibraryManager.Pages
                 //Set HasLendingDetail to true only if a matching LendingDetail exists
                 HasLendingDetail = Handlers.ProductHandler.HasLendingDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
 
-                //Set HasReservationDetail to true only if a matching ReservationDetail exists
-                HasReservationDetail = Handlers.ProductHandler.HasReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+                //Set HasCommonReservationDetail to true only if a matching ReservationDetail exists
+                HasCommonReservationDetail = Handlers.ProductHandler.HasCommonReservationDetail(Int32.Parse(cookieValue2), Int32.Parse(id));
+
+                //Set IsFirstReserver to true if user is first in queue for borrowing product
+                if(Handlers.ProductHandler.HasReservationForProduct(Int32.Parse(id), Int32.Parse(cookieValue2), out int queuePosition))
+                {
+                    ReservationQueuePosition = queuePosition;
+                }
             }
             else
             {
                 HasLendingDetail = false;
+                HasCommonReservationDetail = false;
+                ReservationQueuePosition = 0;
             }
+
+            //Set HasAnyReservationDetail to true if product has any ReservationDetail
+            HasAnyReservationDetail = Handlers.ProductHandler.HasAnyReservationDetail(Int32.Parse(id));
+
+            //Show modal if necessary
+            ShowModal = showModal;
+            ModalBody = modalBody;
         }
 
 
@@ -93,13 +122,12 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.BorrowProduct(userId, prodId))
                 {
-                    return RedirectToPage("/Index");
-
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt lånad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Lån misslyckades" });
         }
-        
+
 
         /// <summary>
         /// When the submit button to reserve is pressed
@@ -120,11 +148,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.ReserveProduct(userId, prodId))
                 {
-                    return RedirectToPage("/Index");
-
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt reserverad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Reservation misslyckades" });
         }
 
         /// <summary>
@@ -147,11 +174,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.CancelReservation(prodId))
                 {
-                    return RedirectToPage("/Index");
-
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Reservation avslutad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att avsluta reservationen" });
         }
 
         /// <summary>
@@ -174,10 +200,36 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to return product
                 if (Handlers.ProductHandler.ReturnProduct(prodId))
                 {
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt återlämnad" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Återlämningen misslyckades" });
+        }
+
+        /// <summary>
+        /// When the button to re-borrow a product is pressed.
+        /// </summary>
+        /// <returns>Redirect to index or reload page.</returns>
+        public IActionResult OnPostReborrow()
+        {
+            //Compare cookies
+            string cookieValue = Request.Cookies["LibraryCookie"];
+            string cookieValue2 = Request.Cookies["LibraryCookie2"];
+
+            //Validation using cookies. Cookies are saved as strings and must be converted to int.
+            if (cookieValue != null && cookieValue2 != null && Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2) == cookieValue)
+            {
+                int userId = Int32.Parse(cookieValue2);
+                int prodId = Int32.Parse(Id);
+
+                //Attempt to reserve product
+                if (Handlers.ProductHandler.ReBorrowProduct(userId, prodId))
+                {
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt har lånats om" });
+                }
+
+            }
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att låna om produkten" });
         }
 
         /// <summary>
@@ -196,10 +248,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to delete product
                 if (Handlers.ProductHandler.DeleteProduct(Int32.Parse(Id)))
                 {
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/Index", new { showModal = true, modalBody = "Produkt borttagen" });
                 }
             }
-            return Page();
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att ta bort produkten" });
         }
     }
 }

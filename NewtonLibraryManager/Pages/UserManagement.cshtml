@@ -75,7 +75,7 @@ else
 </div>
 
 @section Navigation {
-        <nav class="navbar navbar-expand-xl navbar-toggleable-xl navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-xxl navbar-toggleable-xxl navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-page="/Index">
                 <img src="/css/img/logo.svg" alt="" width="24" height="24" class="d-inline-block align-text-top" />
@@ -86,25 +86,28 @@ else
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-xl-inline-flex justify-content-between">
+            <div class="navbar-collapse collapse d-xxl-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/News">Nyheter</a>
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/DetermineAuthorCount">Lägg till produkt</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/UserManagement" aria-current="page">Hantera användarkonton</a>
+                        <a class="nav-link text-dark active" asp-area="" asp-page="/UserManagement" aria-current="page">Hantera användarkonton</a>
                     </li>
                     }
                     @if (cookieValue1 == cookieComparerTrue && cookieValue == cookieComparer1) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/AdminManagement">Hantera adminkonton</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera användare</a>

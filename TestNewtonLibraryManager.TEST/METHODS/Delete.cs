@@ -20,50 +20,70 @@ namespace TestNewtonLibraryManager.TEST.METHODS
             Assert.NotEqual(expected, actual);
         }
 
+        [Fact]
         public void DeleteAuthor()
         {
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteAuthor(42);
+            Assert.True(testActual);
 
         }
 
+        [Fact]
+        public void DeleteProduct()
+        {
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteProduct(54);
+            Assert.IsType<int>(testActual);
+        }
+
+        [Fact]
         public void DeleteAuthorDetail()
         {
-
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(62);
+            Assert.IsType<int>(testActual);
         }
 
+        [Fact]
         public void DeleteCategory()
         {
-    
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteCategory(29);
+            Assert.True(testActual);
+
         }
 
+        [Fact]
         public void DeleteLanguage()
         {
-
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteLanguage(6);
+            Assert.True(testActual);
         }
 
+        [Fact]
+        public void DeleteUser()
+        {
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteUser(48);
+            Assert.True(testActual);
+        }
+
+        [Fact]
         public void DeleteLendingDetail()
         {
 
         }
 
+        [Fact]
         public void DeleteReservationDetail()
         {
-
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteReservationDetail(12);
+            Assert.True(testActual);
         }
 
-        public void DeleteProduct()
-        {
-
-        }
-
+        [Fact]
         public void DeleteType()
         {
-
+            var testActual = NewtonLibraryManager.EntityFramework.Delete.DeleteHandler.DeleteType(9);
+            Assert.True(testActual);
         }
 
-        public void DeleteUser()
-        {
-
-        }
 
     }
 }

@@ -11,23 +11,46 @@
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
     string cookieComparerId = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + Model.User1.Id.ToString());
 
-    @if(cookieValue != null)
+
+
+    /*@if(cookieValue != null)
     {
         ViewData["Title"] = @Model.User1.FirstName + " " + @Model.User1.LastName;
     }
     else
     {
         ViewData["Title"] = "";
-    }
+    }*/
 }
+
+<div class="container d-flex justify-content-start mt-5 mb-5">
+    <div class="libraryCard">
+        <div class="libraryCard-body">
+            <div class="libraryCard-brand">
+                <img src="~/css/img/librarycard/logo-beige.svg" class="libraryCard-logo" />
+                <img src="~/css/img/librarycard/logo-newton-beige.svg" class="libraryCard-newton" />
+            </div>
+            <div class="libraryCard-text">
+                <span class="libraryCard-heading">Bibliotekskort</span>
+                <span class="libraryCard-name">@Model.User1.FirstName @Model.User1.LastName</span> <br />
+                <span class="libraryCard-name">@Model.User1.EMail</span>
+            </div>
+        </div>
+        <div class="libraryCard-footer">
+            <span class="libraryCard-adress">Malmvägen 1, Stockholm</span>
+            <span class="libraryCard-phone">08-410 456 00</span>
+        </div>
+    </div>
+</div>
+
     @if(Model.User1 != null && Model.User1.Id > 0 && (cookieValue == cookieComparerId || cookieValue1 == cookieComparerTrue))
     {
     <div class="text-center container">
         <form method="post" asp-page-handler="edit" class="d-inline text-start">
-            <h3 class="mb-4">@Model.ViewData["Title"]</h3>
+            <h3 class="mb-3">@Model.ViewData["Title"]</h3>
             <div class="row">
-                <div class="col-2"><b>Förnamn</b></div>
-                <div class="col col-sm-2">@Model.User1.FirstName</div>
+                <div class="col-2 pt-3"><b>Förnamn</b></div>
+                <div class="col col-sm-2 pt-3">@Model.User1.FirstName</div>
                 <div class="col">
                     <div class="form-floating mb-3">
                       <input type="text" asp-for="EditedUser.FirstName" class="form-control" id="changeFirstName" placeholder="Nytt förnamn" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30">
@@ -36,8 +59,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2"><b>Efternamn</b></div>
-                <div class="col col-sm-2">@Model.User1.LastName</div>
+                <div class="col-2 pt-3"><b>Efternamn</b></div>
+                <div class="col col-sm-2 pt-3">@Model.User1.LastName</div>
                 <div class="col">
                     <div class="form-floating mb-3">
                       <input type="text" asp-for="EditedUser.LastName" class="form-control" id="changeLastName" placeholder="Nytt efternamn" minlength="2" maxlength="30" data-val-length-min="2" data-val-length-max="30">
@@ -46,8 +69,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2"><b>E-mail</b></div>
-                <div class="col col-sm-2">@Model.User1.EMail</div>
+                <div class="col-2 pt-3"><b>E-mail</b></div>
+                <div class="col col-sm-2 pt-3">@Model.User1.EMail</div>
                 <div class="col">
                     <div class="form-floating mb-3">
                       <input type="email" asp-for="EditedUser.EMail" class="form-control" id="changeEmail" placeholder="name@example.com" minlength="8" data-val-length-min="8">
@@ -56,14 +79,14 @@
                 </div>
             </div>
             <div class="row mb-4">
-                <div class="col-2"><b>Lösenord</b></div>
+                <div class="col-2 pt-3"><b>Lösenord</b></div>
             @if(@Model.User1.Password != null)
             {
-                <div class="col col-sm-2">Dolt</div>
+                <div class="col col-sm-2 pt-3">Dolt</div>
             }
             else
             {
-                <div class="col">Saknas</div>
+                <div class="col pt-3">Saknas</div>
             }
             <div class="col">
                 <div class="form-floating">
@@ -89,55 +112,97 @@
             </form>
         }
     </div>
-    @if(@Model.UserLoans.Count > 0)
-    {
-        <h3 class="mt-4">Lånade produkter</h3>
-        <form asp-page-handler="view" method="post">
-            <div class="container text-center mt-3 ms-0 searchResults">
-              <div class="row searchHeader">
-                <div class="col">
-                  ISBN
-                </div>
-                <div class="col">
-                  Titel
-                </div>
-                <div class="col">
-                  Lånad från
-                </div>
-                <div class="col">
-                  Lånad till
-                </div>
 
-              </div>
-              @foreach (var loan in Model.UserLoans)
-                {
-                <a asp-page="/ProductView" asp-route-id="@loan.Id" class="row searchBody">
-                    <div class="col">
-                      @loan.Isbn<input type="hidden" name="id" value="@loan.Id.ToString()" />
-                    </div>
-                    <div class="col">
-                      @loan.Title
-                    </div>
-                    <div class="col">
-                        @loan.FromAsString
-                    </div>
-                    <div class="col">
-                        @if (DateTime.Now >= loan.To)
-                        {
-                            <input type="submit" value="Låna om" />
-                        }
-                        else
-                        {
-                            @loan.ToAsString
-                        }
-                    </div>
-                </a>
-                }
-            </div>
-        </form>
-    }
+	@if (@Model.UserLoans.Count > 0)
+	{
+		<h3 class="mt-4">Lånade produkter</h3>
+		<div class="container text-center mt-3 ms-0 searchResults">
+			<div class="row searchHeader text-center">
+				<div class="col justify-content-center">
+					Produkt
+				</div>
+				<div class="col justify-content-center">
+					ISBN
+				</div>
+				<div class="col justify-content-center">
+					Titel
+				</div>
+				<div class="col justify-content-center">
+					Lånad från
+				</div>
+				<div class="col justify-content-center">
+					Lånad till
+				</div>
+				<div class="col justify-content-center">
+				</div>
+
+			</div>
+			@foreach (var loan in Model.UserLoans)
+			{
+				var image = "";
+				@if (@loan.Id <= 30)
+				{
+					image = $"css/img/books_150x225/{loan.Id}.jpg";
+				}
+				else
+				{
+					image = $"css/img/books_150x225/NotFound.png";
+				}
+				<div class="row searchBody">
+					<div class="col d-flex flex-column justify-content-center">
+						<img style="width: 90px;" class="m-auto" src="@image" />
+						<a class="link-custom m-auto" asp-page="/ProductView" asp-route-id="@loan.Id">Gå till produkt</a>
+					</div>
+					<div class="col d-flex align-items-center justify-content-center">
+						@loan.Isbn<input type="hidden" name="id" value="@loan.Id.ToString()" />
+					</div>
+					<div class="col d-flex align-items-center justify-content-center">
+						@loan.Title
+					</div>
+					<div class="col d-flex align-items-center justify-content-center">
+						@loan.FromAsString
+					</div>
+					<div class="col d-flex align-items-center justify-content-center">
+						@if (DateTime.Today >= loan.To)
+						{
+							@if (Handlers.ProductHandler.HasLendingDetail(Model.User1.Id, loan.Id) && !Handlers.ProductHandler.HasAnyReservationDetail(loan.Id))
+							{
+								<form asp-page-handler="Reborrow" asp-route-id="@loan.Id" method="post">
+									<button type="submit" value="Reborrow" class="btn btn-custom btn-sm">Låna om</button>
+								</form>
+
+							}
+							else
+							{
+								<div style="color: red;">
+									<span>Din lånetid har gått ut, boken måste lämnas tillbaka</span>
+									<span style="font-size: 10px;">
+										Du kan tyvärr inte låna om denna bok.
+										Atingen finns inte boken inne eller också är den reserverad.
+									</span>
+								</div>
+							}
+						}
+						else
+						{
+							<span style="color: green">
+								@loan.ToAsString
+							</span>
+						}
+					</div>
+					<div class="col d-flex align-items-center justify-content-center">
+
+						<form asp-page-handler="Return" asp-route-id="@loan.Id" method="post">
+							<button type="submit" value="Return" class="btn btn-custom btn-sm">Lämna tillbaka</button>
+						</form>
+
+					</div>
+				</div>
+			}
+		</div>
+	}
         @if(@Model.UserReservations.Count > 0)
-    {
+        {
         <h3 class="mt-4">Reserverade produkter</h3>
         <form asp-page-handler="ViewReservation" method="post">
             <div class="container text-center mt-3 ms-0 searchResults">
@@ -176,9 +241,29 @@ else
     <p>Sidan är inte tillgänglig.</p>
 }
 
+@if(@Model.ShowModal)
+{
+    <div class="modal fade show" id="staticBackdrop" style="display: block;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">@Model.ModalBody</h5>
+            <a class="btn-close" role="button" asp-page="/Profile" asp-route-id="@Model.Id" asp-route-showModal="False"></a>
+          </div>
+          <div class="modal-body">
+            @Model.ModalBody
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-custom" role="button" asp-page="/Profile" asp-route-id="@Model.Id" asp-route-showModal="False">Ok</a>
+            <a class="btn btn-custom" role="button" asp-page="/Index">Gå till start</a>
+          </div>
+        </div>
+      </div>
+    </div>
+}
 
 @section Navigation {
-        <nav class="navbar navbar-expand-xl navbar-toggleable-xl navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-xxl navbar-toggleable-xxl navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-page="/Index">
                 <img src="/css/img/logo.svg" alt="" width="24" height="24" class="d-inline-block align-text-top" />
@@ -189,13 +274,16 @@ else
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-xl-inline-flex justify-content-between">
+            <div class="navbar-collapse collapse d-xxl-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Inventory">Alla produkter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/News">Nyheter</a>
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
