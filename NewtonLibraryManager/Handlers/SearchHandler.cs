@@ -28,56 +28,33 @@ namespace NewtonLibraryManager.Handlers
                                       author.FirstName.Contains(search) ||
                                       author.LastName.Contains(search) ||
                                       product.Title.Contains(search)
-                                select new DisplayProductModel
+                                select new
                                 {
-                                    Id = product.Id,
-                                    Title = product.Title,
-                                    Language = language.Language1,
-                                    Category = category.Category1,
-                                    Dewey = product.Dewey,
-                                    Description = product.Description,
-                                    Isbn = product.Isbn,
-                                    FirstName = author.FirstName,
-                                    LastName = author.LastName,
-                                    ProductType = type.Type1
+                                    ID = product.Id,
+                                    TITLE = product.Title,
+                                    LANG = language.Language1,
+                                    CAT = category.Category1,
+                                    DEW = product.Dewey,
+                                    DESC = product.Description,
+                                    ISBN = product.Isbn,
+                                    FIRSTNAME = author.FirstName,
+                                    LASTNAME = author.LastName,
+                                    PRODTYPE = type.Type1
                                 };
 
-                var testList = queryable.ToList();
-                Console.WriteLine("testList: " + testList[0].Title);
-
-                //GroupBy to account for multiple elements in queryable having the same ID
-                var groupedList = queryable.ToList().GroupBy(x => x.Id, x => x);
-
-                foreach (var i in groupedList)
+                foreach (var item in queryable)
                 {
-                    var item = i.ToList();
-
-                    DisplayProductModel displayProductModel = item[0];
-
-                    Console.WriteLine("displayProductModel: " + displayProductModel.Title);
-
-                    displayProductModel.AuthorsList = new List<string>();
-
-                    foreach (var itemCopy in item)
-                    {
-                        if (itemCopy.LastName != null && itemCopy.FirstName != null)
-                        {
-                            displayProductModel.AuthorsList.Add($"{itemCopy.LastName}, {itemCopy.FirstName}");
-                        }
-                        else if (itemCopy.LastName != null)
-                        {
-                            displayProductModel.AuthorsList.Add($"{itemCopy.LastName}");
-                        }
-                        else if (itemCopy.FirstName != null)
-                        {
-                            displayProductModel.AuthorsList.Add($"{itemCopy.FirstName}");
-                        }
-                        else
-                        {
-                            displayProductModel.AuthorsList.Add("");
-                        }
-                    }
-
+                    DisplayProductModel displayProductModel = new();
+                    displayProductModel.Id = item.ID;
+                    displayProductModel.Category = item.CAT;
+                    displayProductModel.Description = item.DESC;
+                    displayProductModel.Dewey = item.DEW;
+                    displayProductModel.Language = item.LANG;
+                    displayProductModel.Title = item.TITLE;
+                    displayProductModel.FirstName = item.FIRSTNAME;
+                    displayProductModel.LastName = item.LASTNAME;
+                    displayProductModel.ProductType = item.PRODTYPE;
+                    displayProductModel.Isbn = item.ISBN;
                     displayProductModels.Add(displayProductModel);
                 }
                 return displayProductModels;
