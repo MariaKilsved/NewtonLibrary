@@ -1,7 +1,7 @@
 ﻿@page
-@model NewtonLibraryManager.Pages.UserManagementModel
+@model NewtonLibraryManager.Pages.AddNewsModel
 @{
-    ViewData["Title"] = "Användare";
+    ViewData["Title"] = "Publicera nyhet";
     string cookieValue = null;
     string cookieValue1 = null;
     string cookieValue2 = null;
@@ -12,67 +12,50 @@
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
 }
 
-<div class="text-center">
-@if (cookieValue1 == cookieComparerTrue)
-{
-        <div class="container mb-3 text-center">
-            <h3>Statistik</h3>
-            <div class="d-inline-flex justify-content-start flex-column text-start">
-                <div><b>Användare som lånat flest produkter: </b>@Model.MostActiveUser</div>
-            </div>
-        </div>
-        <div class="container">
-            <h3 class="mb-0">Alla användare</h3>
-        </div>
-        <div class="container mt-3 searchResults">
-          <div class="row searchHeader">
-            <div class="col-1">
-                Admin
-            </div>
-            <div class="col-3">
-              Förnamn
-            </div>
-            <div class="col-3">
-              Efternamn
-            </div>
-            <div class="col-5">
-              E-mail
-            </div>
-          </div>
-                @if (Model.Users != null)
-                {
-                    @foreach (var user in Model.Users)
-                    {
-                        <a class="row searchBody" asp-page="/Profile" asp-route-id="@user.Id.ToString()">
-                            <div class="col-1">
-                            @if(@user.IsAdmin == true)
-                            {
-                                <span>Ja</span>
-                            }
-                            else
-                            {
-                                <span>Nej</span>
-                            }
-                        </div>
-                            <div class="col-3">
-                                @user.FirstName
-                            </div>
-                            <div class="col-3">
-                                @user.LastName
-                            </div>
-                            <div class="col-5">
-                                @user.EMail
-                            </div>
-                        </a>
-                    }
-                }
-        </div>
+@if(cookieValue1 == cookieComparerTrue) {
+<div class="container text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <form method="post asp-page-handler="post" class="mt-3 d-flex align-items-center flex-column">
+     <div class="mb-3 AltAutoWidth">
+        <label for="neTitle" class="form-label"><b>Titel</b></label>
+        <input type="text" asp-for="Title" class="form-control" id="neTitle" minlength="2" maxlength="100" data-val-length-min="2" data-val-length-max="100"/>
+    </div>
+    <div class="mb-3 AltAutoWidth">
+        <label for="SelectedCategory" class="form-label"><b>Kategori</b></label>
+        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-select" name="SelectedCategory" id="SelectedCategory"></select>
+    </div>
+    <div class="mb-3 AltAutoWidth">
+      <label for="contentTextArea" class="form-label"><b>Text</b></label>
+      <textarea asp-for="Story" class="form-control" id="contentTextArea" rows="10"></textarea>
+    </div>
+    <button type="submit" class="btn btn-custom">Lägg till</button>
+    </form>
+</div>
 }
-else
-{
+else {
     <p>Sidan är ej tillgänglig.</p>
 }
-</div>
+
+@if(@Model.ShowModal)
+{
+    <div class="modal fade show" id="staticBackdrop" style="display: block;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">@Model.ModalBody</h5>
+            <a class="btn-close" role="button" asp-page="/AddNews" asp-route-showModal="False"></a>
+            </div>
+            <div class="modal-body">
+            @Model.ModalBody
+            </div>
+            <div class="modal-footer">
+            <a class="btn btn-custom" role="button" asp-page="/AddNews" asp-route-showModal="False">Ok</a>
+            <a class="btn btn-custom" role="button" asp-page="/Index">Gå till start</a>
+            </div>
+        </div>
+        </div>
+    </div>
+}
 
 @section Navigation {
         <nav class="navbar navbar-expand-xxl navbar-toggleable-xxl navbar-light bg-white border-bottom box-shadow mb-3">
@@ -99,13 +82,13 @@ else
                     </li>
                     @if (cookieValue1 == cookieComparerTrue) {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/AddNews">Publicera</a>
+                        <a class="nav-link text-dark active" asp-area="" asp-page="/AddNews" aria-current="page">Publicera</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/DetermineAuthorCount">Lägg till produkt</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/UserManagement" aria-current="page">Hantera användarkonton</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/UserManagement">Hantera användarkonton</a>
                     </li>
                     }
                     @if (cookieValue1 == cookieComparerTrue && cookieValue == cookieComparer1) {
@@ -130,11 +113,6 @@ else
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Register">Registrera dig</a>
-                    </li>
-                    }
-                    @if (cookieValue != null) {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logga ut</a>
                     </li>
                     }
                 </ul>

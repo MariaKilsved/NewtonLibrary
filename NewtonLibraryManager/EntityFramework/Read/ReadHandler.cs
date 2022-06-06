@@ -37,7 +37,9 @@ namespace NewtonLibraryManager.EntityFramework.Read
                 case "authors":
                     GetAuthors();
                     break;
-                    
+                case "necategories":
+                    GetNECategories();
+                    break;
                 default:
                     throw new ArgumentException("Wrong input");
                     
@@ -109,6 +111,13 @@ namespace NewtonLibraryManager.EntityFramework.Read
             using NewtonLibraryContext db = new();
             var authors = db.Authors.ToList();
             return authors;
+        }
+
+        public static List<NECategory> GetNECategories()
+        {
+            using NewtonLibraryContext db = new();
+            var neCategories = db.NECategories.ToList();
+            return neCategories;
         }
 
         public static List<NewsAndEvent> GetNewsAndEvents()
