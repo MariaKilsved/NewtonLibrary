@@ -34,7 +34,7 @@ namespace TestNewtonLibraryManager.TEST.METHODS
         [Fact]
         public void CreateAuthorDetail()
         {
-            var testActual = NewtonLibraryManager.EntityFramework.Create.CreateHandler.CreateAuthorDetail(40, 50);
+            var testActual = NewtonLibraryManager.EntityFramework.Create.CreateHandler.CreateAuthorDetail(40, 62);
             Assert.True(testActual);
 
             testActual = NewtonLibraryManager.EntityFramework.Create.CreateHandler.CreateAuthorDetail(-20, 1000);
