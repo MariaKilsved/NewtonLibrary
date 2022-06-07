@@ -26,9 +26,36 @@ public static class CreateHandler
                     Isbn = isbn,
                     ProductType = productType,
                 };
-                db.Add(product);
-                db.SaveChanges();
-                prodId = product.Id;
+
+
+                try
+                {
+                    db.Add(product);
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+                try
+                {
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+                try
+                {
+                    prodId = product.Id;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
             return prodId;
         }
