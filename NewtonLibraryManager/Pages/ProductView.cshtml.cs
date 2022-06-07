@@ -122,10 +122,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.BorrowProduct(userId, prodId))
                 {
-                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt lånad" });
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt l" + '\x00E5' + "nad" });
                 }
             }
-            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Lån misslyckades" });
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "L" + '\x00E5' + "n misslyckades" });
         }
 
 
@@ -200,10 +200,10 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to return product
                 if (Handlers.ProductHandler.ReturnProduct(prodId))
                 {
-                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt återlämnad" });
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt "+ '\x00E5' + "terl"+ '\x00E4' + "mnad" });
                 }
             }
-            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Återlämningen misslyckades" });
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = '\x00C5' + "terl" + '\x00E4' + "mningen misslyckades" });
         }
 
         /// <summary>
@@ -225,11 +225,11 @@ namespace NewtonLibraryManager.Pages
                 //Attempt to reserve product
                 if (Handlers.ProductHandler.ReBorrowProduct(userId, prodId))
                 {
-                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt har lånats om" });
+                    return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Produkt har l" + '\x00E5' + "nats om" });
                 }
 
             }
-            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att låna om produkten" });
+            return RedirectToPage("/ProductView", new { id = Id, showModal = true, modalBody = "Misslyckades med att l" + '\x00E5' + "na om produkten" });
         }
 
         /// <summary>

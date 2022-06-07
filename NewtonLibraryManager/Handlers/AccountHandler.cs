@@ -157,7 +157,7 @@ public static class AccountHandler
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            errorMessage = "Lösenordet kan inte vara tomt";
+            errorMessage = "L" + '\x00F6' + "senordet kan inte vara tomt";
             return false;
         }
 

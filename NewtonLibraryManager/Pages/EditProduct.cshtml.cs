@@ -236,11 +236,11 @@ namespace NewtonLibraryManager.Pages
             int selectedProd;
 
             if (!Int32.TryParse(SelectedCategory, out selectedCategory))
-                return RedirectToPage("/EditProduct", new { id = Id, showModal = true, modalBody = "Kunde inte lägga till " +
+                return RedirectToPage("/EditProduct", new { id = Id, showModal = true, modalBody = "Kunde inte l" + '\x00E4' + "gga till " +
                     "kategorin." });
                     
             if(!Int32.TryParse(SelectedProdType, out selectedProd))
-                return RedirectToPage("/EditProduct", new { id = Id, showModal = true, modalBody = "Kunde inte lägga till " +
+                return RedirectToPage("/EditProduct", new { id = Id, showModal = true, modalBody = "Kunde inte l" + '\x00E4' + "gga till " +
                     "produkttyp." });
 
             //Create the product and set the values
