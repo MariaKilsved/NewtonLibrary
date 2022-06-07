@@ -46,7 +46,7 @@ namespace NewtonLibraryManager.Handlers
 		/// <returns></returns>
 		public static User GetUser(int userId)
 		{
-			var user = EntityFramework.Read.ReadHandler.GetUsers(userId);
+			var user = EntityFramework.Read.ReadHandler.GetUser(userId);
 			return user;
 		}
 

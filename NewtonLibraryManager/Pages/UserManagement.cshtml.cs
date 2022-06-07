@@ -21,11 +21,14 @@ namespace NewtonLibraryManager.Pages
 
             //Get the most active user, who has the most entries in LendingDetails
             int activeUserId = Handlers.StatisticHandler.GetMostActiveBorrower();
-            var activeUser = Handlers.UserHandler.GetUser(activeUserId);
 
-            if(activeUser != null)
+            if(activeUserId != 0)
             {
-                MostActiveUser = $"{activeUser.FirstName} {activeUser.LastName}";
+                var activeUser = Handlers.UserHandler.GetUser(activeUserId);
+                if (activeUser != null)
+                {
+                    MostActiveUser = $"{activeUser.FirstName} {activeUser.LastName}";
+                }
             }
         }
     }

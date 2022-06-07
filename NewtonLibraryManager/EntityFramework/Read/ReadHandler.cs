@@ -140,7 +140,7 @@ namespace NewtonLibraryManager.EntityFramework.Read
             return product;
         }
 
-        public static User GetUsers(int userId)
+        public static User GetUser(int userId)
         {
             using NewtonLibraryContext db = new();
             User user = db.Users.Find(userId);
