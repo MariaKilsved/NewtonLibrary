@@ -148,7 +148,7 @@ namespace NewtonLibraryManager.Pages
             {
                 if (Handlers.ProductHandler.ReturnProduct(id))
                 {
-                                                          Console.WriteLine("Returned product");
+                    Console.WriteLine("Returned product");
                     return RedirectToPage("/Profile", new { id = Id, showModal = true, modalBody = "Produkt �terl�mnad" });
                 }
             }

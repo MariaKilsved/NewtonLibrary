@@ -47,18 +47,20 @@
     </form>
 </div>
 
-@if(!Model.SearchCompleted && Model.News.Count > 0)
+@if(!Model.SearchCompleted)
 {
     <div class="container text-center mt-3 searchResults">
-        @for(int i = 0; i < @Model.News.Count; i++)
-        {
-            <div class="card">
-                <div class="card-body">
-                <h5 class="card-title mb-1">@Model.News[i].Title</h5>
-                <i class="d-block text-start mb-2 opacity-75">@Model.News[i].PublishedDate?.ToString("MM/dd/yyyy")</i>
-                <p class="card-text">@Model.News[i].Content</p>
+        @if(@Model.News.Count > 0) {
+            @for(int i = 0; i < @Model.News.Count; i++)
+            {
+                <div class="card">
+                    <div class="card-body">
+                    <h5 class="card-title mb-1">@Model.News[i].Title</h5>
+                    <i class="d-block text-start mb-2 opacity-75">@Model.News[i].PublishedDate?.ToString("MM/dd/yyyy")</i>
+                    <p class="card-text">@Model.News[i].Content</p>
+                    </div>
                 </div>
-            </div>
+            }
         }
         <div class="text-end mt-5">
             <img class="chrisLawtonUnsplash"
