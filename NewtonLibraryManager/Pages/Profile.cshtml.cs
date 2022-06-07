@@ -42,11 +42,19 @@ namespace NewtonLibraryManager.Pages
             //Uses the user Id determined in the Url to set everything
             Id = id;
 
-            int loggedIn = Handlers.AccountHandler.CurrentIdLoggedIn;
+            //int loggedIn = Handlers.AccountHandler.CurrentIdLoggedIn;
 
+            //Check cookies
+            var cookieValue = Request.Cookies["LibraryCookie"];
+            var cookieValue1 = Request.Cookies["LibraryCookie1"];
+            string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
+            string cookieComparerId = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + Id);
 
-            //Needs to be User1 instead of User to avoid hiding PageModel.User
-            User1 = Handlers.UserHandler.GetUser(loggedIn);
+            if(cookieValue == cookieComparerId || cookieValue1 == cookieComparerTrue)
+            {
+                //Needs to be User1 instead of User to avoid hiding PageModel.User
+                User1 = Handlers.UserHandler.GetUser(Int32.Parse(Id));
+            }
 
             //Deep copy in order to keep frontend and user edits separate
             EditedUser = new Models.User() { 
@@ -58,10 +66,10 @@ namespace NewtonLibraryManager.Pages
                 Password = User1.Password };
 
             //Obtain user loans
-            UserLoans = Handlers.UserHandler.GetUserLoans(loggedIn).Where(x => x.Returned == null).ToList();
+            UserLoans = Handlers.UserHandler.GetUserLoans(Int32.Parse(Id)).Where(x => x.Returned == null).ToList();
 
             //Obtain user reservations
-            UserReservations = Handlers.UserHandler.GetUserReservations(loggedIn);
+            UserReservations = Handlers.UserHandler.GetUserReservations(Int32.Parse(Id));
 
             //Show modal if necessary
             ShowModal = showModal;
