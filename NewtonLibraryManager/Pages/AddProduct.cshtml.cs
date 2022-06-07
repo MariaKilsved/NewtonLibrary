@@ -148,7 +148,7 @@ namespace NewtonLibraryManager.Pages
             //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
             Dewey = Dewey.Replace('.', ',');
             bool s = Decimal.TryParse(Dewey, out decimal DeweyDecimal);
-            if(!s)
+            if (!s)
             {
                 DeweyError = "M" + '\x00E5' + "ste vara ett nummer mellan 0 och 999.999";
                 return Page();
@@ -156,26 +156,30 @@ namespace NewtonLibraryManager.Pages
 
             //Round Dewey
             DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
-            //decimal deci = 1.1M;
+            decimal deci = 1.1M;
 
-            /*
             Console.WriteLine();
             Console.WriteLine("SelectedCategory: " + SelectedCategory);
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
             Console.WriteLine();
-            */
+
+            if (!Int32.TryParse(SelectedCategory, out int selcat))
+                throw new Exception("Couldnt parse Selected category");
+
+            if (!Int32.TryParse(SelectedProdType, out int seltype))
+                throw new Exception("Couldnt parse Selected category");
 
             //Create the product and set the values
             var product = new Models.Product()
             {
                 Title = Title,
                 LanguageId = LanguageId,
-                CategoryId = Int32.Parse(SelectedCategory),
+                CategoryId = selcat,
                 NrOfCopies = NrOfCopies,
-                Dewey = DeweyDecimal,
+                Dewey = deci,
                 Description = Description,
                 Isbn = Isbn,
-                ProductType = Int32.Parse(SelectedProdType),
+                ProductType = seltype
             };
 
             //Create list of authors
@@ -185,7 +189,7 @@ namespace NewtonLibraryManager.Pages
             for (int i = 0; i < SelectedAuthorNames.Count; i++)
             {
                 //If there is something in the text input fields, use those instead of the select
-                if(!String.IsNullOrWhiteSpace(AuthorFirstNames[i]) && !String.IsNullOrWhiteSpace(AuthorLastNames[i]))
+                if (!String.IsNullOrWhiteSpace(AuthorFirstNames[i]) && !String.IsNullOrWhiteSpace(AuthorLastNames[i]))
                 {
                     //Remove commas just in case
                     AuthorFirstNames[i].Replace(",", "");
@@ -202,19 +206,17 @@ namespace NewtonLibraryManager.Pages
                 }
             }
 
-            /*
             Console.WriteLine();
             Console.WriteLine("Attempting to add product...");
             Console.WriteLine();
-            */
 
             //Attempt to add product
             if (Handlers.ProductHandler.InsertProduct(product, newAuthors))
             {
+                //Should redirect to specific product? Or show confirmation message on page.
 
                 //var addedProductList = EntityFramework.Read.ReadHandler.GetProducts().Where(x => x.Isbn == product.Isbn).ToList();
 
-                /*
                 Console.WriteLine();
                 Console.WriteLine("Successfully added product!");
                 Console.WriteLine("Product Title: " + product.Title);
@@ -233,13 +235,11 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine($"Author {i + 1} LastName: {newAuthors[i].LastName}");
                     Console.WriteLine();
                 }
-                */
 
                 return RedirectToPage("/Index", new { showModal = true, modalBody = "Produkt tillagd" });
             }
             else
             {
-                /*
                 Console.WriteLine();
                 Console.WriteLine("Failed to add product!");
                 Console.WriteLine("Product Title: " + product.Title);
@@ -258,7 +258,6 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine($"Author {i + 1} LastName: {newAuthors[i].LastName}");
                     Console.WriteLine();
                 }
-                */
 
                 return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att l�gga till produkt" });
             }
