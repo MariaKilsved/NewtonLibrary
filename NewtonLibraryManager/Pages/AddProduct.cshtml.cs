@@ -156,30 +156,23 @@ namespace NewtonLibraryManager.Pages
 
             //Round Dewey
             DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
-            decimal deci = 1.1M;
 
             Console.WriteLine();
             Console.WriteLine("SelectedCategory: " + SelectedCategory);
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
             Console.WriteLine();
 
-            if (!Int32.TryParse(SelectedCategory, out int selcat))
-                throw new Exception("Couldnt parse Selected category");
-
-            if (!Int32.TryParse(SelectedProdType, out int seltype))
-                throw new Exception("Couldnt parse Selected category");
-
             //Create the product and set the values
             var product = new Models.Product()
             {
                 Title = Title,
                 LanguageId = LanguageId,
-                CategoryId = selcat,
+                CategoryId = Int32.Parse(SelectedCategory),
                 NrOfCopies = NrOfCopies,
-                Dewey = deci,
+                Dewey = DeweyDecimal,
                 Description = Description,
                 Isbn = Isbn,
-                ProductType = seltype
+                ProductType = Int32.Parse(SelectedProdType)
             };
 
             //Create list of authors
@@ -259,7 +252,7 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine();
                 }
 
-                return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att lï¿½gga till produkt" });
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att lägga till produkt" });
             }
         }
     }
