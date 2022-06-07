@@ -19,20 +19,14 @@
     <div class="container text-center searchResults">
         <div class="row searchHeader">
         <div class="col">
-            Titel
-        </div>
-        <div class="col">
-            Författare
+            Mest eftertraktade produkter
         </div>
         </div>
         @foreach (var result in Model.HotBooks)
         {
         <div class="row searchBody">
             <div class="col">
-                @result.Title />
-            </div>
-            <div class="col">
-                @result.AuthorName
+                @result.Title 
             </div>
         </div>
         }
