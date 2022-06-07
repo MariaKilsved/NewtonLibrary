@@ -146,13 +146,11 @@ namespace NewtonLibraryManager.Pages
             Isbn = Isbn.Replace("-", "");
 
             //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
-            Dewey = Dewey.Replace('.', ',');
-            bool s = Decimal.TryParse(Dewey, out decimal DeweyDecimal);
-            if (!s)
-            {
-                DeweyError = "M" + '\x00E5' + "ste vara ett nummer mellan 0 och 999.999";
-                return Page();
-            }
+            if(!Decimal.TryParse(Dewey, out decimal DeweyDecimal))
+                Dewey = Dewey.Replace('.', ',');
+
+            if (!Decimal.TryParse(Dewey, out DeweyDecimal))
+                throw new Exception("Could not parse the second time.");
 
             //Round Dewey
             DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
@@ -162,17 +160,28 @@ namespace NewtonLibraryManager.Pages
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
             Console.WriteLine();
 
+            int selectedCategory;
+            int selectedProd;
+
+            if (!Int32.TryParse(SelectedCategory, out selectedCategory))
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Kunde inte lägga till " +
+                    "kategorin." });
+                    
+            if(!Int32.TryParse(SelectedProdType, out selectedProd))
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Kunde inte lägga till " +
+                    "produkttyp." });
+
             //Create the product and set the values
             var product = new Models.Product()
             {
                 Title = Title,
                 LanguageId = LanguageId,
-                CategoryId = Int32.Parse(SelectedCategory),
+                CategoryId = selectedCategory,
                 NrOfCopies = NrOfCopies,
                 Dewey = DeweyDecimal,
                 Description = Description,
                 Isbn = Isbn,
-                ProductType = Int32.Parse(SelectedProdType)
+                ProductType = selectedProd
             };
 
             //Create list of authors
@@ -252,7 +261,7 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine();
                 }
 
-                return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att l�gga till produkt" });
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att l�gga till produkt" });
             }
         }
     }
