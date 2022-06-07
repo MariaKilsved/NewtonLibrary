@@ -16,22 +16,30 @@
 <div class="text-center">
 @if (cookieValue1 == cookieComparerTrue) 
 {
-    <div class="container text-center searchResults">
-        <div class="row searchHeader">
-        <div class="col">
-            Mest eftertraktade produkter
-        </div>
-        </div>
-        @foreach (var result in Model.HotBooks)
-        {
-        <div class="row searchBody">
+    @if(Model.HotBooks.Count > 0) 
+    {
+        <div class="container text-center searchResults">
+            <div class="row searchHeader">
             <div class="col">
-                @result.Title 
+                Mest eftertraktade produkter
             </div>
-        </div>
+            </div>
+            @foreach (var result in Model.HotBooks)
+            {
+            <div class="row searchBody">
+                <div class="col">
+                    @result.Title 
+                </div>
+            </div>
+            }
+            </div>
         }
-    </div>
-}
+        else
+        {
+            <p>Inga utlåningar ännu.</p>
+        }
+
+    }
 else
 {
     <p>Sidan är ej tillgänglig.</p>
