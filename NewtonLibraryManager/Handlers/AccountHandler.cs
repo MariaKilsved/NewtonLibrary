@@ -40,14 +40,9 @@ public static class AccountHandler
     /// </summary>
     public static void LogOut()
     {
-        if (LoggedIn || AdminLoggedIn)
-        {
             _loggedIn = false;
             _currentIdLoggedIn = 0;
             _adminLoggedIn = false;
-        }
-        else
-            throw new Exception("Could not log you out.");
     }
 
     /// <summary>
