@@ -54,6 +54,13 @@ namespace NewtonLibraryManager.Pages
                 PublishedDate = DateTime.Now
             };
 
+            Console.WriteLine("---AddNews---");
+            Console.WriteLine("newsEvent.CategoryId: " + newsEvent.CategoryId);
+            Console.WriteLine("newsEvent.Title: " + newsEvent.Title);
+            Console.WriteLine("newsEvent.ContentText: " + newsEvent.ContentText);
+            Console.WriteLine("newsEvent.PublishedDate: " + newsEvent.PublishedDate);
+            Console.WriteLine();
+
             if(EntityFramework.Create.CreateHandler.CreateNewsEvent(newsEvent))
             {
                 return RedirectToPage("/News", new { showModal = true, modalBody = "Nyhet publicerad" });

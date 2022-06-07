@@ -15,7 +15,7 @@
 @if(cookieValue1 == cookieComparerTrue) {
 <div class="container text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
-    <form method="post asp-page-handler="post" class="mt-3 d-flex align-items-center flex-column">
+    <form method="post" asp-page-handler="post" class="mt-3 d-flex align-items-center flex-column">
      <div class="mb-3 AltAutoWidth">
         <label for="neTitle" class="form-label"><b>Titel</b></label>
         <input type="text" asp-for="Title" class="form-control" id="neTitle" minlength="2" maxlength="100" data-val-length-min="2" data-val-length-max="100"/>

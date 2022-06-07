@@ -215,6 +215,14 @@ public static class CreateHandler
 
     public static bool CreateNewsEvent(NewsAndEvent newsEvent)
     {
+        Console.WriteLine();
+        Console.WriteLine("---CreateNewsEvent---");
+        Console.WriteLine("newsEvent.CategoryId: " + newsEvent.CategoryId);
+        Console.WriteLine("newsEvent.Title: " + newsEvent.Title);
+        Console.WriteLine("newsEvent.ContentText: " + newsEvent.ContentText);
+        Console.WriteLine("newsEvent.PublishedDate: " + newsEvent.PublishedDate);
+        Console.WriteLine();
+
         var db = new NewtonLibraryContext();
         db.Add(newsEvent);
         try
