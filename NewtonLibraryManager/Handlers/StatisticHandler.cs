@@ -77,9 +77,7 @@ public static class StatisticHandler
                     if (item != null)
                     {
                         var product = EntityFramework.Read.ReadHandler.GetProducts(item.Value);
-                        var authors = EntityFramework.Read.ReadHandler.GetAuthors(product.Id);
                         dp.Title = product.Title;
-                        dp.AuthorName = authors.FirstName + authors.LastName;
                     }
 
                     hottestBooksToReturn.Add(dp);             
