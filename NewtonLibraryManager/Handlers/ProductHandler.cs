@@ -29,6 +29,18 @@ public static class ProductHandler
     /// <returns>Returns true if everything went ok. Error otherwise.</returns>
     public static bool UpdateProduct(Product product, List<Author> authors)
     {
+        Console.WriteLine();
+        Console.WriteLine("---Product inside UpdateProduct---");
+        Console.WriteLine("product.Title: " + product.Title);
+        Console.WriteLine("product.LanguageId: " + product.LanguageId);
+        Console.WriteLine("product.CategoryId: " + product.CategoryId);
+        Console.WriteLine("product.NrOfCopies: " + product.NrOfCopies);
+        Console.WriteLine("product.Dewey: " + product.Dewey);
+        Console.WriteLine("product.Description: " + product.Description);
+        Console.WriteLine("product.Isbn: " + product.Isbn);
+        Console.WriteLine("product.ProductType: " + product.ProductType);
+        Console.WriteLine();
+
         //Prepare list of authorIds to be used when creating Authordettails.
         List<int> authorIds = new();
 
@@ -57,6 +69,13 @@ public static class ProductHandler
             }
         });
 
+        Console.WriteLine("---authorIds in UpdateProduct---");
+        foreach (var i in authorIds)
+        {
+            Console.WriteLine("Id: " + i);
+        }
+        Console.WriteLine();
+
 
         //If everything is ok and no exceptions has been thrown,
         //proceed with updating product and authordetail
@@ -71,7 +90,7 @@ public static class ProductHandler
         }
         catch (Exception)
         {
-            throw;
+            return false;
         }
         return true;
     }

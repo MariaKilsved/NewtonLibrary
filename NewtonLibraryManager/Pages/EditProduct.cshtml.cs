@@ -175,8 +175,11 @@ namespace NewtonLibraryManager.Pages
             ModalBody = modalBody;
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(string id)
         {
+            //Ensure Id is correct
+            Id = id;
+
             //Copy some of the values from the original if no input was used
             Title = String.IsNullOrWhiteSpace(Title)? Product.Title : Title;
             Dewey = String.IsNullOrWhiteSpace(Dewey)? Product.Dewey.ToString() : Dewey;
@@ -184,10 +187,18 @@ namespace NewtonLibraryManager.Pages
             Isbn = String.IsNullOrWhiteSpace(Isbn)? Product.Isbn : Isbn;
             NrOfCopies = (NrOfCopies == 0)? Product.NrOfCopies : NrOfCopies;
 
+            Console.WriteLine("Title: " + Title);
+            Console.WriteLine("Dewey: " + Dewey);
+            Console.WriteLine("Description: " + Description);
+            Console.WriteLine("Isbn: " + Isbn);
+            Console.WriteLine("NrOfCopies: " + NrOfCopies);
+            Console.WriteLine("SelectedCategory: " + SelectedCategory);
+            Console.WriteLine("SelectedProdType: " + SelectedProdType);
+
+
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 
-            //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
             //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
             decimal DeweyDecimal;
 
@@ -204,6 +215,7 @@ namespace NewtonLibraryManager.Pages
             DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
 
             Console.WriteLine();
+            Console.WriteLine("---Dropdown values---");
             Console.WriteLine("SelectedCategory: " + SelectedCategory);
             Console.WriteLine("SelectedProdType: " + SelectedProdType);
             Console.WriteLine();
@@ -232,6 +244,17 @@ namespace NewtonLibraryManager.Pages
                 ProductType = selectedProd
             };
 
+            Console.WriteLine();
+            Console.WriteLine("---Temporary product---");
+            Console.WriteLine("product.Title: " + product.Title);
+            Console.WriteLine("product.LanguageId: " + product.LanguageId);
+            Console.WriteLine("product.CategoryId: " + product.CategoryId);
+            Console.WriteLine("product.NrOfCopies: " + product.NrOfCopies);
+            Console.WriteLine("product.Dewey: " + product.Dewey);
+            Console.WriteLine("product.Description: " + product.Description);
+            Console.WriteLine("product.Isbn: " + product.Isbn);
+            Console.WriteLine("product.ProductType: " + product.ProductType);
+
             //Create list of authors
             var newAuthors = new List<Models.Author>();
 
@@ -254,6 +277,15 @@ namespace NewtonLibraryManager.Pages
 
                     newAuthors.Add(new Models.Author() { FirstName = subs[0], LastName = subs[1] });
                 }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("---Product authors---");
+            for (int i = 0; i < newAuthors.Count; i++)
+            {
+                Console.WriteLine($"Author {i + 1} FirstName: {newAuthors[i].FirstName}");
+                Console.WriteLine($"Author {i + 1} LastName: {newAuthors[i].LastName}");
+                Console.WriteLine();
             }
 
             try
