@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace NewtonLibraryManager.Pages
 {
@@ -183,19 +184,21 @@ namespace NewtonLibraryManager.Pages
             Isbn = String.IsNullOrWhiteSpace(Isbn)? Product.Isbn : Isbn;
             NrOfCopies = (NrOfCopies == 0)? Product.NrOfCopies : NrOfCopies;
 
-            //If any frontend field is incorrect, the page will reload
-            if (ModelState.IsValid == false)
-                return Page();
-
             //Remove hyphens from ISBN
             Isbn = Isbn.Replace("-", "");
 
             //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
-            if(!Decimal.TryParse(Dewey, out decimal DeweyDecimal))
-                Dewey = Dewey.Replace('.', ',');
+            //Convert Dewey from string to decimal (can't use input type=number due to bug in Razor Pages):
+            decimal DeweyDecimal;
 
-            if (!Decimal.TryParse(Dewey, out DeweyDecimal))
-                throw new Exception("Could not parse the second time.");
+            try
+            {
+                Decimal.TryParse(Dewey, NumberStyles.Number, new CultureInfo("en-US"), out DeweyDecimal);
+            }
+            catch
+            {
+                Decimal.TryParse(Dewey, NumberStyles.Number, new CultureInfo("sv-SE"), out DeweyDecimal);
+            }
 
             //Round Dewey
             DeweyDecimal = Math.Round(DeweyDecimal, 3, MidpointRounding.ToZero);
@@ -209,11 +212,11 @@ namespace NewtonLibraryManager.Pages
             int selectedProd;
 
             if (!Int32.TryParse(SelectedCategory, out selectedCategory))
-                return RedirectToPage("/Index", new { showModal = true, modalBody = "Kunde inte lägga till " +
+                return RedirectToPage("/EditProduct", new { id = Id, showModal = true, modalBody = "Kunde inte lägga till " +
                     "kategorin." });
                     
             if(!Int32.TryParse(SelectedProdType, out selectedProd))
-                return RedirectToPage("/Index", new { showModal = true, modalBody = "Kunde inte lägga till " +
+                return RedirectToPage("/EditProduct", new { id = Id, showModal = true, modalBody = "Kunde inte lägga till " +
                     "produkttyp." });
 
             //Create the product and set the values
