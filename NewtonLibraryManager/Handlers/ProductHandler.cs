@@ -81,12 +81,39 @@ public static class ProductHandler
         //proceed with updating product and authordetail
         try
         {
-            EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(product.Id);
-            EntityFramework.Update.UpdateHandler.UpdateProduct(product);
-            authorIds.ForEach(x =>
+
+            try
             {
-                EntityFramework.Create.CreateHandler.CreateAuthorDetail(x, product.Id);
-            });
+                EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail(product.Id);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Failed EntityFramework.Delete.DeleteHandler.DeleteAuthorDetail");
+                return false;
+            }
+
+            try
+            {
+                EntityFramework.Update.UpdateHandler.UpdateProduct(product);
+            }
+            catch(Exception)
+            {
+                Console.WriteLine("Failed EntityFramework.Update.UpdateHandler.UpdateProduct");
+                return false;
+            }
+
+            foreach(var a in authorList)
+            {
+                try
+                {
+                    EntityFramework.Create.CreateHandler.CreateAuthorDetail(a.Id, product.Id);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Failed EntityFramework.Create.CreateHandler.CreateAuthorDetail for Author id " + a.Id + " and product.Id " + product.Id);
+                    return false;
+                }
+            }
         }
         catch (Exception)
         {
