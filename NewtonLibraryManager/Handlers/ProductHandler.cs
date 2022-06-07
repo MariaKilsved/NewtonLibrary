@@ -102,15 +102,15 @@ public static class ProductHandler
                 return false;
             }
 
-            foreach(var a in authorList)
+            foreach(var a in authorIds)
             {
                 try
                 {
-                    EntityFramework.Create.CreateHandler.CreateAuthorDetail(a.Id, product.Id);
+                    EntityFramework.Create.CreateHandler.CreateAuthorDetail(a, product.Id);
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Failed EntityFramework.Create.CreateHandler.CreateAuthorDetail for Author id " + a.Id + " and product.Id " + product.Id);
+                    Console.WriteLine("Failed EntityFramework.Create.CreateHandler.CreateAuthorDetail for Author id " + a + " and product.Id " + product.Id);
                     return false;
                 }
             }

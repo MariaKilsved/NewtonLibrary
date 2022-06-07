@@ -180,6 +180,18 @@ namespace NewtonLibraryManager.Pages
             //Ensure Id is correct
             Id = id;
 
+            //int of Id
+            int idInt;
+            try
+            {
+                Int32.TryParse(Id, out idInt);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to parse id into int");
+                throw;
+            }
+
             //Copy some of the values from the original if no input was used
             Title = String.IsNullOrWhiteSpace(Title)? Product.Title : Title;
             Dewey = String.IsNullOrWhiteSpace(Dewey)? Product.Dewey.ToString() : Dewey;
@@ -234,6 +246,7 @@ namespace NewtonLibraryManager.Pages
             //Create the product and set the values
             var product = new Models.Product()
             {
+                Id = idInt,
                 Title = Title,
                 LanguageId = LanguageId,
                 CategoryId = selectedCategory,
