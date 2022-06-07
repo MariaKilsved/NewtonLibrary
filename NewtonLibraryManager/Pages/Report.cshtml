@@ -1,60 +1,48 @@
 ﻿@page
-@model NewtonLibraryManager.Pages.ContactModel
+@model NewtonLibraryManager.Pages.ReportModel
 @{
-    ViewData["Title"] = "Kontakt";
+    ViewData["Title"] = "Rapport";
     string cookieValue = null;
     string cookieValue1 = null;
     string cookieValue2 = null;
     cookieValue = Request.Cookies["LibraryCookie"];
     cookieValue1 = Request.Cookies["LibraryCookie1"];
     cookieValue2 = Request.Cookies["LibraryCookie2"];
+    string cookieComparerId = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2);
     string cookieComparer1 = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_1");
     string cookieComparerTrue = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_True");
-    string cookieComparerId = Models.SecurePasswordHasher.Hash("NewtonLibraryManager_" + cookieValue2);
 }
 
-@if (cookieValue != null && cookieValue == cookieComparerId)
+<div class="text-center">
+@if (cookieValue1 == cookieComparerTrue) 
 {
-    <div class="text-center">
-        <h1>Kontakt</h1>
-
-        <address>
-            <b>Malmvägen 1</b> <br />
-            <b>115 41 Stockholm</b> <br />            
-            <a class="link-custom" href="tel:08-410 456 00">08-410 456 00</a>
-        </address>
-
-        <div class="text-center">
-            <div class="list-group searchResults p-0">
-                @foreach(var admin in Model.Admins)
-                {
-                    string mail = "mailto:" + @admin.EMail;
-                    string name = @admin.FirstName + " " + @admin.LastName;
-                    <a href="@mail" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">@name</h5>
-                        </div>
-                        <p class="mb-1">@admin.EMail</p>
-                        @if(admin.Id == 1)
-                        {
-                            <small>Bibliotekschef</small>
-                        }
-                        else
-                        {
-                            <small>Bibliotekarie</small>
-                        }
-                    </a>
-                }
+    <div class="container text-center searchResults">
+        <div class="row searchHeader">
+        <div class="col">
+            Titel
+        </div>
+        <div class="col">
+            Författare
+        </div>
+        </div>
+        @foreach (var result in Model.HotBooks)
+        {
+        <div class="row searchBody">
+            <div class="col">
+                @result.Title />
+            </div>
+            <div class="col">
+                @result.AuthorName
             </div>
         </div>
-
+        }
     </div>
 }
 else
 {
-    <p>Logga in för att se sidan.</p>
+    <p>Sidan är ej tillgänglig.</p>
 }
-
+</div>
 
 @section Navigation {
         <nav class="navbar navbar-light bg-white border-bottom box-shadow mb-3">
@@ -71,7 +59,7 @@ else
             <div class="navbar-collapse collapse justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index" >Sök</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sök</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Inventory">Alla produkter</a>
@@ -84,7 +72,7 @@ else
                         <a class="nav-link text-dark" asp-area="" asp-page="/AddNews">Publicera</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Report">Rapporter</a>
+                        <a class="nav-link text-dark active" asp-area="" asp-page="/Report" aria-current="page">Rapporter</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/DetermineAuthorCount">Lägg till produkt</a>
@@ -106,7 +94,7 @@ else
                         <a class="nav-link text-dark" asp-area="" asp-page="/Profile" asp-route-id="@cookieValue2">Profil</a>
                     </li>
                     <li>
-                        <a class="nav-link text-dark active" asp-area="" asp-page="/Contact" aria-current="page" >Kontakt</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Contact">Kontakt</a>
                     </li>
                     }
                     @if (cookieValue == null) {
