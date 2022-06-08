@@ -107,7 +107,7 @@
         </form>
         @if(!(cookieValue == cookieComparerId && cookieValue1 == cookieComparerTrue))
         {
-            <form class="text-center mt-4 d-inline" method="post" asp-page-handler="delete" >
+            <form class="text-center mt-4 d-inline" method="post" asp-page-handler="delete" asp-route-id="@Model.User1.Id">
                 <input type="hidden" value="@Model.User1.Id" />
                 <button type="submit" class="btn btn-custom">Ta bort konto</button>
             </form>

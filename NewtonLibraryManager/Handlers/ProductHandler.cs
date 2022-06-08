@@ -281,8 +281,27 @@ public static class ProductHandler
                                 ProductType = type.Type1
                             };
             queryable = queryable.OrderBy(p => p.LastName).ThenBy(p => p.FirstName);
+            var list = queryable.ToList();
+            List<DisplayProductModel> filteredList = new();
 
-            return queryable.ToList();
+            list.ForEach(x =>
+            {
+
+                int found = 0;
+                filteredList.ForEach(v =>
+                {
+                    if (x.Id == v.Id)
+                    {
+                        found = 1;
+                    }
+                });
+
+                if (found == 0)
+                {
+                    filteredList.Add(x);
+                }
+            });
+            return filteredList;
         }
     }
 
