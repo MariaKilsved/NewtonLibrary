@@ -267,7 +267,7 @@ namespace NewtonLibraryManager.Pages
                     Console.WriteLine();
                 }
 
-                return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att l�gga till produkt" });
+                return RedirectToPage("/Index", new { showModal = true, modalBody = "Misslyckades med att l" + '\x00E4' + "gga till produkt" });
             }
         }
     }
