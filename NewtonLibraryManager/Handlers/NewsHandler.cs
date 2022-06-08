@@ -7,6 +7,10 @@ namespace NewtonLibraryManager.Handlers;
 /// </summary>
 public class NewsHandler
 {
+    /// <summary>
+    /// Returns a news class with the news that have been published today.
+    /// </summary>
+    /// <returns></returns>
     public static List<DisplayNewsModel> GetNewsForToday()
     {
         var todayNewsList = new List<DisplayNewsModel>();
@@ -16,6 +20,7 @@ public class NewsHandler
         foreach (var item in news)
         {
             var todayNewsModel = new DisplayNewsModel();
+            //check if it's more than a day old.
             if (item.PublishedDate != DateTime.Today) 
                 continue;
             

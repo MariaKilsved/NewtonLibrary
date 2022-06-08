@@ -40,6 +40,7 @@ public static class AccountHandler
     /// </summary>
     public static void LogOut()
     {
+        // No checks because it interfered with cookies. Simple logout when called instead.
             _loggedIn = false;
             _currentIdLoggedIn = 0;
             _adminLoggedIn = false;

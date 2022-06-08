@@ -5,7 +5,13 @@ namespace NewtonLibraryManager.Handlers;
 
 public static class ProductHandler
 {
-
+    /// <summary>
+    /// Method to borrow a product again.
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <param name="productId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static bool ReBorrowProduct(int userID, int productId)
     {
         //int userId = AccountHandler.CurrentIdLoggedIn;
@@ -153,6 +159,11 @@ public static class ProductHandler
         return true;
     }
 
+    /// <summary>
+    /// A method to cancel a reservation
+    /// </summary>
+    /// <param name="prodId"></param>
+    /// <returns></returns>
     public static bool CancelReservation(int prodId)
     {
         var reservationDetails = EntityFramework.Read.ReadHandler.GetReservationDetails();

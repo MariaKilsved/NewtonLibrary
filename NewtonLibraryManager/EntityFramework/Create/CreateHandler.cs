@@ -6,6 +6,19 @@ namespace NewtonLibraryManager.EntityFramework.Create;
 /// </summary>
 public static class CreateHandler
 {
+    /// <summary>
+    /// Creates a product and inserts it to the databse
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="langId"></param>
+    /// <param name="catId"></param>
+    /// <param name="nrOfCopies"></param>
+    /// <param name="dewey"></param>
+    /// <param name="desc"></param>
+    /// <param name="isbn"></param>
+    /// <param name="productType"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static int CreateProduct(string title, int langId, int catId, 
         int nrOfCopies, decimal dewey, string desc, string isbn, int productType)
     {
@@ -36,6 +49,14 @@ public static class CreateHandler
             throw new Exception("Could not add product");
         }
     }
+    /// <summary>
+    /// Creates a lending detail and inserts it to the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <param name="productId"></param>
+    /// <returns></returns>
     public static bool CreateLendingDetail(int userId, DateTime from, DateTime to, int productId)
     {
         try
@@ -61,6 +82,13 @@ public static class CreateHandler
             return false;
         }
     }
+    /// <summary>
+    /// Creates a reservation detail and inserts it to the database.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="reservDate"></param>
+    /// <param name="productId"></param>
+    /// <returns></returns>
     public static bool CreateReservationDetail(int userId, DateTime reservDate , int productId)
     {
         try
@@ -85,6 +113,12 @@ public static class CreateHandler
             return false;
         }
     }
+    /// <summary>
+    /// Creates an author detail and inserts it to the database
+    /// </summary>
+    /// <param name="authorId"></param>
+    /// <param name="productId"></param>
+    /// <returns></returns>
     public static bool CreateAuthorDetail(int authorId, int productId)
     {
         try
@@ -108,6 +142,13 @@ public static class CreateHandler
         }
     }
     
+    /// <summary>
+    /// Creates an author and inserts it to the database
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static int CreateAuthor(string firstName, string lastName)
     {
         int authorId;
@@ -131,6 +172,11 @@ public static class CreateHandler
             throw new Exception("Could not add author");
         }
     }
+    /// <summary>
+    /// Creates a product type and inserts it to the database
+    /// </summary>
+    /// <param name="tp"></param>
+    /// <returns></returns>
     public static bool CreateType(string tp)
     {
         try
@@ -152,6 +198,11 @@ public static class CreateHandler
             return false;
         }
     }
+    /// <summary>
+    /// Creates a product language and inserts it to the database
+    /// </summary>
+    /// <param name="lang"></param>
+    /// <returns></returns>
     public static int CreateLanguage(string lang)
     {
         using (NewtonLibraryContext db = new())
@@ -165,6 +216,11 @@ public static class CreateHandler
         }
     }
 
+    /// <summary>
+    /// Creates a product category and inserts it to the database
+    /// </summary>
+    /// <param name="cat"></param>
+    /// <returns></returns>
     public static bool CreateCategory(string cat)
     {
         try
@@ -187,6 +243,15 @@ public static class CreateHandler
         }
     }
 
+    /// <summary>
+    /// Creates a user and inserts it to the database
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="isAdmin"></param>
+    /// <returns></returns>
     public static bool CreateUser(string firstName, string lastName, string email, string password, bool isAdmin)
     {
         try
@@ -213,6 +278,12 @@ public static class CreateHandler
         }
     }
 
+    /// <summary>
+    /// Creates a newevent and inserts it to the database
+    /// </summary>
+    /// <param name="newsEvent"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static bool CreateNewsEvent(NewsAndEvent newsEvent)
     {
         Console.WriteLine();

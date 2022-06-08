@@ -64,6 +64,10 @@ namespace NewtonLibraryManager.Handlers
             return borrowedTo;
         }
 
+        /// <summary>
+        /// Returns a list of borrowed books.
+        /// </summary>
+        /// <returns></returns>
         public static List<DisplayCurrentBorrowedBooks> GetAllBorrowedBooks()
         {
             var list = new List<DisplayCurrentBorrowedBooks>();
