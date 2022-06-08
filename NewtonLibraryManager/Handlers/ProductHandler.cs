@@ -273,7 +273,6 @@ public static class ProductHandler
             var list = queryable.ToList();
             List<DisplayProductModel> filteredList = new();
 
-            int count = 0;
             list.ForEach(x =>
             {
 
@@ -286,12 +285,10 @@ public static class ProductHandler
                     }
                 });
 
-                if (found == 0 || count == 0)
+                if (found == 0)
                 {
                     filteredList.Add(x);
                 }
-
-                count++;
             });
             return filteredList;
         }
